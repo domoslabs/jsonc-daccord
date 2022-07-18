@@ -62,15 +62,15 @@ Install json-c and libcmocka-dev (used in the debug builds).
 - Release version:
 
 ```
-git clone https://github.com/domoslabs/jsonc-daccord &&\
-cd jsonc-daccord/src && mkdir build && cd build &&\
+git clone --branch libjsoncdac-0.1 https://github.com/domoslabs/jsonc-daccord &&\
+cd jsonc-daccord && mkdir build && cd build &&\
 cmake .. -DCMAKE_BUILD_TYPE=Release && make && sudo make install
 ```
 
 - Debug version:
 ```
-git clone https://github.com/domoslabs/jsonc-daccord &&\
-cd jsonc-daccord/src && mkdir build && cd build &&\
+git clone --branch libjsoncdac-0.1 https://github.com/domoslabs/jsonc-daccord &&\
+cd jsonc-daccord && mkdir build && cd build &&\
 cmake .. -DCMAKE_BUILD_TYPE=Debug && make && sudo make install
 ```
 
@@ -89,6 +89,6 @@ You can try the library with the jdac-cli command.
 jdac-cli path-to-json path-to-schema
 ```
 
-## Reated links
+## Related links
 
 https://json-schema.org/draft/2020-12/json-schema-core.html
