@@ -1,0 +1,36 @@
+{
+    "alltrue": {
+        "person": {
+            "name": "Anna",
+            "husbands": 1
+        }
+    },
+
+    "nametooshort": {
+        "person": {
+            "name": "Ann",
+            "husbands": 1
+        }
+    },
+
+    "wrongtype": {
+        "person": {
+            "name": "Anna",
+            "husbands": "1"
+        }
+    },
+
+    "husbandmissing": {
+        "person": {
+            "name": "Anna"
+        }
+    },
+
+    "namemissing": {
+        "person": {
+        }
+    },
+
+    "empty": {
+    }
+}

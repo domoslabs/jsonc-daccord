@@ -1,0 +1,8 @@
+{
+    "test-object"   : {"type": "object"},
+    "test-array"    : {"type": "array"},
+    "test-string"   : {"type": "string"},
+    "test-integer"  : {"type": "integer"},
+    "test-boolean"  : {"type": "boolean"} 
+  }
+  

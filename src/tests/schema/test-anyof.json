@@ -1,0 +1,45 @@
+{
+    "acceptstringandinteger": {
+        "$schema": "https://json-schema.org/draft/2019-09/schema",
+        "type": "object",
+        "anyOf": [
+            {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    }
+                }
+            },
+            {
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    }
+                }
+            }
+        ],
+        "required": [
+            "id"
+        ]
+    }
+},
+"inarray": {
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "type": "object",
+    "properties": {
+        "anna": {
+            "type": "array",
+            "items": {
+                "anyOf": [
+                    {
+                        "type": "object",
+                        "required": [
+                            "id"
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}
+}

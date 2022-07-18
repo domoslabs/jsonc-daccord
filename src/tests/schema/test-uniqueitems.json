@@ -1,0 +1,10 @@
+{
+    "unique": {
+        "type": "array",
+        "uniqueItems": true
+    },
+    "notunique": {
+        "type": "array",
+        "uniqueItems": false
+    }
+}

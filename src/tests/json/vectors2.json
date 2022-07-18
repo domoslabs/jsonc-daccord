@@ -1,0 +1,769 @@
+{
+    "ID": "lcss_vectors",
+    "Version": "v01",
+    "Services": [
+        {
+            "Service": "slitherio",
+            "NetifyName": "gaming.slitherio",
+            "max_diff": 1,
+            "max_length": 10,
+            "ValidPorts": [
+                [
+                    444,
+                    444
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "TT": 0,
+                    "ignore_indices": [
+                        0,
+                        1
+                    ],
+                    "proto": "tcp",
+                    "confidence": 10,
+                    "vector": [
+                        0,
+                        0
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "steamworks",
+            "NetifyName": "gaming.steamworks",
+            "max_diff": 1,
+            "max_length": 10,
+            "ValidPorts": [
+                [
+                    4380,
+                    4380
+                ],
+                [
+                    27000,
+                    27100
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "CT": 2,
+                    "TT": 20,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        1300,
+                        -214
+                    ]
+                },
+                {
+                    "ID": "v1",
+                    "CT": 2,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        1300,
+                        1300
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "leagueoflegends",
+            "NetifyName": "gaming.leagueoflegends",
+            "max_diff": 1,
+            "max_length": 10,
+            "ValidPorts": [
+                [
+                    5000,
+                    5500
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "CT": 2,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        515,
+                        -107
+                    ]
+                },
+                {
+                    "ID": "v1",
+                    "CT": 2,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        515,
+                        515
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "apex",
+            "NetifyName": "gaming.apex",
+            "max_diff": 1,
+            "max_length": 10,
+            "ValidPorts": [
+                [
+                    1024,
+                    1124
+                ],
+                [
+                    18000,
+                    18000
+                ],
+                [
+                    29900,
+                    29900
+                ],
+                [
+                    37000,
+                    40000
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "CT": 2,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        50,
+                        -58
+                    ]
+                },
+                {
+                    "ID": "v1",
+                    "CT": 2,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        50,
+                        50
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "rainbow6",
+            "NetifyName": "gaming.rainbow6",
+            "max_diff": 1,
+            "max_length": 10,
+            "ValidPorts": [
+                [
+                    3074,
+                    3074
+                ],
+                [
+                    4380,
+                    4380
+                ],
+                [
+                    6015,
+                    6015
+                ],
+                [
+                    10000,
+                    10099
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "CT": 2,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        139,
+                        139
+                    ]
+                },
+                {
+                    "ID": "v1",
+                    "CT": 2,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        139,
+                        -131
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "iperf3",
+            "NetifyName": "domos.iperf3",
+            "ValidPorts": [
+                [
+                    5201,
+                    5201
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v2",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        4,
+                        -4
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "flent",
+            "NetifyName": "domos.flent",
+            "ValidPorts": [
+                [
+                    2116,
+                    2116
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v2",
+                    "ignore_indices": [],
+                    "CT": 0,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        4,
+                        -4
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "unrealengine4",
+            "NetifyName": "gaming.unrealengine4",
+            "ValidPorts": [
+                [
+                    12000,
+                    65535
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        29,
+                        -29
+                    ]
+                },
+                {
+                    "ID": "v1",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        29,
+                        29
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "overwatch",
+            "NetifyName": "gaming.overwatch",
+            "ValidPorts": [
+                [
+                    26400,
+                    27000
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        34,
+                        -34
+                    ]
+                },
+                {
+                    "ID": "v1",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        34,
+                        34
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "valorant",
+            "NetifyName": "gaming.valorant",
+            "ValidPorts": [
+                [
+                    7000,
+                    7500
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        53,
+                        -33
+                    ]
+                },
+                {
+                    "ID": "v1",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        53,
+                        53
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "seaofthieves",
+            "NetifyName": "gaming.seaofthieves",
+            "ValidPorts": [
+                [
+                    30000,
+                    32000
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        51,
+                        -88
+                    ]
+                },
+                {
+                    "ID": "v1",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        51,
+                        51
+                    ]
+                },
+                {
+                    "ID": "v1",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        272,
+                        60
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "rust",
+            "NetifyName": "gaming.rust",
+            "ValidPorts": [
+                [
+                    28015,
+                    28015
+                ],
+                [
+                    28225,
+                    28225
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        1372,
+                        -28
+                    ]
+                },
+                {
+                    "ID": "v1",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        1372,
+                        1372
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "minecraft",
+            "NetifyName": "gaming.minecraft",
+            "ValidPorts": [
+                [
+                    19132,
+                    19133
+                ],
+                [
+                    19000,
+                    20000
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        33,
+                        1464
+                    ]
+                },
+                {
+                    "ID": "v1",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        33,
+                        33
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "gta5",
+            "NetifyName": "gaming.gta5",
+            "ValidPorts": [
+                [
+                    6672,
+                    6672
+                ],
+                [
+                    61455,
+                    61458
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "ignore_indices": [
+                        1
+                    ],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        221,
+                        0
+                    ]
+                },
+                {
+                    "ID": "v1",
+                    "ignore_indices": [],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        221,
+                        -221
+                    ]
+                },
+                {
+                    "ID": "v3",
+                    "ignore_indices": [
+                        1
+                    ],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        237,
+                        0
+                    ]
+                },
+                {
+                    "ID": "v3",
+                    "ignore_indices": [
+                        1
+                    ],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        205,
+                        0
+                    ]
+                },
+                {
+                    "ID": "v3",
+                    "ignore_indices": [
+                        1
+                    ],
+                    "CT": 2,
+                    "TT": 0,
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        141,
+                        205
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "starcraft2",
+            "NetifyName": "gaming.starcraft2",
+            "ValidPorts": [
+                [
+                    3724,
+                    3724
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "CT": 2,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        20,
+                        -20
+                    ]
+                },
+                {
+                    "ID": "v0",
+                    "CT": 2,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 10,
+                    "vector": [
+                        20,
+                        20
+                    ]
+                }
+            ]
+        },
+        {
+            "Service": "video-conferencing",
+            "NetifyName": "video-conferencing.video-conf",
+            "ValidPorts": [
+                [
+                    3478,
+                    3478
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "CT": 0,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 4,
+                    "vector": []
+                }
+            ]
+        },
+        {
+            "Service": "slack",
+            "NetifyName": "video-conferencing.slack",
+            "ValidPorts": [
+                [
+                    22466,
+                    22466
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "CT": 0,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 6,
+                    "vector": []
+                }
+            ]
+        },
+        {
+            "Service": "webex",
+            "NetifyName": "video-conferencing.webex",
+            "ValidPorts": [
+                [
+                    9000,
+                    9000
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "CT": 0,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 6,
+                    "vector": []
+                }
+            ]
+        },
+        {
+            "Service": "meet",
+            "NetifyName": "video-conferencing.meet",
+            "ValidPorts": [
+                [
+                    19302,
+                    19309
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "CT": 0,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 6,
+                    "vector": []
+                }
+            ]
+        },
+        {
+            "Service": "zoom",
+            "NetifyName": "video-conferencing.zoom",
+            "ValidPorts": [
+                [
+                    3478,
+                    3479
+                ],
+                [
+                    8801,
+                    8802
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "CT": 0,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 6,
+                    "vector": []
+                }
+            ]
+        },
+        {
+            "Service": "bluejeans",
+            "NetifyName": "video-conferencing.bluejeans",
+            "ValidPorts": [
+                [
+                    5000,
+                    5000
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "CT": 0,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 6,
+                    "vector": []
+                }
+            ]
+        },
+        {
+            "Service": "teams/skype",
+            "NetifyName": "video-conferencing.teams/skype",
+            "ValidPorts": [
+                [
+                    3478,
+                    3481
+                ]
+            ],
+            "vectors": [
+                {
+                    "ID": "v0",
+                    "CT": 0,
+                    "TT": 0,
+                    "ignore_indices": [],
+                    "proto": "udp",
+                    "confidence": 6,
+                    "vector": []
+                }
+            ]
+        }
+    ]
+}

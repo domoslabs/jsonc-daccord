@@ -1,0 +1,68 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "description": "Represents a collection of flows. For testing ref defs",
+    "type": "object",
+    "properties": {
+        "flows": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/flow"
+            }
+        }
+    },
+    "required": [
+        "flows"
+    ],
+    "$defs": {
+        "flow": {
+            "type": "object",
+            "properties": {
+                "flow_id": {
+                    "type": "string"
+                },
+                "service_name": {
+                    "type": "string"
+                },
+                "master_protocol": {
+                    "type": "string"
+                },
+                "sport": {
+                    "type": "integer"
+                },
+                "dport": {
+                    "type": "integer"
+                },
+                "src": {
+                    "type": "string"
+                },
+                "dst": {
+                    "type": "string"
+                },
+                "proto": {
+                    "type": "string"
+                },
+                "alive": {
+                    "type": "string"
+                },
+                "active": {
+                    "type": "boolean"
+                },
+                "extrakeythatdoesnotexist": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "flow_id",
+                "service_name",
+                "master_protocol",
+                "sport",
+                "dport",
+                "src",
+                "dst",
+                "proto",
+                "alive",
+                "active"
+            ]
+        }
+    }
+}

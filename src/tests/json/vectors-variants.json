@@ -1,0 +1,106 @@
+{
+"truejson":
+   {
+        "ID": "lcss_vectors",
+        "Version": "v01",
+        "Services": [
+            {
+                "Service": "slitherio",
+                "NetifyName": "gaming.slitherio",
+                "max_diff": 1,
+                "max_length": 10,
+                "ValidPorts": [ [444,445] ],
+                "vectors": [
+                    {
+                        "ID": "v0",
+                        "CT": 0,
+                        "TT": 0,
+                        "ignore_indices": [0,1],
+                        "proto": "tcp",
+                        "confidence": 10,
+                        "vector": [1,2,3,4,5,6,7,8,9]
+                    }
+                ]
+            }
+        ]
+    },
+
+    "validport_toohigh":
+    {
+        "ID": "lcss_vectors",
+        "Version": "v01",
+        "Services": [
+            {
+                "Service": "slitherio",
+                "NetifyName": "gaming.slitherio",
+                "max_diff": 1,
+                "max_length": 10,
+                "ValidPorts": [ [444,445], [50000,100000] ],
+                "vectors": [
+                    {
+                        "ID": "v0",
+                        "CT": 0,
+                        "TT": 0,
+                        "ignore_indices": [0,1],
+                        "proto": "tcp",
+                        "confidence": 10,
+                        "vector": [1,2,3,4,5,6,7,8,9]
+                    }
+                ]
+            }
+        ]
+     },
+
+    "ignore_indices_index_too_high":
+    {
+        "ID": "lcss_vectors",
+        "Version": "v01",
+        "Services": [
+            {
+                "Service": "slitherio",
+                "NetifyName": "gaming.slitherio",
+                "max_diff": 1,
+                "max_length": 10,
+                "ValidPorts": [ [444,445] ],
+                "vectors": [
+                    {
+                        "ID": "v0",
+                        "CT": 0,
+                        "TT": 0,
+                        "ignore_indices": [0,20],
+                        "proto": "tcp",
+                        "confidence": 10,
+                        "vector": [1,2,3,4,5,6,7,8,9]
+                    }
+                ]
+            }
+        ]
+    },
+
+    "too_many_vector_elements":
+    {
+        "ID": "lcss_vectors",
+        "Version": "v01",
+        "Services": [
+            {
+                "Service": "slitherio",
+                "NetifyName": "gaming.slitherio",
+                "max_diff": 1,
+                "max_length": 10,
+                "ValidPorts": [ [444,445] ],
+                "vectors": [
+                    {
+                        "ID": "v0",
+                        "CT": 0,
+                        "TT": 0,
+                        "ignore_indices": [0,1],
+                        "proto": "tcp",
+                        "confidence": 10,
+                        "vector": [0,1,2,3,4,5,6,7,8,9,10]
+                    }
+                ]
+            }
+        ]
+    }
+ 
+ }

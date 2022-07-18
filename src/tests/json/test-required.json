@@ -1,0 +1,11 @@
+{
+    "test-emptyjson": {},
+    "test-keywords-abc": {"a":"a", "b":"b", "c":"c"},
+    "test-keywords-bc": {"b":"b", "c":"c"},
+    "test-keywords-ac": {"a":"a", "c":"c"},
+    "test-keywords-ab": {"a":"a", "b":"b"},
+    "test-keywords-a": {"a":"a"},
+    "test-keywords-b": {"b":"b"},
+    "test-keywords-c": {"c":"c"},
+    "test-wrongtype": 123
+}

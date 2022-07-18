@@ -1,0 +1,53 @@
+{
+    "test1": {
+        "flowarray": [
+            {
+                "key1": 5,
+                "key2": "hanz"
+            }
+        ]
+    },
+    "wrongtype": {
+        "flowarray": [
+            {
+                "key1": "5",
+                "key2": "hanz"
+            }
+        ]
+    },
+    "missingkey": {
+        "flowarray": [
+            {
+                "key2": "hanz"
+            }
+        ]
+    },
+    "nestedarray": {
+        "flowarray": [
+            {
+                "key1": "hanz",
+                "key2": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ]
+            }
+        ]
+    },
+    "nestedarrayofstrings": {
+        "flowarray": [
+            {
+                "key1": "hanz",
+                "key2": [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                ]
+            }
+        ]
+    }
+}

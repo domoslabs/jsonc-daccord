@@ -1,0 +1,127 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": [
+        "ID",
+        "Version",
+        "Services"
+    ],
+    "properties": {
+        "ID": {
+            "type": "string",
+            "enum": [
+                "lcss_vectors"
+            ]
+        },
+        "Version": {
+            "type": "string",
+            "minLength": 2
+        },
+        "Services": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "required": [
+                    "Service",
+                    "NetifyName",
+                    "ValidPorts",
+                    "vectors"
+                ],
+                "properties": {
+                    "Service": {
+                        "type": "string",
+                        "minLength": 4
+                    },
+                    "NetifyName": {
+                        "type": "string",
+                        "minLength": 4
+                    },
+                    "max_diff": {
+                        "type": "integer"
+                    },
+                    "max_length": {
+                        "type": "integer"
+                    },
+                    "ValidPorts": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                            "type": "array",
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "items": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 65535
+                            }
+                        }
+                    },
+                    "vectors": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "ID",
+                                "CT",
+                                "TT",
+                                "ignore_indices",
+                                "proto",
+                                "confidence",
+                                "vector"
+                            ],
+                            "properties": {
+                                "ID": {
+                                    "type": "string",
+                                    "enum": [
+                                        "v0",
+                                        "v1",
+                                        "v2",
+                                        "v3"
+                                    ]
+                                },
+                                "CT": {
+                                    "type": "integer",
+                                    "minimum": 0
+                                },
+                                "TT": {
+                                    "type": "integer",
+                                    "minimum": 0
+                                },
+                                "ignore_indices": {
+                                    "type": "array",
+                                    "maxItems": 10,
+                                    "items": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 9
+                                    }
+                                },
+                                "proto": {
+                                    "type": "string",
+                                    "enum": [
+                                        "tcp",
+                                        "udp"
+                                    ]
+                                },
+                                "confidence": {
+                                    "type": "integer"
+                                },
+                                "vector": {
+                                    "type": "array",
+                                    "maxItems": 10,
+                                    "items": {
+                                        "type": "integer",
+                                        "minimum": -1500,
+                                        "maximum": 1500
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

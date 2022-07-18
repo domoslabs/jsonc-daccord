@@ -1,0 +1,18 @@
+{
+  "enum-string": {
+    "type": "string",
+    "enum": [
+      "one",
+      "two",
+      "three"
+    ]
+  },
+  "enum-integer": {
+    "type": "integer",
+    "enum": [
+      1,
+      2,
+      3
+    ]
+  }
+}

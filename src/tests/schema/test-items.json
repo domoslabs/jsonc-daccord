@@ -1,0 +1,51 @@
+{
+    "test1": {
+        "type": "object",
+        "properties": {
+            "flowarray": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": [
+                        "key1",
+                        "key2"
+                    ],
+                    "properties": {
+                        "key1": {
+                            "type": "integer"
+                        },
+                        "key2": {
+                            "type": "string"
+                        },
+                    }
+                }
+            }
+        }
+    },
+    "nested": {
+        "type": "object",
+        "properties": {
+            "flowarray": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "required": [
+                        "key1",
+                        "key2"
+                    ],
+                    "properties": {
+                        "key1": {
+                            "type": "string"
+                        },
+                        "key2": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer"
+                            }
+                        },
+                    }
+                }
+            }
+        }
+    }
+}

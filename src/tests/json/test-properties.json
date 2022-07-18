@@ -1,0 +1,57 @@
+{
+    "emptyobject": {},
+
+    "testjson": {
+        "computer": "banana",
+        "phone": 12345678,
+        "switch": true
+    },
+
+    "testjsontrue": {
+        "computer": "banana",
+        "phone": 12345678,
+        "switch": true,
+        "object": {"object":123},
+        "list": [1,2,3]
+    },
+
+    "testjsonfalse": {
+        "computer": 12345678,
+        "phone": "banana",
+        "switch": [1,2,3],
+        "object": true,
+        "list": {"object":123}
+    },
+
+    "testjsonstring-all": {
+        "computer1": "hansihansi",
+        "computer2": "hans",
+        "computer3": "ha",
+        "computer4": "han"
+    },
+
+    "testjsonstring-all-fail": {
+        "computer1": "hansihansi",
+        "computer2": "hansi",
+        "computer3": "han",
+        "computer4": "hans"
+    },
+
+    "testjsonstring2": {
+        "computer4": "ha"
+    },
+
+    "testjsonstring3": {
+        "computer4": "han"
+    },
+
+   "testjsonstring4": {
+        "computer4": "hans"
+    },
+
+    "testjsonstring5": {
+        "computer4": "hansp"
+    }
+
+
+}

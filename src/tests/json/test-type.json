@@ -1,0 +1,7 @@
+{
+  "test-object"  : {"1":"2"},
+  "test-array"   : [1,2,3],
+  "test-string"  : "101",
+  "test-integer" : 101,
+  "test-boolean" : true
+}

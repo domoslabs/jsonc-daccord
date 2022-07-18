@@ -1,0 +1,80 @@
+{
+    "noproperties":
+    {
+        "type": "object"
+    },
+
+    "emptyproperties":
+    {
+        "type": "object",
+        "properties": {}
+    },
+
+    "typetests":
+    {
+        "type": "object",
+        "properties": {
+            "computer": {
+                "type": "string"
+            },
+            "phone": {
+                "type": "integer"
+            },
+            "switch": {
+                "type": "boolean"
+            },
+            "object": {
+                "type": "object"
+            },
+            "list": {
+                "type": "array"
+            }
+        }
+    },
+
+    "typetests":
+    {
+        "type": "object",
+        "properties": {
+            "computer": {
+                "type": "string"
+            },
+            "phone": {
+                "type": "integer"
+            },
+            "switch": {
+                "type": "boolean"
+            },
+            "object": {
+                "type": "object"
+            },
+            "list": {
+                "type": "array"
+            }
+        }
+    },
+
+    "string-properties":
+    {
+        "type": "object",
+        "properties": {
+            "computer1": {
+                "type": "string"
+            },
+            "computer2": {
+                "type": "string",
+                "maxLength": 4
+            },
+            "computer3": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2
+            },
+            "computer4": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 4
+            }
+        }
+    }
+}

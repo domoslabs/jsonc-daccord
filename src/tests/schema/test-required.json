@@ -1,0 +1,12 @@
+{
+    "test-emptyschema":    {},
+    "test-norequired":     {"type": "object"},
+    "test-required-empty": {"type": "object", "required": []},
+    "test-require-abc":    {"type": "object", "required": ["a","b","c"]},
+    "test-require-bc":     {"type": "object", "required": ["b","c"]},
+    "test-require-ac":     {"type": "object", "required": ["a","c"]},
+    "test-require-ab":     {"type": "object", "required": ["a","b"]},
+    "test-require-a":      {"type": "object", "required": ["a"]},
+    "test-require-b":      {"type": "object", "required": ["b"]},
+    "test-require-c":      {"type": "object", "required": ["c"]}    
+}
