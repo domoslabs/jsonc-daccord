@@ -1,0 +1,7 @@
+{
+    "schema-2-3": {
+        "type": "array",
+        "maxItems": 3,
+        "minItems": 2
+    }
+}

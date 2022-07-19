@@ -1,8 +1,12 @@
 {
-    "test-object"   : {"type": "object"},
-    "test-array"    : {"type": "array"},
-    "test-string"   : {"type": "string"},
-    "test-integer"  : {"type": "integer"},
-    "test-boolean"  : {"type": "boolean"} 
+    "test-object"     : {"type": "object"},
+    "test-array"      : {"type": "array"},
+    "test-string"     : {"type": "string"},
+    "test-integer"    : {"type": "integer"},
+    "test-double"     : {"type": "double"},
+    "test-boolean"    : {"type": "boolean"}, 
+    "test-nonsense"   : {"type": "nonsense"},
+    "test-nonstring"  : {"type": 1 },
+    "test-nonstring2" : {"type": {"type": "yes" } }
   }
   

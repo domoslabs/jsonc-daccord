@@ -6,7 +6,7 @@ Supported schema keywords:
 - all: type, enum, required, properties.
 - objects: anyOf.
 - strings: minLength, maxLength.
-- integers: minimum, maximum.
+- integers and doubles: minimum, maximum.
 - arrays: minItems, maxItems, uniqeItems, items.
 
 TODO:
@@ -17,10 +17,12 @@ TODO:
 
 You can pass json and schema as either filepaths or `json_object`:
 
-```
+```C
     int jdac_validate(const char *jsonfile, const char *jsonschemafile);
-
     int jdac_validate_node(json_object *jobj, json_object *jschema);
+    const char* jdac_errorstr(unsigned int jdac_errors);
+
+
 ```
 
 For return values, see: [jsoncdaccord.h](include/jsoncdaccord.h)
@@ -31,7 +33,7 @@ Use the #include header: `#include <jsoncdaccord.h>`
 
 Example C code (based on jdac-cli):
 
-```
+```C
 #include <stdio.h>
 #include <json-c/json.h>
 #include <jsoncdaccord.h>
@@ -85,7 +87,7 @@ ctest -V # to see output of tests
 ## Command Line Interface
 You can try the library with the jdac-cli command.
 
-```
+```/tmp/domos/domosqos-sta_statistics_json
 jdac-cli path-to-json path-to-schema
 ```
 
