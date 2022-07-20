@@ -8,8 +8,11 @@ add_library(jsoncdaccord_static STATIC ${jsoncdaccord_SOURCES})
 
 set_target_properties(
   jsoncdaccord_shared jsoncdaccord_static
-  PROPERTIES  OUTPUT_NAME   jsoncdac
-              PUBLIC_HEADER "${HEADER_FILES}"
+  PROPERTIES
+    OUTPUT_NAME   jsoncdac
+    PUBLIC_HEADER "${HEADER_FILES}"
+    VERSION 1.0.0
+    SOVERSION 1
 )
 
 #target_link_libraries(jsoncdaccord_static json-c)
