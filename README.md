@@ -12,15 +12,17 @@ Supported schema keywords:
 TODO:
 - $ref, $defs
 - anyOf for any type.
+- pkg-config
+- [schema testing suite](https://github.com/json-schema-org/JSON-Schema-Test-Suite)
 
 ## Example Use
 
 You can pass json and schema as either filepaths or `json_object`:
 
-```
+```C
     int jdac_validate(const char *jsonfile, const char *jsonschemafile);
-
     int jdac_validate_node(json_object *jobj, json_object *jschema);
+    const char* jdac_errorstr(unsigned int jdac_errors);
 ```
 
 For return values, see: [jsoncdaccord.h](include/jsoncdaccord.h)
@@ -31,7 +33,7 @@ Use the #include header: `#include <jsoncdaccord.h>`
 
 Example C code (based on jdac-cli):
 
-```
+```C
 #include <stdio.h>
 #include <json-c/json.h>
 #include <jsoncdaccord.h>
@@ -91,4 +93,7 @@ jdac-cli path-to-json path-to-schema
 
 ## Related links
 
-https://json-schema.org/draft/2020-12/json-schema-core.html
+- https://json-schema.org/draft/2020-12/json-schema-core.html
+- https://github.com/json-schema-org/json-schema-spec
+- https://github.com/json-schema-org/JSON-Schema-Test-Suite
+- https://github.com/json-c/json-c
