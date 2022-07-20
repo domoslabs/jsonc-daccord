@@ -82,6 +82,9 @@ For debug builds:
 ctest
 ctest -V # to see output of tests
 ```
+
+Running test suites are currently optional, and are select with `RUN_TEST_SUITS=ON` in the cmake options.
+
 ## Command Line Interface
 You can try the library with the jdac-cli command.
 
