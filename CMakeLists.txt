@@ -1,18 +1,21 @@
 cmake_minimum_required(VERSION 3.0)
 project (jsonc-daccord VERSION "0.1")
 
+option(RUN_TEST_SUITS "Run JSON-Schema-org's test suits" OFF)
+
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wno-error=cpp -Wall")
 set(CMAKE_C_FLAGS_RELEASE "-Os -Werror")
 set(CMAKE_C_FLAGS_DEBUG "-ggdb -O0 -fsanitize=address -static-libasan -fno-omit-frame-pointer")
 
 if(NOT CMAKE_BUILD_TYPE)
-	set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_BUILD_TYPE Release)
 endif()
 string(TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
 
 find_library(JSONC_LIBRARY NAMES libjson-c.so)
 if (NOT JSONC_LIBRARY)
-  message(FATAL_ERROR "libjson-c.so not found!")
+message(FATAL_ERROR "libjson-c.so not found!")
 endif()
 
 configure_file("config.h.in" ${CMAKE_BINARY_DIR}/generated/version_config.h)
