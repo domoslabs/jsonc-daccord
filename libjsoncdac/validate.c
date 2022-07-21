@@ -69,54 +69,79 @@ int _jdac_load(const char *jsonfile, const char *jsonschema)
     return JDAC_ERR_VALID;
 }
 
-int _jdac_check_type(json_object *jobj, json_object *jschema)
+int __jdac_inspect_type(json_object *jobj, const char *type)
 {
-    json_object *jtype = json_object_object_get(jschema, "type");
-    if (jtype) {
-        if (!json_object_is_type(jtype, json_type_string))
-            return JDAC_ERR_SCHEMA_ERROR;
-
-        const char *type = json_object_get_string(jtype);
-        if (strcmp(type,"object")==0) {
-            if (json_object_is_type(jobj, json_type_object))
+    if (strcmp(type,"object")==0) {
+        if (json_object_is_type(jobj, json_type_object))
+            return JDAC_ERR_VALID;
+    }
+    else if (strcmp(type,"array")==0) {
+        if (json_object_is_type(jobj, json_type_array))
+            return JDAC_ERR_VALID;
+    }
+    else if (strcmp(type,"string")==0) {
+        if (json_object_is_type(jobj, json_type_string))
+            return JDAC_ERR_VALID;
+    }
+    else if (strcmp(type,"integer")==0) {
+        if (json_object_is_type(jobj, json_type_int))
+            return JDAC_ERR_VALID;
+        if (json_object_is_type(jobj, json_type_double)) {
+            double value = json_object_get_double(jobj);
+            if (value==round(value)) // "zero fractional part is an integer"
                 return JDAC_ERR_VALID;
-        }
-        else if (strcmp(type,"array")==0) {
-            if (json_object_is_type(jobj, json_type_array))
-                return JDAC_ERR_VALID;
-        }
-        else if (strcmp(type,"string")==0) {
-            if (json_object_is_type(jobj, json_type_string))
-                return JDAC_ERR_VALID;
-        }
-        else if (strcmp(type,"integer")==0) {
-            if (json_object_is_type(jobj, json_type_int))
-                return JDAC_ERR_VALID;
-            if (json_object_is_type(jobj, json_type_double)) {
-                double value = json_object_get_double(jobj);
-                if (value==round(value)) // "zero fractional part is an integer"
-                    return JDAC_ERR_VALID;
-            }
-        }
-        else if (strcmp(type,"double")==0) {
-            if (json_object_is_type(jobj, json_type_double))
-                return JDAC_ERR_VALID;
-        }
-        else if (strcmp(type,"number")==0) {
-            if (json_object_is_type(jobj, json_type_double) ||
-                json_object_is_type(jobj, json_type_int))
-                return JDAC_ERR_VALID;
-        }
-         else if (strcmp(type,"boolean")==0) {
-            if (json_object_is_type(jobj, json_type_boolean))
-                return JDAC_ERR_VALID;
-        }
-        else {
-            printf("WARN unknown type in check type %s\n", type);
-            return JDAC_ERR_SCHEMA_ERROR;
         }
     }
+    else if (strcmp(type,"double")==0) {
+        if (json_object_is_type(jobj, json_type_double))
+            return JDAC_ERR_VALID;
+    }
+    else if (strcmp(type,"number")==0) {
+        if (json_object_is_type(jobj, json_type_double) ||
+            json_object_is_type(jobj, json_type_int))
+            return JDAC_ERR_VALID;
+    }
+    else if (strcmp(type,"boolean")==0) {
+        if (json_object_is_type(jobj, json_type_boolean))
+            return JDAC_ERR_VALID;
+    }
+    else if (strcmp(type,"null")==0) {
+        if (json_object_is_type(jobj, json_type_null))
+            return JDAC_ERR_VALID;
+    }
+    else {
+        printf("WARN unknown type in check type %s\n", type);
+        return JDAC_ERR_SCHEMA_ERROR;
+    }
     return JDAC_ERR_INVALID_TYPE;
+}
+
+int _jdac_check_type(json_object *jobj, json_object *jschema)
+{
+        json_object *jtype = json_object_object_get(jschema, "type");
+
+        if  (jtype==NULL) {
+            return JDAC_ERR_VALID;
+        }
+        else if (json_object_is_type(jtype, json_type_string)) {
+            const char *type = json_object_get_string(jtype);
+            return __jdac_inspect_type(jobj, type);
+        }
+        else if (json_object_is_type(jtype, json_type_array)) {
+            int arraylen = json_object_array_length(jtype);
+            for (int i=0; i<arraylen; i++) {
+                json_object *iobj = json_object_array_get_idx(jtype, i);
+                if (!json_object_is_type(iobj, json_type_string))
+                    return JDAC_ERR_SCHEMA_ERROR;
+                const char *type = json_object_get_string(iobj);
+                int err = __jdac_inspect_type(jobj, type);
+                if (err==JDAC_ERR_VALID)
+                    return JDAC_ERR_VALID;
+            }
+            return JDAC_ERR_INVALID_TYPE;
+        }
+        else
+            return JDAC_ERR_SCHEMA_ERROR;
 }
 
 
