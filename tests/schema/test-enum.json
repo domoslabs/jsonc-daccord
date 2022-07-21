@@ -14,5 +14,9 @@
       2,
       3
     ]
+  },
+  "enum-schemaerror": {
+    "type": "integer",
+    "enum": "1,2,3"
   }
 }

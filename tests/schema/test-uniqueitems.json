@@ -6,5 +6,9 @@
     "notunique": {
         "type": "array",
         "uniqueItems": false
+    },
+    "schemaerror": {
+        "type": "array",
+        "uniqueItems": 1
     }
 }

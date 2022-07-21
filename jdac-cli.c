@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     if (err==JDAC_ERR_VALID) {
         printf("validation ok\n");
     } else {
-        printf("validate failed %d\n", err);
+        printf("validate failed: error %d, %s\n", err, jdac_errorstr(err));
     }
     return err;
 }
