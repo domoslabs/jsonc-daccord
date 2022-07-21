@@ -1,8 +1,8 @@
-
 #include <stdio.h>
 #include <string.h>
 #include <json-c/json.h>
 #include "../include/jsoncdaccord.h"
+#include "../include/optional.h"
 
 json_object *json = NULL;
 json_object *schema = NULL;
