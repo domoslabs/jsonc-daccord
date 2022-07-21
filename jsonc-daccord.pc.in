@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: jsonc-daccord
+Description: A JSON schema validator implementation in C
+Version: @VERSION@
+Requires:
+Libs.private: @LIBS@
+Libs: -L${libdir} -ljsoncdac
+Cflags: -I${includedir}
