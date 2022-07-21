@@ -78,6 +78,16 @@ cmake .. -DCMAKE_BUILD_TYPE=Debug && make && sudo make install
 
 Note: After install you might need to run `sudo ldconfig`.
 
+## CMake Options
+
+build options:
+
+| option               | description                                                             |
+| :------------------- | :---------------------------------------------------------------------- |
+| CMAKE_BUILD_TYPE     | Build as Release or Debug. Default: Release.                            |
+| RUN_TEST_SUITE       | Run JSON Schema .org's test.<br> Works only with CMAKE_BUILD_TYPE=Debug |
+| BUILD_STRING_PATTERN | Support *pattern*. String matching with regex pattern                   |
+
 ## Run tests
 For debug builds:
 ```
@@ -85,7 +95,7 @@ ctest
 ctest -V # to see output of tests
 ```
 
-Running test suites are currently optional, and are select with `RUN_TEST_SUITS=ON` in the cmake options.
+Running test suites are currently optional, and are select with `RUN_TEST_SUITE=ON` in the cmake options.
 
 ## Command Line Interface
 You can try the library with the jdac-cli command.
