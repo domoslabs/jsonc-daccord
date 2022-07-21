@@ -98,12 +98,17 @@ int _jdac_check_type(json_object *jobj, json_object *jschema)
                     return JDAC_ERR_VALID;
             }
         }
-        else if (strcmp(type,"boolean")==0) {
-            if (json_object_is_type(jobj, json_type_boolean))
-                return JDAC_ERR_VALID;
-        }
         else if (strcmp(type,"double")==0) {
             if (json_object_is_type(jobj, json_type_double))
+                return JDAC_ERR_VALID;
+        }
+        else if (strcmp(type,"number")==0) {
+            if (json_object_is_type(jobj, json_type_double) ||
+                json_object_is_type(jobj, json_type_int))
+                return JDAC_ERR_VALID;
+        }
+         else if (strcmp(type,"boolean")==0) {
+            if (json_object_is_type(jobj, json_type_boolean))
                 return JDAC_ERR_VALID;
         }
         else {
