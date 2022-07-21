@@ -2,16 +2,18 @@
 
 jsonc-daccord is a lightweight JSON Schema validation library written in C, and is taking advantage of the libjson-c library.
 
-Supported schema keywords:
+## Design Goals
+
+The goal is to have a lightweight JSON Schema validation implementation in C using json-c. json-c is popular in OpenWRT communities. Initially I just wanted it to support a small subset of JSON Schema to suit a need to validate simple json files. See the minimum build supports below. However to suit a broader audience, supporting more JSON Schema is important.
+
+Currently the footprint of libjsoncdac.so is 8KB. The keep the footprint from bloating out, new features should be selectable using CMake options.
+
+Minimal build supports:
 - all: type, enum, required, properties.
 - objects: anyOf.
 - strings: minLength, maxLength.
 - integers: minimum, maximum.
 - arrays: minItems, maxItems, uniqeItems, items.
-
-TODO:
-- $ref, $defs
-- anyOf for any type.
 
 ## Example Use
 
@@ -91,6 +93,10 @@ You can try the library with the jdac-cli command.
 ```
 jdac-cli path-to-json path-to-schema
 ```
+## To do
+- ref, defs
+- anyOf: any type
+- prevent infinite recursion
 
 ## Related links
 
