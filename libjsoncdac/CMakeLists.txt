@@ -24,8 +24,11 @@ target_compile_definitions(jsoncdaccord_static PRIVATE "SUPPORTED_KEYWORDS_BASE=
 
 set_target_properties(
   jsoncdaccord_shared jsoncdaccord_static
-  PROPERTIES  OUTPUT_NAME   jsoncdac
-              PUBLIC_HEADER "${HEADER_FILES}"
+  PROPERTIES
+    OUTPUT_NAME   jsoncdac
+    PUBLIC_HEADER "${HEADER_FILES}"
+    VERSION 1.0.0
+    SOVERSION 1
 )
 
 install(
