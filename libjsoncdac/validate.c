@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 #include <json-c/json.h>
+
 #include "../include/jsoncdaccord.h"
 #include "../include/optional.h"
 
@@ -76,35 +78,40 @@ int _jdac_check_type(json_object *jobj, json_object *jschema)
 
         const char *type = json_object_get_string(jtype);
         if (strcmp(type,"object")==0) {
-            if (!json_object_is_type(jobj, json_type_object))
-                return JDAC_ERR_INVALID_TYPE;
+            if (json_object_is_type(jobj, json_type_object))
+                return JDAC_ERR_VALID;
         }
         else if (strcmp(type,"array")==0) {
-            if (!json_object_is_type(jobj, json_type_array))
-                return JDAC_ERR_INVALID_TYPE;
+            if (json_object_is_type(jobj, json_type_array))
+                return JDAC_ERR_VALID;
         }
         else if (strcmp(type,"string")==0) {
-            if (!json_object_is_type(jobj, json_type_string))
-                return JDAC_ERR_INVALID_TYPE;
+            if (json_object_is_type(jobj, json_type_string))
+                return JDAC_ERR_VALID;
         }
         else if (strcmp(type,"integer")==0) {
-            if (!json_object_is_type(jobj, json_type_int))
-                return JDAC_ERR_INVALID_TYPE;
+            if (json_object_is_type(jobj, json_type_int))
+                return JDAC_ERR_VALID;
+            if (json_object_is_type(jobj, json_type_double)) {
+                double value = json_object_get_double(jobj);
+                if (value==round(value)) // "zero fractional part is an integer"
+                    return JDAC_ERR_VALID;
+            }
         }
         else if (strcmp(type,"boolean")==0) {
-            if (!json_object_is_type(jobj, json_type_boolean))
-                return JDAC_ERR_INVALID_TYPE;
+            if (json_object_is_type(jobj, json_type_boolean))
+                return JDAC_ERR_VALID;
         }
         else if (strcmp(type,"double")==0) {
-            if (!json_object_is_type(jobj, json_type_double))
-                return JDAC_ERR_INVALID_TYPE;
+            if (json_object_is_type(jobj, json_type_double))
+                return JDAC_ERR_VALID;
         }
         else {
             printf("WARN unknown type in check type %s\n", type);
             return JDAC_ERR_SCHEMA_ERROR;
         }
     }
-    return JDAC_ERR_VALID;
+    return JDAC_ERR_INVALID_TYPE;
 }
 
 
