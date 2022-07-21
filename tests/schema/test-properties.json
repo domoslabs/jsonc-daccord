@@ -32,7 +32,7 @@
         }
     },
 
-    "typetests":
+    "typetests2":
     {
         "type": "object",
         "properties": {

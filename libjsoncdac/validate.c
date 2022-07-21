@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <json-c/json.h>
-#include "jsoncdaccord.h"
+#include "../include/jsoncdaccord.h"
 
 json_object *json = NULL;
 json_object *schema = NULL;
@@ -21,8 +21,35 @@ int _jdac_validate_array     (json_object *jobj, json_object *jschema);
 int _jdac_validate_object    (json_object *jobj, json_object *jschema);
 int _jdac_validate_string    (json_object *jobj, json_object *jschema);
 int _jdac_validate_integer   (json_object *jobj, json_object *jschema);
+int _jdac_validate_double    (json_object *jobj, json_object *jschema);
+int _jdac_validate_number    (json_object *jobj, json_object *jschema, double value);
 int _jdac_validate_boolean   (json_object *jobj, json_object *jschema);
 
+static char* jdacerrstr[JDAC_ERR_MAX] = {
+    "VALID",
+    "GENERAL ERROR",
+    "JSON FILE NOT FOUND",
+    "SCHEMA FILE NOT FOUND",
+    "WRONG ARGUEMNTS GIVEN",
+    "SCHEMA ERROR",
+    "INVALID",
+    "INVALID TYPE",
+    "INVALID REQUIRED",
+    "INVALID ANYOF",
+    "INVALID ENUMS",
+    "INVALID STRING LENGTH",
+    "INVALID UNIQUE ITEMS",
+    "INVALID ARRAY LENGTH",
+    "INVALID NUMBER"
+};
+
+const char* jdac_errorstr(unsigned int jdac_errors)
+{
+    if (jdac_errors<JDAC_ERR_MAX) {
+        return jdacerrstr[jdac_errors];
+    }
+    return NULL;
+}
 
 int _jdac_load(const char *jsonfile, const char *jsonschema)
 {
@@ -44,31 +71,38 @@ int _jdac_check_type(json_object *jobj, json_object *jschema)
 {
     json_object *jtype = json_object_object_get(jschema, "type");
     if (jtype) {
+        if (!json_object_is_type(jtype, json_type_string))
+            return JDAC_ERR_SCHEMA_ERROR;
+
         const char *type = json_object_get_string(jtype);
         if (strcmp(type,"object")==0) {
             if (!json_object_is_type(jobj, json_type_object))
-                return JDAC_ERR_INVALID;
+                return JDAC_ERR_INVALID_TYPE;
         }
         else if (strcmp(type,"array")==0) {
             if (!json_object_is_type(jobj, json_type_array))
-                return JDAC_ERR_INVALID;
+                return JDAC_ERR_INVALID_TYPE;
         }
         else if (strcmp(type,"string")==0) {
             if (!json_object_is_type(jobj, json_type_string))
-                return JDAC_ERR_INVALID;
+                return JDAC_ERR_INVALID_TYPE;
         }
         else if (strcmp(type,"integer")==0) {
             if (!json_object_is_type(jobj, json_type_int))
-                return JDAC_ERR_INVALID;
+                return JDAC_ERR_INVALID_TYPE;
         }
         else if (strcmp(type,"boolean")==0) {
             if (!json_object_is_type(jobj, json_type_boolean))
-                return JDAC_ERR_INVALID;
+                return JDAC_ERR_INVALID_TYPE;
+        }
+        else if (strcmp(type,"double")==0) {
+            if (!json_object_is_type(jobj, json_type_double))
+                return JDAC_ERR_INVALID_TYPE;
         }
         else {
             printf("WARN unknown type in check type %s\n", type);
+            return JDAC_ERR_SCHEMA_ERROR;
         }
-
     }
     return JDAC_ERR_VALID;
 }
@@ -94,14 +128,14 @@ int _jdac_check_required(json_object *jobj, json_object *jschema)
         }
     }
     if (missing_required_key)
-        return JDAC_ERR_INVALID;
+        return JDAC_ERR_INVALID_REQUIRED;
     else
         return JDAC_ERR_VALID;
 }
 
 int _jdac_check_properties(json_object *jobj, json_object *jschema)
 {
-    //printf("%s\n", __func__);
+    // printf("%s\n", __func__);
 
     json_object *jprops = json_object_object_get(jschema, "properties");
     if (jprops) {
@@ -122,20 +156,22 @@ int _jdac_check_anyOf(json_object *jobj, json_object *jschema)
 {
     //printf("%s\n", __func__);
     json_object *jschema_array = json_object_object_get(jschema, "anyOf");
-    if (jschema_array) {
-        int arraylen = json_object_array_length(jschema_array);
-        for (int i = 0; i < arraylen; i++) {
-            json_object *ischema = json_object_array_get_idx(jschema_array, i);
-            if (!json_object_is_type(ischema, json_type_object)) {
-                printf("anyOf array item at idx %d is not an object\n", i);
-                return JDAC_ERR_INVALID;
-            }
-            int err = jdac_validate_node(jobj, ischema); 
-            if (err==JDAC_ERR_VALID)
-                return JDAC_ERR_VALID;
+
+    if (!jschema_array)
+        return JDAC_ERR_VALID;
+
+    int arraylen = json_object_array_length(jschema_array);
+    for (int i = 0; i < arraylen; i++) {
+        json_object *ischema = json_object_array_get_idx(jschema_array, i);
+        if (!json_object_is_type(ischema, json_type_object)) {
+            //printf("anyOf array item at idx %d is not an object\n", i);
+            return JDAC_ERR_SCHEMA_ERROR;
         }
+        int err = jdac_validate_node(jobj, ischema); 
+        if (err==JDAC_ERR_VALID)
+            return JDAC_ERR_VALID;
     }
-    return JDAC_ERR_VALID;
+    return JDAC_ERR_INVALID_ANYOF;
 }
 
 json_object* _jdac_get_defs_from_ref(json_object* ref)
@@ -206,7 +242,7 @@ int _jdac_check_enums(json_object *jobj, json_object *jschema)
         return JDAC_ERR_VALID;
 
     if (!json_object_is_type(jenum_array, json_type_array))
-        return JDAC_ERR_VALID;
+        return JDAC_ERR_SCHEMA_ERROR;
 
     int arraylen = json_object_array_length(jenum_array);
     for (int i=0; i<arraylen; i++) {
@@ -216,7 +252,7 @@ int _jdac_check_enums(json_object *jobj, json_object *jschema)
     }
     printf("ERROR: enum check failed (%s not in enum)\n", json_object_to_json_string(jobj));
 
-    return JDAC_ERR_INVALID;
+    return JDAC_ERR_INVALID_ENUMS;
 }
 
 int _jdac_check_uniqueItems(json_object *jobj, json_object *jschema)
@@ -224,7 +260,7 @@ int _jdac_check_uniqueItems(json_object *jobj, json_object *jschema)
     json_object *juniq = json_object_object_get(jschema, "uniqueItems");
     if (juniq) {
         if (!json_object_is_type(juniq, json_type_boolean))
-            return JDAC_ERR_VALID;
+            return JDAC_ERR_SCHEMA_ERROR;
 
         if (json_object_get_boolean(juniq)==0)
             return JDAC_ERR_VALID;
@@ -235,7 +271,7 @@ int _jdac_check_uniqueItems(json_object *jobj, json_object *jschema)
             for (int j=i+1; j<arraylen; j++) {
             json_object *uobj = json_object_array_get_idx(jobj, j);
                 if (json_object_equal(iobj, uobj)==1)
-                    return JDAC_ERR_INVALID;
+                    return JDAC_ERR_INVALID_UNIQUEITEMS;
             }
         }
     }
@@ -253,7 +289,7 @@ int _jdac_check_maxmin_items(json_object *jobj, json_object *jschema)
         if (json_object_is_type(jmax, json_type_int)) {
             int maxitems = json_object_get_int64(jmax);
             if (arraylen>maxitems)
-                err = JDAC_ERR_INVALID;
+                err = JDAC_ERR_INVALID_ARRAYLEN;
         }
     }
 
@@ -261,7 +297,7 @@ int _jdac_check_maxmin_items(json_object *jobj, json_object *jschema)
         if (json_object_is_type(jmin, json_type_int)) {
             int minitems = json_object_get_int64(jmin);
             if (arraylen<minitems)
-                err = JDAC_ERR_INVALID;
+                err = JDAC_ERR_INVALID_ARRAYLEN;
         }
     }
 
@@ -273,9 +309,6 @@ int _jdac_check_maxmin_items(json_object *jobj, json_object *jschema)
 int _jdac_validate_array(json_object *jobj, json_object *jschema)
 {
     int err;
-
-    err = _jdac_check_type(jobj, jschema);
-    if (err) return err;
 
     err = _jdac_check_uniqueItems(jobj, jschema);
     if (err) return err;
@@ -295,9 +328,6 @@ int _jdac_validate_object(json_object *jobj, json_object *jschema)
     if (defs==NULL)
         defs = json_object_object_get(jschema, "$defs");
 
-    err = _jdac_check_type(jobj, jschema);
-    if (err) return err;
-
     err = _jdac_check_required(jobj, jschema);
     if (err) return err;
 
@@ -312,24 +342,21 @@ int _jdac_validate_object(json_object *jobj, json_object *jschema)
 
 int _jdac_validate_string(json_object *jobj, json_object *jschema)
 {
-    int err = _jdac_check_type(jobj, jschema);
-    if (err) return err;
-
     const char *str = json_object_get_string(jobj);
     json_object *jminlen = json_object_object_get(jschema, "minLength");
     if (jminlen) {
         int minlen = json_object_get_int64(jminlen);
         if (strlen(str)<minlen)
-            return JDAC_ERR_INVALID;
+            return JDAC_ERR_INVALID_STRLEN;
     }
     json_object *jmaxlen = json_object_object_get(jschema, "maxLength");
     if (jmaxlen) {
         int maxlen = json_object_get_int64(jmaxlen);
         if (strlen(str)>maxlen)
-            return JDAC_ERR_INVALID;
+            return JDAC_ERR_INVALID_STRLEN;
     }
 
-    err = _jdac_check_enums(jobj, jschema);
+    int err = _jdac_check_enums(jobj, jschema);
     if (err) return err;
 
     return JDAC_ERR_VALID;
@@ -337,24 +364,34 @@ int _jdac_validate_string(json_object *jobj, json_object *jschema)
 
 int _jdac_validate_integer(json_object *jobj, json_object *jschema)
 {
-    int err = _jdac_check_type(jobj, jschema);
-    if (err) return err;
+    double value = (double)json_object_get_int64(jobj);
+    int err = _jdac_validate_number(jobj, jschema, value);
+    return err;
+}
 
-    int64_t number = json_object_get_int64(jobj);
+int _jdac_validate_double(json_object *jobj, json_object *jschema)
+{
+    double value = json_object_get_double(jobj);
+    int err = _jdac_validate_number(jobj, jschema, value);
+    return err;
+}
+
+int _jdac_validate_number(json_object *jobj, json_object *jschema, double value)
+{
     json_object *jmin = json_object_object_get(jschema, "minimum");
     if (jmin) {
-        int64_t min = json_object_get_int64(jmin);
-        if (number<min)
-            return JDAC_ERR_INVALID;
+        double min = (double)json_object_get_int64(jmin);
+        if (value<min)
+            return JDAC_ERR_INVALID_NUMBER;
     }
     json_object *jmax = json_object_object_get(jschema, "maximum");
     if (jmax) {
-        int64_t max = json_object_get_int64(jmax);
-        if (number>max)
-            return JDAC_ERR_INVALID;
+        double max = (double)json_object_get_int64(jmax);
+        if (value>max)
+            return JDAC_ERR_INVALID_NUMBER;
     }
 
-    err = _jdac_check_enums(jobj, jschema);
+    int err = _jdac_check_enums(jobj, jschema);
     if (err) return err;
 
     return JDAC_ERR_VALID;
@@ -368,6 +405,9 @@ int _jdac_validate_boolean(json_object *jobj, json_object *jschema)
 
 int jdac_validate_node(json_object *jobj, json_object *jschema)
 {
+    int err = _jdac_check_type(jobj, jschema);
+    if (err) return err;
+
     json_type type = json_object_get_type(jobj);
     // printf("%s\n", json_object_get_string(jobj));
     // printf("%s\n", json_object_get_string(jschema));
@@ -382,6 +422,8 @@ int jdac_validate_node(json_object *jobj, json_object *jschema)
         return _jdac_validate_boolean(jobj, jschema);
     else if (type==json_type_int)
         return _jdac_validate_integer(jobj, jschema);
+    else if (type==json_type_double)
+        return _jdac_validate_double(jobj, jschema);
     else
         printf("WARN: type %d not handled\n", type);
 

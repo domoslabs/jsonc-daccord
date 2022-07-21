@@ -6,7 +6,7 @@ Supported schema keywords:
 - all: type, enum, required, properties.
 - objects: anyOf.
 - strings: minLength, maxLength.
-- integers: minimum, maximum.
+- integers and doubles: minimum, maximum.
 - arrays: minItems, maxItems, uniqeItems, items.
 
 TODO:
@@ -87,7 +87,7 @@ ctest -V # to see output of tests
 ## Command Line Interface
 You can try the library with the jdac-cli command.
 
-```
+```/tmp/domos/domosqos-sta_statistics_json
 jdac-cli path-to-json path-to-schema
 ```
 

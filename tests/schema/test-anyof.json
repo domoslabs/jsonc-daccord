@@ -21,25 +21,31 @@
         "required": [
             "id"
         ]
-    }
-},
-"inarray": {
-    "$schema": "https://json-schema.org/draft/2019-09/schema",
-    "type": "object",
-    "properties": {
-        "anna": {
-            "type": "array",
-            "items": {
-                "anyOf": [
-                    {
-                        "type": "object",
-                        "required": [
-                            "id"
-                        ]
-                    }
-                ]
+    },
+    "inarray": {
+        "$schema": "https://json-schema.org/draft/2019-09/schema",
+        "type": "object",
+        "properties": {
+            "anna": {
+                "type": "array",
+                "items": {
+                    "anyOf": [
+                        {
+                            "type": "object",
+                            "required": [
+                                "id"
+                            ]
+                        }
+                    ]
+                }
             }
         }
+    },
+    "anyOfSchemaError": {
+        "$schema": "https://json-schema.org/draft/2019-09/schema",
+        "type": "object",
+        "anyOf": [
+            "type"
+        ]
     }
-}
 }

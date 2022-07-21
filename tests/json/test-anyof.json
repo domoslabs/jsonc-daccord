@@ -2,8 +2,14 @@
     "test-int": {
         "id": 123
     },
+    "test-double": {
+        "id": 1.23
+    },
     "test-string": {
         "id": "1234"
+    },
+    "test-boolean": {
+        "id": true
     },
     "test-array": [
         123,
