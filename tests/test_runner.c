@@ -19,7 +19,8 @@ char *testfile;
 
 static void test_runner(void **state)
 {
-    json_object *jobj, *schema, *json;
+    int test_failed = 0;
+    json_object *json;
     json = json_object_from_file(testfile);
     assert_non_null(json);
     assert_int_equal(json_object_is_type(json, json_type_array), 1);
@@ -49,18 +50,22 @@ static void test_runner(void **state)
             json_object *jvalid = json_object_object_get(jtest, "valid");
             assert_non_null(jtestdescription);
             printf("    test: %s\n", json_object_get_string(jtestdescription));
-            assert_non_null(jdata);
+            //assert_non_null(jdata); // jdata is allowed to be null (null json)
             assert_non_null(jvalid);
             assert_int_equal(json_object_is_type(jvalid, json_type_boolean), 1);
             json_bool valid = json_object_get_boolean(jvalid);
-            if (valid==1)
-                assert_int_equal(jdac_validate_node(jdata, jschema), JDAC_ERR_VALID);
-            else
-                assert_int_not_equal(jdac_validate_node(jdata, jschema), JDAC_ERR_VALID);
+            int err = jdac_validate_node(jdata, jschema);
+            if (valid == (err==JDAC_ERR_VALID)) {
+                printf("                OK\n");
+            }
+            else {
+                printf("                FAILED\n");
+                test_failed=1;
+            }
         }
     }
-
-
+    json_object_put(json);
+    assert_int_equal(test_failed, 0);
 }
 
 int main(int argc, char *argv[])
