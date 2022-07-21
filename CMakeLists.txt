@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project (jsonc-daccord LANGUAGES C VERSION "0.1.99")
 
-option(RUN_TEST_SUITS "Run JSON-Schema-org's test suits" OFF)
+option(RUN_TEST_SUITE "Run JSON-Schema-org's test suite" OFF)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wno-error=cpp -Wall")
 set(CMAKE_C_FLAGS_RELEASE "-Os -Werror")
