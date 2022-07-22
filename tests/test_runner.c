@@ -57,7 +57,7 @@ static void test_runner(void **state)
             assert_non_null(jvalid);
             assert_int_equal(json_object_is_type(jvalid, json_type_boolean), 1);
             json_bool valid = json_object_get_boolean(jvalid);
-            int err = jdac_validate_node(jdata, jschema);
+            int err = jdac_validate_instance(jdata, jschema);
             if (valid == (err==JDAC_ERR_VALID)) {
                 printf("                OK\n");
                 number_of_successes++;
