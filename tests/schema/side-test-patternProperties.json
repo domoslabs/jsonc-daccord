@@ -1,0 +1,23 @@
+{
+    "description": "patternProperties side tests",
+    "schema-non-object": {
+        "patternProperties": true
+    },
+    "schema-invalid-regex": {
+        "patternProperties": {
+            "^[a-zA-Z0-9]*@[a-zA-Z0-9-_.]*[.]*?": {
+                "type": "object"
+            }
+        }
+    },
+    "schema-valid": {
+        "patternProperties": {
+            "boten*": {
+                "type": "string"
+            },
+            "anna.*": {
+                "type": "string"
+            }
+        }
+    }
+}

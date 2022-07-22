@@ -30,6 +30,7 @@ file(COPY json schema DESTINATION ${CMAKE_BINARY_DIR}/tests)
 
 addtest(test-flows.c    SOURCES "" LIBS cmocka json-c jsoncdaccord_static )
 addtest(test-validate.c SOURCES "" LIBS cmocka json-c jsoncdaccord_static WRAPFUNCTIONS json_object_from_file )
+addtest(test-suite-side-tests.c SOURCES "" LIBS cmocka json-c jsoncdaccord_static )
 
 # Test JSON Schema Test Suite
 if (RUN_TEST_SUITE)

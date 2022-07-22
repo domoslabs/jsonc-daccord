@@ -4,28 +4,12 @@
 #include <json-c/json.h>
 
 #include "../include/jsoncdaccord.h"
+#include "../include/internal.h"
 #include "../include/optional.h"
 
 json_object *json = NULL;
 json_object *schema = NULL;
 json_object *defs = NULL;
-
-int _jdac_load(const char *jsonfile, const char *jsonschema);
-int _jdac_check_type         (json_object *jobj, json_object *jschema);
-int _jdac_check_required     (json_object *jobj, json_object *jschema);
-int _jdac_check_properties   (json_object *jobj, json_object *jschema);
-int _jdac_check_anyOf        (json_object *jobj, json_object *jschema);
-int _jdac_check_items        (json_object *jobj, json_object *jschema);
-int _jdac_check_enums        (json_object *jobj, json_object *jschema);
-int _jdac_check_uniqueItems  (json_object *jobj, json_object *jschema);
-int _jdac_check_maxmin_items (json_object *jobj, json_object *jschema);
-int _jdac_validate_array     (json_object *jobj, json_object *jschema);
-int _jdac_validate_object    (json_object *jobj, json_object *jschema);
-int _jdac_validate_string    (json_object *jobj, json_object *jschema);
-int _jdac_validate_integer   (json_object *jobj, json_object *jschema);
-int _jdac_validate_double    (json_object *jobj, json_object *jschema);
-int _jdac_validate_number    (json_object *jobj, json_object *jschema, double value);
-int _jdac_validate_boolean   (json_object *jobj, json_object *jschema);
 
 static char* jdacerrstr[JDAC_ERR_MAX] = {
     "VALID",
@@ -371,6 +355,11 @@ int _jdac_validate_object(json_object *jobj, json_object *jschema)
     err = _jdac_check_properties(jobj, jschema);
     if (err) return err;
 
+#ifdef JDAC_PATTERNPROPERTIES
+    err = _jdac_check_patternproperties(jobj, jschema);
+    if (err) return err;
+#endif
+
     err = _jdac_check_anyOf(jobj, jschema);
     if (err) return err;
 
@@ -436,18 +425,37 @@ int _jdac_validate_number(json_object *jobj, json_object *jschema, double value)
 
 int _jdac_validate_boolean(json_object *jobj, json_object *jschema)
 {
-    int err = _jdac_check_type(jobj, jschema);
-    return err;
+    // printf("%s\n", __func__);
+    // printf("%s\n", json_object_get_string(jobj));
+    // printf("%s\n", json_object_get_string(jschema));
+    return JDAC_ERR_VALID;
 }
 
 int jdac_validate_node(json_object *jobj, json_object *jschema)
 {
+
+    // check if jschema is a bool, true or false
+    if (json_object_is_type(jschema, json_type_boolean)) {
+        json_bool value = json_object_get_boolean(jschema);
+        if (value==0)
+            return JDAC_ERR_INVALID;
+        if (value==1)
+            return JDAC_ERR_VALID;
+    }
+
     int err = _jdac_check_type(jobj, jschema);
     if (err) return err;
 
+    // if (!json_object_is_type(jobj, json_type_null))
+    //     printf("%s\n", json_object_get_string(jobj));
+    // else
+    //     printf("jobj was null\n");
+    // if (!json_object_is_type(jschema, json_type_null))
+    //     printf("%s\n", json_object_get_string(jschema));
+    // else
+    //     printf("jschema was null\n");
+
     json_type type = json_object_get_type(jobj);
-    // printf("%s\n", json_object_get_string(jobj));
-    // printf("%s\n", json_object_get_string(jschema));
 
     if (type==json_type_object)
         return _jdac_validate_object(jobj, jschema);
@@ -461,6 +469,8 @@ int jdac_validate_node(json_object *jobj, json_object *jschema)
         return _jdac_validate_integer(jobj, jschema);
     else if (type==json_type_double)
         return _jdac_validate_double(jobj, jschema);
+    else if (type==json_type_null)
+        return JDAC_ERR_VALID;
     else
         printf("WARN: type %d not handled\n", type);
 

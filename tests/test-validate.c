@@ -11,6 +11,7 @@
 
 #include <json-c/json.h>
 #include "../include/jsoncdaccord.h"
+#include "../include/internal.h"
 //#include "common.h"
 
 #define UNIT_TESTING 1  //overloads malloc,calloc,free,etc to mocka versions
@@ -79,23 +80,6 @@ struct json_object *__wrap_json_object_from_file(const char *filename)
 
     return NULL;
 }
-
-int _jdac_load(const char *jsonfile, const char *jsonschema);
-int _jdac_check_type         (json_object *jobj, json_object *jschema);
-int _jdac_check_required     (json_object *jobj, json_object *jschema);
-int _jdac_check_properties   (json_object *jobj, json_object *jschema);
-int _jdac_check_anyOf        (json_object *jobj, json_object *jschema);
-int _jdac_check_items        (json_object *jobj, json_object *jschema);
-int _jdac_check_enums        (json_object *jobj, json_object *jschema);
-int _jdac_check_uniqueItems  (json_object *jobj, json_object *jschema);
-int _jdac_check_maxmin_items (json_object *jobj, json_object *jschema);
-int _jdac_validate_array     (json_object *jobj, json_object *jschema);
-int _jdac_validate_object    (json_object *jobj, json_object *jschema);
-int _jdac_validate_string    (json_object *jobj, json_object *jschema);
-int _jdac_validate_integer   (json_object *jobj, json_object *jschema);
-int _jdac_validate_double    (json_object *jobj, json_object *jschema);
-int _jdac_validate_boolean   (json_object *jobj, json_object *jschema);
-
 
 static void test_jdac_load(void **state)
 {

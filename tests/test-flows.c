@@ -6,7 +6,8 @@
 #include <cmocka.h>
 
 #include <stdio.h>
-#include "jsoncdaccord.h"
+#include "../include/jsoncdaccord.h"
+#include "../include/internal.h"
 
 #define UNIT_TESTING 1  //overloads malloc,calloc,free,etc to mocka versions
 
