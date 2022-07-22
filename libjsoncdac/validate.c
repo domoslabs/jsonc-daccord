@@ -26,7 +26,8 @@ static char* jdacerrstr[JDAC_ERR_MAX] = {
     "INVALID STRING LENGTH",
     "INVALID UNIQUE ITEMS",
     "INVALID ARRAY LENGTH",
-    "INVALID NUMBER"
+    "INVALID NUMBER",
+    "PATTERN NO MATCH"
 };
 
 const char* jdac_errorstr(unsigned int jdac_errors)
@@ -384,6 +385,11 @@ int _jdac_validate_string(json_object *jobj, json_object *jschema)
 
     int err = _jdac_check_enums(jobj, jschema);
     if (err) return err;
+
+#ifdef JDAC_PATTERN
+    err = _jdac_check_pattern(jobj, jschema);
+    if (err) return err;
+#endif
 
     return JDAC_ERR_VALID;
 }
