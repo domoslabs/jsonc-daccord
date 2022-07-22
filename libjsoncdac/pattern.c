@@ -27,7 +27,8 @@ int _jdac_check_pattern(json_object *jobj, json_object *jschema)
            if (reti==0) {
                 return JDAC_ERR_VALID;
            }
+           return JDAC_ERR_INVALID_PATTERNMATCH;
         }
     }
-    return JDAC_ERR_INVALID_PATTERNMATCH;
+    return JDAC_ERR_VALID;
 }
