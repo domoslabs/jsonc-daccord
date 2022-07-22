@@ -6,7 +6,7 @@ set(PUBLIC_HEADER_FILES ../include/jsoncdaccord.h)
 # plugging in optional functionality here:
 # The option name must match the filename excluding the .c
 
-set(OPTIONAL patternproperties pattern)
+set(OPTIONAL pattern patternproperties additionalproperties)
 
 foreach(src ${OPTIONAL})
   string(TOUPPER ${src} srcupper)
@@ -18,9 +18,10 @@ foreach(src ${OPTIONAL})
   endif()
 endforeach()
 
-#if (BUILD_PATTERNPROPERTIES OR BUILD_PATTERN)
-#  set(EXTRA_LIBS regex)
-#endif()
+if (BUILD_PATTERNPROPERTIES OR BUILD_PATTERN)
+  set(jsoncdaccord_SOURCES ${jsoncdaccord_SOURCES} regex_match.c )
+  #set(EXTRA_LIBS regex)
+endif()
 
 # always supported
 list(APPEND SUPPORTED_BASE type enum required properties anyOf minLength maxLength minimum maximum)
