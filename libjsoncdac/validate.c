@@ -1,29 +1,15 @@
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 #include <json-c/json.h>
+
 #include "../include/jsoncdaccord.h"
+#include "../include/internal.h"
 #include "../include/optional.h"
 
 json_object *json = NULL;
 json_object *schema = NULL;
 json_object *defs = NULL;
-
-int _jdac_load(const char *jsonfile, const char *jsonschema);
-int _jdac_check_type         (json_object *jobj, json_object *jschema);
-int _jdac_check_required     (json_object *jobj, json_object *jschema);
-int _jdac_check_properties   (json_object *jobj, json_object *jschema);
-int _jdac_check_anyOf        (json_object *jobj, json_object *jschema);
-int _jdac_check_items        (json_object *jobj, json_object *jschema);
-int _jdac_check_enums        (json_object *jobj, json_object *jschema);
-int _jdac_check_uniqueItems  (json_object *jobj, json_object *jschema);
-int _jdac_check_maxmin_items (json_object *jobj, json_object *jschema);
-int _jdac_validate_array     (json_object *jobj, json_object *jschema);
-int _jdac_validate_object    (json_object *jobj, json_object *jschema);
-int _jdac_validate_string    (json_object *jobj, json_object *jschema);
-int _jdac_validate_integer   (json_object *jobj, json_object *jschema);
-int _jdac_validate_double    (json_object *jobj, json_object *jschema);
-int _jdac_validate_number    (json_object *jobj, json_object *jschema, double value);
-int _jdac_validate_boolean   (json_object *jobj, json_object *jschema);
 
 static char* jdacerrstr[JDAC_ERR_MAX] = {
     "VALID",
@@ -67,44 +53,79 @@ int _jdac_load(const char *jsonfile, const char *jsonschema)
     return JDAC_ERR_VALID;
 }
 
-int _jdac_check_type(json_object *jobj, json_object *jschema)
+int __jdac_inspect_type(json_object *jobj, const char *type)
 {
-    json_object *jtype = json_object_object_get(jschema, "type");
-    if (jtype) {
-        if (!json_object_is_type(jtype, json_type_string))
-            return JDAC_ERR_SCHEMA_ERROR;
-
-        const char *type = json_object_get_string(jtype);
-        if (strcmp(type,"object")==0) {
-            if (!json_object_is_type(jobj, json_type_object))
-                return JDAC_ERR_INVALID_TYPE;
-        }
-        else if (strcmp(type,"array")==0) {
-            if (!json_object_is_type(jobj, json_type_array))
-                return JDAC_ERR_INVALID_TYPE;
-        }
-        else if (strcmp(type,"string")==0) {
-            if (!json_object_is_type(jobj, json_type_string))
-                return JDAC_ERR_INVALID_TYPE;
-        }
-        else if (strcmp(type,"integer")==0) {
-            if (!json_object_is_type(jobj, json_type_int))
-                return JDAC_ERR_INVALID_TYPE;
-        }
-        else if (strcmp(type,"boolean")==0) {
-            if (!json_object_is_type(jobj, json_type_boolean))
-                return JDAC_ERR_INVALID_TYPE;
-        }
-        else if (strcmp(type,"double")==0) {
-            if (!json_object_is_type(jobj, json_type_double))
-                return JDAC_ERR_INVALID_TYPE;
-        }
-        else {
-            printf("WARN unknown type in check type %s\n", type);
-            return JDAC_ERR_SCHEMA_ERROR;
+    if (strcmp(type,"object")==0) {
+        if (json_object_is_type(jobj, json_type_object))
+            return JDAC_ERR_VALID;
+    }
+    else if (strcmp(type,"array")==0) {
+        if (json_object_is_type(jobj, json_type_array))
+            return JDAC_ERR_VALID;
+    }
+    else if (strcmp(type,"string")==0) {
+        if (json_object_is_type(jobj, json_type_string))
+            return JDAC_ERR_VALID;
+    }
+    else if (strcmp(type,"integer")==0) {
+        if (json_object_is_type(jobj, json_type_int))
+            return JDAC_ERR_VALID;
+        if (json_object_is_type(jobj, json_type_double)) {
+            double value = json_object_get_double(jobj);
+            if (value==round(value)) // "zero fractional part is an integer"
+                return JDAC_ERR_VALID;
         }
     }
-    return JDAC_ERR_VALID;
+    else if (strcmp(type,"double")==0) {
+        if (json_object_is_type(jobj, json_type_double))
+            return JDAC_ERR_VALID;
+    }
+    else if (strcmp(type,"number")==0) {
+        if (json_object_is_type(jobj, json_type_double) ||
+            json_object_is_type(jobj, json_type_int))
+            return JDAC_ERR_VALID;
+    }
+    else if (strcmp(type,"boolean")==0) {
+        if (json_object_is_type(jobj, json_type_boolean))
+            return JDAC_ERR_VALID;
+    }
+    else if (strcmp(type,"null")==0) {
+        if (json_object_is_type(jobj, json_type_null))
+            return JDAC_ERR_VALID;
+    }
+    else {
+        printf("WARN unknown type in check type %s\n", type);
+        return JDAC_ERR_SCHEMA_ERROR;
+    }
+    return JDAC_ERR_INVALID_TYPE;
+}
+
+int _jdac_check_type(json_object *jobj, json_object *jschema)
+{
+        json_object *jtype = json_object_object_get(jschema, "type");
+
+        if  (jtype==NULL) {
+            return JDAC_ERR_VALID;
+        }
+        else if (json_object_is_type(jtype, json_type_string)) {
+            const char *type = json_object_get_string(jtype);
+            return __jdac_inspect_type(jobj, type);
+        }
+        else if (json_object_is_type(jtype, json_type_array)) {
+            int arraylen = json_object_array_length(jtype);
+            for (int i=0; i<arraylen; i++) {
+                json_object *iobj = json_object_array_get_idx(jtype, i);
+                if (!json_object_is_type(iobj, json_type_string))
+                    return JDAC_ERR_SCHEMA_ERROR;
+                const char *type = json_object_get_string(iobj);
+                int err = __jdac_inspect_type(jobj, type);
+                if (err==JDAC_ERR_VALID)
+                    return JDAC_ERR_VALID;
+            }
+            return JDAC_ERR_INVALID_TYPE;
+        }
+        else
+            return JDAC_ERR_SCHEMA_ERROR;
 }
 
 
@@ -334,6 +355,11 @@ int _jdac_validate_object(json_object *jobj, json_object *jschema)
     err = _jdac_check_properties(jobj, jschema);
     if (err) return err;
 
+#ifdef JDAC_PATTERNPROPERTIES
+    err = _jdac_check_patternproperties(jobj, jschema);
+    if (err) return err;
+#endif
+
     err = _jdac_check_anyOf(jobj, jschema);
     if (err) return err;
 
@@ -399,18 +425,37 @@ int _jdac_validate_number(json_object *jobj, json_object *jschema, double value)
 
 int _jdac_validate_boolean(json_object *jobj, json_object *jschema)
 {
-    int err = _jdac_check_type(jobj, jschema);
-    return err;
+    // printf("%s\n", __func__);
+    // printf("%s\n", json_object_get_string(jobj));
+    // printf("%s\n", json_object_get_string(jschema));
+    return JDAC_ERR_VALID;
 }
 
 int jdac_validate_node(json_object *jobj, json_object *jschema)
 {
+
+    // check if jschema is a bool, true or false
+    if (json_object_is_type(jschema, json_type_boolean)) {
+        json_bool value = json_object_get_boolean(jschema);
+        if (value==0)
+            return JDAC_ERR_INVALID;
+        if (value==1)
+            return JDAC_ERR_VALID;
+    }
+
     int err = _jdac_check_type(jobj, jschema);
     if (err) return err;
 
+    // if (!json_object_is_type(jobj, json_type_null))
+    //     printf("%s\n", json_object_get_string(jobj));
+    // else
+    //     printf("jobj was null\n");
+    // if (!json_object_is_type(jschema, json_type_null))
+    //     printf("%s\n", json_object_get_string(jschema));
+    // else
+    //     printf("jschema was null\n");
+
     json_type type = json_object_get_type(jobj);
-    // printf("%s\n", json_object_get_string(jobj));
-    // printf("%s\n", json_object_get_string(jschema));
 
     if (type==json_type_object)
         return _jdac_validate_object(jobj, jschema);
@@ -424,6 +469,8 @@ int jdac_validate_node(json_object *jobj, json_object *jschema)
         return _jdac_validate_integer(jobj, jschema);
     else if (type==json_type_double)
         return _jdac_validate_double(jobj, jschema);
+    else if (type==json_type_null)
+        return JDAC_ERR_VALID;
     else
         printf("WARN: type %d not handled\n", type);
 

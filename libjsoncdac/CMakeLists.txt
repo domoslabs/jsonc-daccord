@@ -1,19 +1,30 @@
 include_directories(../include)
 
-option (BUILD_STRING_PATTERN "" ON)
-
 set(jsoncdaccord_SOURCES validate.c)
 set(PUBLIC_HEADER_FILES ../include/jsoncdaccord.h)
+
+# plugging in optional functionality here:
+# The option name must match the filename excluding the .c
+
+set(OPTIONAL patternproperties)
+
+foreach(src ${OPTIONAL})
+  string(TOUPPER ${src} srcupper)
+  option(BUILD_${srcupper} "${src} option" ON)
+  if (BUILD_${srcupper})
+    list(APPEND SUPPORTED_OPTIONAL ${src})
+    set(jsoncdaccord_SOURCES ${jsoncdaccord_SOURCES} ${src}.c )
+    add_definitions(-DJDAC_${srcupper})
+  endif()
+endforeach()
+
+#if (BUILD_PATTERNPROPERTIES)
+#  set(EXTRA_LIBS regex)
+#endif()
 
 # always supported
 list(APPEND SUPPORTED_BASE type enum required properties anyOf minLength maxLength minimum maximum)
 list(APPEND SUPPORTED_BASE minItems maxItems uniqueItems items)
-
-if (BUILD_STRING_PATTERN)
-  set(jsoncdaccord_SOURCES validate.c string-pattern.c )
-  list(APPEND SUPPORTED_OPTIONAL "patterns")
-endif ()
-
 string (REPLACE ";" "," SUPPORTED_BASE_STR "${SUPPORTED_BASE}")
 string (REPLACE ";" "," SUPPORTED_OPTIONAL_STR "${SUPPORTED_OPTIONAL}")
 
@@ -40,9 +51,10 @@ install(
 
 add_executable(jdac-cli jdac-cli.c)
 if (BUILD_TYPE STREQUAL "debug")
-  target_link_libraries(jdac-cli PUBLIC jsoncdaccord_static json-c cmocka)
+  set(EXTRA_LIBS ${EXTRA_LIBS} jsoncdaccord_static json-c cmocka)
 else ()
-  target_link_libraries(jdac-cli PUBLIC jsoncdaccord_shared json-c)
+  set(EXTRA_LIBS ${EXTRA_LIBS} jsoncdaccord_shared json-c)
 endif ()
+target_link_libraries(jdac-cli PUBLIC ${EXTRA_LIBS})
 target_compile_definitions(jdac-cli PRIVATE "SUPPORTED_KEYWORDS_BASE=\"${SUPPORTED_BASE_STR}\"" "SUPPORTED_KEYWORDS_OPTIONAL=\"${SUPPORTED_OPTIONAL_STR}\"")
 install(TARGETS jdac-cli DESTINATION bin)

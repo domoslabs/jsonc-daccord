@@ -20,6 +20,8 @@ char *testfile;
 static void test_runner(void **state)
 {
     int test_failed = 0;
+    int number_of_tests = 0;
+    int number_of_successes = 0;
     json_object *json;
     json = json_object_from_file(testfile);
     assert_non_null(json);
@@ -43,6 +45,7 @@ static void test_runner(void **state)
         printf("case: %s\n", json_object_get_string(jcasedescription));
         int arraylen2 = json_object_array_length(jtests);
         for(int j=0; j<arraylen2; j++) {
+            number_of_tests++;
             json_object *jtest = json_object_array_get_idx(jtests, j);
             assert_int_equal(json_object_is_type(jtest, json_type_object), 1);
             json_object *jtestdescription = json_object_object_get(jtest, "description");
@@ -57,6 +60,7 @@ static void test_runner(void **state)
             int err = jdac_validate_node(jdata, jschema);
             if (valid == (err==JDAC_ERR_VALID)) {
                 printf("                OK\n");
+                number_of_successes++;
             }
             else {
                 printf("                FAILED\n");
@@ -65,6 +69,7 @@ static void test_runner(void **state)
         }
     }
     json_object_put(json);
+    printf("    stats: %d/%d tests passed\n", number_of_successes, number_of_tests);
     assert_int_equal(test_failed, 0);
 }
 
