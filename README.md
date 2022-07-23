@@ -82,11 +82,16 @@ Note: After install you might need to run `sudo ldconfig`.
 
 build options:
 
-| option               | description                                                             |
-| :------------------- | :---------------------------------------------------------------------- |
-| CMAKE_BUILD_TYPE     | Build as Release or Debug. Default: Release.                            |
-| RUN_TEST_SUITE       | Run JSON Schema .org's test.<br> Works only with CMAKE_BUILD_TYPE=Debug |
-| BUILD_STRING_PATTERN | Support *pattern*. String matching with regex pattern                   |
+| option                     | description                                                   |
+| :------------------------- | :------------------------------------------------------------ |
+| CMAKE_BUILD_TYPE           | Build as Release or Debug. Default: Release.                  |
+| RUN_TEST_SUITE             | Run JSON Schema .org's test.<br> (Use CMAKE_BUILD_TYPE=Debug) |
+| BUILD_PATTERN              | Support *pattern*.         |
+| BUILD_PATTERNPROPERTIES    | Support *patternProperties*                                   |
+| BUILD_ADDITIONALPROPERTIES | Support *additionalProperties*                                |
+| BUILD_PROPERTYNAMES        | Support *propertyNames*                                       |
+
+ Note: All BUILD_* options are selected by default
 
 ## Run tests
 For debug builds:
@@ -105,7 +110,6 @@ jdac-cli path-to-json path-to-schema
 ```
 ## To do
 - ref, defs
-- anyOf: any type
 - prevent infinite recursion
 
 ## Related links
