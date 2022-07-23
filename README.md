@@ -10,7 +10,7 @@ Currently the footprint of libjsoncdac.so is 8KB. The keep the footprint from bl
 
 Minimal build supports:
 - all: type, enum, required, properties.
-- objects: anyOf.
+- objects: 
 - strings: minLength, maxLength.
 - integers and doubles: minimum, maximum.
 - arrays: minItems, maxItems, uniqeItems, items.
@@ -82,14 +82,15 @@ Note: After install you might need to run `sudo ldconfig`.
 
 build options:
 
-| option                     | description                                                   |
-| :------------------------- | :------------------------------------------------------------ |
-| CMAKE_BUILD_TYPE           | Build as Release or Debug. Default: Release.                  |
-| RUN_TEST_SUITE             | Run JSON Schema .org's test.<br> (Use CMAKE_BUILD_TYPE=Debug) |
-| BUILD_PATTERN              | Support *pattern*.         |
-| BUILD_PATTERNPROPERTIES    | Support *patternProperties*                                   |
-| BUILD_ADDITIONALPROPERTIES | Support *additionalProperties*                                |
-| BUILD_PROPERTYNAMES        | Support *propertyNames*                                       |
+| option                     | description                                              |
+| :------------------------- | :------------------------------------------------------- |
+| CMAKE_BUILD_TYPE           | Build as Release or Debug. Default: Release.             |
+| RUN_TEST_SUITE             | Run JSON Schema test suite (CMAKE_BUILD_TYPE=Debug Only) |
+| BUILD_PATTERN              | Support *pattern*.                                       |
+| BUILD_PATTERNPROPERTIES    | Support *patternProperties*                              |
+| BUILD_ADDITIONALPROPERTIES | Support *additionalProperties*                           |
+| BUILD_PROPERTYNAMES        | Support *propertyNames*                                  |
+| BUILD_SUBSCHEMALOGIC       | Support *allOf*, *anyOf*, *oneOf*, and *not*             |
 
  Note: All BUILD_* options are selected by default
 

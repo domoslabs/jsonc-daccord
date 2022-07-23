@@ -804,7 +804,7 @@ static void test_check_anyof(void **state)
 
     jobj = json_object_object_get(e->json, "test-double");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_ANYOF);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_SUBSCHEMALOGIC);
 
     jobj = json_object_object_get(e->json, "test-string");
     assert_non_null(jobj);
@@ -812,7 +812,7 @@ static void test_check_anyof(void **state)
 
     jobj = json_object_object_get(e->json, "test-boolean");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_ANYOF);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_SUBSCHEMALOGIC);
 
     jschema = json_object_object_get(e->schema, "anyOfSchemaError");
     assert_non_null(jschema);

@@ -6,7 +6,6 @@ int __jdac_inspect_type(json_object *jobj, const char *type);
 int _jdac_check_type         (json_object *jobj, json_object *jschema);
 int _jdac_check_required     (json_object *jobj, json_object *jschema);
 int _jdac_check_properties   (json_object *jobj, json_object *jschema);
-int _jdac_check_anyOf        (json_object *jobj, json_object *jschema);
 int _jdac_check_items        (json_object *jobj, json_object *jschema);
 int _jdac_check_enums        (json_object *jobj, json_object *jschema);
 int _jdac_check_uniqueItems  (json_object *jobj, json_object *jschema);
