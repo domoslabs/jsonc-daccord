@@ -464,14 +464,14 @@ int jdac_validate_instance(json_object *jobj, json_object *jschema)
     int err = _jdac_check_type(jobj, jschema);
     if (err) return err;
 
-    if (!json_object_is_type(jobj, json_type_null))
-        printf("%s\n", json_object_get_string(jobj));
-    else
-        printf("jobj was null\n");
-    if (!json_object_is_type(jschema, json_type_null))
-        printf("%s\n", json_object_get_string(jschema));
-    else
-        printf("jschema was null\n");
+    // if (!json_object_is_type(jobj, json_type_null))
+    //     printf("%s\n", json_object_get_string(jobj));
+    // else
+    //     printf("jobj was null\n");
+    // if (!json_object_is_type(jschema, json_type_null))
+    //     printf("%s\n", json_object_get_string(jschema));
+    // else
+    //     printf("jschema was null\n");
 
     json_type type = json_object_get_type(jobj);
 
