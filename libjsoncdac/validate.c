@@ -21,7 +21,7 @@ static char* jdacerrstr[JDAC_ERR_MAX] = {
     "INVALID",
     "INVALID TYPE",
     "INVALID REQUIRED",
-    "INVALID ANYOF",
+    "INVALID SUBSCHEMA LOGIC (allOf, anyOf, oneOf, or not)",
     "INVALID ENUMS",
     "INVALID STRING LENGTH",
     "INVALID UNIQUE ITEMS",
@@ -135,6 +135,7 @@ int _jdac_check_type(json_object *jobj, json_object *jschema)
 
 int _jdac_check_required(json_object *jobj, json_object *jschema)
 {
+    //printf("%s\n%s\n", __func__, json_object_to_json_string(jobj));
     json_object *jarray = json_object_object_get(jschema, "required");
     int missing_required_key = 0;
     if (jarray) {
@@ -144,8 +145,10 @@ int _jdac_check_required(json_object *jobj, json_object *jschema)
             const char *key = json_object_get_string(iobj);
             if (key) {
                 //printf("%s\n", key);
-                json_object *required_object = json_object_object_get(jobj, key);
-                if (!required_object) {
+                // use json_object_object_get_ex becuase of json_type_null types
+                json_object *required_object = NULL;
+                int err = json_object_object_get_ex(jobj, key, &required_object);
+                if (err==0) {
                     printf("required key missing: %s\n", key);
                     missing_required_key=1;
                 }
@@ -170,34 +173,14 @@ int _jdac_check_properties(json_object *jobj, json_object *jschema)
             //printf("iobj %s type %d\nkey %s\nval %s\n", json_object_get_string(iobj), json_object_get_type(iobj), jprop_key, json_object_get_string(jprop_val));
             if (iobj) {
                 int err = jdac_validate_instance(iobj, jprop_val);
-                if (err) return err;
+                if (err)
+                    return err;
             }
         }
     }
     return JDAC_ERR_VALID;
 }
 
-int _jdac_check_anyOf(json_object *jobj, json_object *jschema)
-{
-    //printf("%s\n", __func__);
-    json_object *jschema_array = json_object_object_get(jschema, "anyOf");
-
-    if (!jschema_array)
-        return JDAC_ERR_VALID;
-
-    int arraylen = json_object_array_length(jschema_array);
-    for (int i = 0; i < arraylen; i++) {
-        json_object *ischema = json_object_array_get_idx(jschema_array, i);
-        if (!json_object_is_type(ischema, json_type_object)) {
-            //printf("anyOf array item at idx %d is not an object\n", i);
-            return JDAC_ERR_SCHEMA_ERROR;
-        }
-        int err = jdac_validate_instance(jobj, ischema); 
-        if (err==JDAC_ERR_VALID)
-            return JDAC_ERR_VALID;
-    }
-    return JDAC_ERR_INVALID_ANYOF;
-}
 
 json_object* _jdac_get_defs_from_ref(json_object* ref)
 {
@@ -336,13 +319,16 @@ int _jdac_validate_array(json_object *jobj, json_object *jschema)
     int err;
 
     err = _jdac_check_uniqueItems(jobj, jschema);
-    if (err) return err;
+    if (err)
+        return err;
 
     err = _jdac_check_maxmin_items(jobj, jschema);
-    if (err) return err;
+    if (err)
+        return err;
 
     err = _jdac_check_items(jobj, jschema);
-    if (err) return err;
+    if (err)
+        return err;
 
     return JDAC_ERR_VALID;
 }
@@ -361,21 +347,21 @@ int _jdac_validate_object(json_object *jobj, json_object *jschema)
 
 #ifdef JDAC_PROPERTYNAMES
     err = _jdac_check_propertynames(jobj, jschema);
-    if (err) return err;
+    if (err)
+        return err;
 #endif
 
 #ifdef JDAC_PATTERNPROPERTIES
     err = _jdac_check_patternproperties(jobj, jschema);
-    if (err) return err;
+    if (err)
+        return err;
 #endif
 
 #ifdef JDAC_ADDITIONALPROPERTIES
     err = _jdac_check_additionalproperties(jobj, jschema);
-    if (err) return err;
+    if (err)
+        return err;
 #endif
-
-    err = _jdac_check_anyOf(jobj, jschema);
-    if (err) return err;
 
     return JDAC_ERR_VALID;
 }
@@ -397,7 +383,8 @@ int _jdac_validate_string(json_object *jobj, json_object *jschema)
     }
 
     int err = _jdac_check_enums(jobj, jschema);
-    if (err) return err;
+    if (err)
+        return err;
 
 #ifdef JDAC_PATTERN
     err = _jdac_check_pattern(jobj, jschema);
@@ -437,7 +424,8 @@ int _jdac_validate_number(json_object *jobj, json_object *jschema, double value)
     }
 
     int err = _jdac_check_enums(jobj, jschema);
-    if (err) return err;
+    if (err)
+        return err;
 
     return JDAC_ERR_VALID;
 }
@@ -462,7 +450,8 @@ int jdac_validate_instance(json_object *jobj, json_object *jschema)
     }
 
     int err = _jdac_check_type(jobj, jschema);
-    if (err) return err;
+    if (err)
+        return err;
 
     // if (!json_object_is_type(jobj, json_type_null))
     //     printf("%s\n", json_object_get_string(jobj));
@@ -472,6 +461,12 @@ int jdac_validate_instance(json_object *jobj, json_object *jschema)
     //     printf("%s\n", json_object_get_string(jschema));
     // else
     //     printf("jschema was null\n");
+
+#ifdef JDAC_SUBSCHEMALOGIC
+    err = _jdac_check_subschemalogic(jobj, jschema);
+    if (err)
+        return err;
+#endif
 
     json_type type = json_object_get_type(jobj);
 
