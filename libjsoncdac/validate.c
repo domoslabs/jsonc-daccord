@@ -359,6 +359,11 @@ int _jdac_validate_object(json_object *jobj, json_object *jschema)
     err = _jdac_check_properties(jobj, jschema);
     if (err) return err;
 
+#ifdef JDAC_PROPERTYNAMES
+    err = _jdac_check_propertynames(jobj, jschema);
+    if (err) return err;
+#endif
+
 #ifdef JDAC_PATTERNPROPERTIES
     err = _jdac_check_patternproperties(jobj, jschema);
     if (err) return err;

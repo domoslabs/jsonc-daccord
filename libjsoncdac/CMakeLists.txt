@@ -6,7 +6,7 @@ set(PUBLIC_HEADER_FILES ../include/jsoncdaccord.h)
 # plugging in optional functionality here:
 # The option name must match the filename excluding the .c
 
-set(OPTIONAL pattern patternproperties additionalproperties)
+set(OPTIONAL pattern patternproperties additionalproperties propertynames)
 
 foreach(src ${OPTIONAL})
   string(TOUPPER ${src} srcupper)
