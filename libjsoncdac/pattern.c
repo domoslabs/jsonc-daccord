@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <regex.h>
 #include <json-c/json.h>
 #include "../include/jsoncdaccord.h"
 #include "../include/internal.h"
@@ -15,19 +14,15 @@ int _jdac_check_pattern(json_object *jobj, json_object *jschema)
 
         const char *pattern = json_object_get_string(jpat);
         const char *istr = json_object_get_string(jobj);
+
         if (istr) {
-            regex_t regex;
-            int reti = regcomp(&regex, pattern, REG_EXTENDED);
-            if (reti) {
-                fprintf(stderr, "Could not compile regex\n");
+            int ret = _jdac_match_string_with_regex(pattern, istr);
+            if (ret==JDAC_REGEX_COMPILE_FAILED)
                 return JDAC_ERR_SCHEMA_ERROR;
-            }
-           reti = regexec(&regex, istr, 0, NULL, 0);
-           regfree(&regex);
-           if (reti==0) {
+            else if (ret==JDAC_REGEX_MATCH)
                 return JDAC_ERR_VALID;
-           }
-           return JDAC_ERR_INVALID_PATTERNMATCH;
+            else if (ret==JDAC_REGEX_MISMATCH)
+                return JDAC_ERR_INVALID_PATTERNMATCH;
         }
     }
     return JDAC_ERR_VALID;

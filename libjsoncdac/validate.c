@@ -27,7 +27,10 @@ static char* jdacerrstr[JDAC_ERR_MAX] = {
     "INVALID UNIQUE ITEMS",
     "INVALID ARRAY LENGTH",
     "INVALID NUMBER",
-    "PATTERN NO MATCH"
+    "PATTERN NO MATCH",
+    "REGEX MISMATCH",
+    "REGEX MATCH",
+    "REGEX COMPILE FAILED"
 };
 
 const char* jdac_errorstr(unsigned int jdac_errors)
@@ -356,8 +359,18 @@ int _jdac_validate_object(json_object *jobj, json_object *jschema)
     err = _jdac_check_properties(jobj, jschema);
     if (err) return err;
 
+#ifdef JDAC_PROPERTYNAMES
+    err = _jdac_check_propertynames(jobj, jschema);
+    if (err) return err;
+#endif
+
 #ifdef JDAC_PATTERNPROPERTIES
     err = _jdac_check_patternproperties(jobj, jschema);
+    if (err) return err;
+#endif
+
+#ifdef JDAC_ADDITIONALPROPERTIES
+    err = _jdac_check_additionalproperties(jobj, jschema);
     if (err) return err;
 #endif
 

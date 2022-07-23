@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <regex.h>        
 #include <json-c/json.h>
 #include "../include/jsoncdaccord.h"
 #include "../include/internal.h"
@@ -11,34 +10,27 @@ int _jdac_check_patternproperties(json_object *jobj, json_object *jschema)
     //printf("%s\n", __func__);
     // check jobj non object is already checked
 
-    json_object *jprops = json_object_object_get(jschema, "patternProperties");
-    if (jprops) {
-        if (!json_object_is_type(jprops, json_type_object))
+    json_object *jpatprops = json_object_object_get(jschema, "patternProperties");
+    if (jpatprops) {
+        if (!json_object_is_type(jpatprops, json_type_object))
             return JDAC_ERR_SCHEMA_ERROR;
 
-        json_object_object_foreach(jprops, jprop_key, jprop_val) {
-            //printf("key of prop is %s\n", jprop_key);
-            regex_t regex;
-            int reti = regcomp(&regex, jprop_key, REG_EXTENDED);
-            if (reti) {
-                fprintf(stderr, "Could not compile regex\n");
-                return JDAC_ERR_SCHEMA_ERROR;
-            }
+        json_object_object_foreach(jpatprops, jprop_key, jprop_val) {
             json_object_object_foreach(jobj, jobj_key, jobj_val) {
-                //printf("  key of jobj is %s\n", jobj_key);
-                reti = regexec(&regex, jobj_key, 0, NULL, 0);
-                if (reti==0) {
-                    //printf("match: %s\n", jobj_key);
+                int ret = _jdac_match_string_with_regex(jprop_key, jobj_key);
+                if (ret==JDAC_REGEX_COMPILE_FAILED)
+                    return JDAC_ERR_SCHEMA_ERROR;
+                else if (ret==JDAC_REGEX_MATCH) {
                     int err = jdac_validate_instance(jobj_val, jprop_val);
-                    if (err) {
-                        regfree(&regex);
+                    if (err)
                         return err;
-                    }
+                }
+                else if (ret==JDAC_REGEX_MISMATCH)
+                {
+                    //
                 }
             }
-            regfree(&regex);
         }
     }
     return JDAC_ERR_VALID;    
-
 }
