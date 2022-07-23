@@ -21,7 +21,7 @@ You can pass json and schema as either filepaths or `json_object`:
 
 ```C
     int jdac_validate(const char *jsonfile, const char *jsonschemafile);
-    int jdac_validate_node(json_object *jobj, json_object *jschema);
+    int jdac_validate_instance(json_object *jobj, json_object *jschema);
     const char* jdac_errorstr(unsigned int jdac_errors);
 ```
 

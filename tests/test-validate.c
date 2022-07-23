@@ -420,26 +420,26 @@ static void test_check_items(void **state)
 
     jobj = json_object_object_get(e->json, "test1");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "wrongtype");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_TYPE);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_TYPE);
 
     jobj = json_object_object_get(e->json, "missingkey");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_REQUIRED);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_REQUIRED);
 
     jschema  = json_object_object_get(e->schema, "nested");
     assert_non_null(jschema);
 
     jobj = json_object_object_get(e->json, "nestedarray");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "nestedarrayofstrings");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_TYPE);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_TYPE);
 
     freejson(state);
     freeschema(state);
@@ -461,19 +461,19 @@ static void test_check_enums(void **state)
 
     jobj = json_object_object_get(e->json, "teststring1");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "teststring2");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "teststring3");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "teststring4");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_ENUMS);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_ENUMS);
 
 
     jschema  = json_object_object_get(e->schema, "enum-integer");
@@ -481,19 +481,19 @@ static void test_check_enums(void **state)
 
     jobj = json_object_object_get(e->json, "testinteger1");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "testinteger2");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "testinteger3");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "testinteger4");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_ENUMS);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_ENUMS);
 
 
     jschema  = json_object_object_get(e->schema, "enum-schemaerror");
@@ -501,19 +501,19 @@ static void test_check_enums(void **state)
 
     jobj = json_object_object_get(e->json, "testinteger1");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
 
     jobj = json_object_object_get(e->json, "testinteger2");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
 
     jobj = json_object_object_get(e->json, "testinteger3");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
 
     jobj = json_object_object_get(e->json, "testinteger4");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
 
     freejson(state);
     freeschema(state);
@@ -535,81 +535,81 @@ static void test_check_uniqueItems(void **state)
 
     jobj = json_object_object_get(e->json, "array-empty");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "array-unique1");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "array-unique2");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "array-notunique1");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_UNIQUEITEMS);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_UNIQUEITEMS);
 
     jobj = json_object_object_get(e->json, "array-notunique2");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_UNIQUEITEMS);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_UNIQUEITEMS);
 
     jobj = json_object_object_get(e->json, "array-notunique3");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_UNIQUEITEMS);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_UNIQUEITEMS);
 
     jobj = json_object_object_get(e->json, "array-notunique4");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_UNIQUEITEMS);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_UNIQUEITEMS);
 
     jobj = json_object_object_get(e->json, "array-notunique5");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_UNIQUEITEMS);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_UNIQUEITEMS);
 
     jschema  = json_object_object_get(e->schema, "notunique");
     assert_non_null(jschema);
 
     jobj = json_object_object_get(e->json, "array-empty");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "array-unique1");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "array-unique2");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "array-notunique1");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "array-notunique2");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "array-notunique3");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "array-notunique4");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "array-notunique5");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jschema  = json_object_object_get(e->schema, "schemaerror");
     assert_non_null(jschema);
 
     jobj = json_object_object_get(e->json, "array-notunique1");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
 
     jobj = json_object_object_get(e->json, "array-notunique2");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
 
     freejson(state);
     freeschema(state);
@@ -660,19 +660,19 @@ static void test_validate_array(void **state)
     assert_non_null(jschema);
     jobj = json_object_object_get(e->json, "array-1");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_ARRAYLEN);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_ARRAYLEN);
     jobj = json_object_object_get(e->json, "array-2");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
     jobj = json_object_object_get(e->json, "array-3");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
     jobj = json_object_object_get(e->json, "array-4");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_ARRAYLEN);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_ARRAYLEN);
     jobj = json_object_object_get(e->json, "array-5");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_ARRAYLEN);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_ARRAYLEN);
     freejson(state);
     freeschema(state);
 }
@@ -712,19 +712,19 @@ static void test_validate_number(void **state)
     freejson(state);
 
     e->json = json_object_new_int(3);
-    assert_int_equal(jdac_validate_node(e->json, e->schema), JDAC_ERR_INVALID_NUMBER);
+    assert_int_equal(jdac_validate_instance(e->json, e->schema), JDAC_ERR_INVALID_NUMBER);
     freejson(state);
     e->json = json_object_new_int(4);
-    assert_int_equal(jdac_validate_node(e->json, e->schema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(e->json, e->schema), JDAC_ERR_VALID);
     freejson(state);
     e->json = json_object_new_int(5);
-    assert_int_equal(jdac_validate_node(e->json, e->schema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(e->json, e->schema), JDAC_ERR_VALID);
     freejson(state);
     e->json = json_object_new_int(6);
-    assert_int_equal(jdac_validate_node(e->json, e->schema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(e->json, e->schema), JDAC_ERR_VALID);
     freejson(state);
     e->json = json_object_new_int(7);
-    assert_int_equal(jdac_validate_node(e->json, e->schema), JDAC_ERR_INVALID_NUMBER);
+    assert_int_equal(jdac_validate_instance(e->json, e->schema), JDAC_ERR_INVALID_NUMBER);
     freejson(state);
 
 
@@ -766,19 +766,19 @@ static void test_validate_number(void **state)
     freejson(state);
 
     e->json = json_object_new_double(3.0);
-    assert_int_equal(jdac_validate_node(e->json, e->schema), JDAC_ERR_INVALID_NUMBER);
+    assert_int_equal(jdac_validate_instance(e->json, e->schema), JDAC_ERR_INVALID_NUMBER);
     freejson(state);
     e->json = json_object_new_double(4-0);
-    assert_int_equal(jdac_validate_node(e->json, e->schema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(e->json, e->schema), JDAC_ERR_VALID);
     freejson(state);
     e->json = json_object_new_double(5.0);
-    assert_int_equal(jdac_validate_node(e->json, e->schema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(e->json, e->schema), JDAC_ERR_VALID);
     freejson(state);
     e->json = json_object_new_double(6.0);
-    assert_int_equal(jdac_validate_node(e->json, e->schema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(e->json, e->schema), JDAC_ERR_VALID);
     freejson(state);
     e->json = json_object_new_double(7.0);
-    assert_int_equal(jdac_validate_node(e->json, e->schema), JDAC_ERR_INVALID_NUMBER);
+    assert_int_equal(jdac_validate_instance(e->json, e->schema), JDAC_ERR_INVALID_NUMBER);
     freejson(state);
 
     freejson(state);
@@ -800,25 +800,25 @@ static void test_check_anyof(void **state)
 
     jobj = json_object_object_get(e->json, "test-int");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "test-double");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_ANYOF);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_ANYOF);
 
     jobj = json_object_object_get(e->json, "test-string");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "test-boolean");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_INVALID_ANYOF);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_INVALID_ANYOF);
 
     jschema = json_object_object_get(e->schema, "anyOfSchemaError");
     assert_non_null(jschema);
     jobj = json_object_object_get(e->json, "test-int");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
 
     freejson(state);
     freeschema(state);
@@ -836,27 +836,27 @@ static void test_requirements_recursively(void **state)
 
     jobj = json_object_object_get(e->json, "alltrue");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, e->schema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, e->schema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "nametooshort");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, e->schema), JDAC_ERR_INVALID_STRLEN);
+    assert_int_equal(jdac_validate_instance(jobj, e->schema), JDAC_ERR_INVALID_STRLEN);
 
     jobj = json_object_object_get(e->json, "wrongtype");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, e->schema), JDAC_ERR_INVALID_TYPE);
+    assert_int_equal(jdac_validate_instance(jobj, e->schema), JDAC_ERR_INVALID_TYPE);
 
     jobj = json_object_object_get(e->json, "husbandmissing");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, e->schema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, e->schema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "namemissing");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, e->schema), JDAC_ERR_INVALID_REQUIRED);
+    assert_int_equal(jdac_validate_instance(jobj, e->schema), JDAC_ERR_INVALID_REQUIRED);
 
     jobj = json_object_object_get(e->json, "empty");
     assert_non_null(jobj);
-    assert_int_not_equal(jdac_validate_node(jobj, e->schema), JDAC_ERR_VALID);
+    assert_int_not_equal(jdac_validate_instance(jobj, e->schema), JDAC_ERR_VALID);
 
     freejson(state);
     freeschema(state);
@@ -869,12 +869,12 @@ static void test_the_vectors_json(void **state)
     e->schema = __real_json_object_from_file("schema/vectors.json");
     assert_non_null(e->json);
     assert_non_null(e->schema);
-    assert_int_equal(jdac_validate_node(e->json, e->schema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(e->json, e->schema), JDAC_ERR_VALID);
     freejson(state);
 
     e->json = __real_json_object_from_file("json/vectors2.json");
     assert_non_null(e->json);
-    assert_int_equal(jdac_validate_node(e->json, e->schema), JDAC_ERR_INVALID_REQUIRED);
+    assert_int_equal(jdac_validate_instance(e->json, e->schema), JDAC_ERR_INVALID_REQUIRED);
 
     freejson(state);
     freeschema(state);
@@ -891,19 +891,19 @@ static void test_the_vectors_variants(void **state)
 
     jobj = json_object_object_get(e->json, "truejson");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, e->schema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, e->schema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "validport_toohigh");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, e->schema), JDAC_ERR_INVALID_NUMBER);
+    assert_int_equal(jdac_validate_instance(jobj, e->schema), JDAC_ERR_INVALID_NUMBER);
 
     jobj = json_object_object_get(e->json, "ignore_indices_index_too_high");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, e->schema), JDAC_ERR_INVALID_NUMBER);
+    assert_int_equal(jdac_validate_instance(jobj, e->schema), JDAC_ERR_INVALID_NUMBER);
 
     jobj = json_object_object_get(e->json, "too_many_vector_elements");
     assert_non_null(jobj);
-    assert_int_equal(jdac_validate_node(jobj, e->schema), JDAC_ERR_INVALID_ARRAYLEN);
+    assert_int_equal(jdac_validate_instance(jobj, e->schema), JDAC_ERR_INVALID_ARRAYLEN);
     freejson(state);
     freeschema(state);
 

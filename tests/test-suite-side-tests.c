@@ -61,7 +61,7 @@ static int test_env_free(void **state){
     return 0;
 }
 
-static void side_test_additionalProperties(void **state)
+static void side_test_patternProperties(void **state)
 {
     json_object *jobj, *jschema;
     struct test_env *e = (struct test_env *)*state;
@@ -73,36 +73,77 @@ static void side_test_additionalProperties(void **state)
     // ignore null instance
     jschema = json_object_object_get(e->schema, "schema-valid");
     assert_non_null(jschema);
-    assert_int_equal(jdac_validate_node(NULL, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(NULL, jschema), JDAC_ERR_VALID);
 
     // invalid regex
     jobj = json_object_object_get(e->json, "botenanna");
     jschema = json_object_object_get(e->schema, "schema-invalid-regex");
     assert_non_null(jobj);
     assert_non_null(jschema);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
 
     // non object patternProperties
     jobj = json_object_object_get(e->json, "botenanna");
     jschema = json_object_object_get(e->schema, "schema-non-object");
     assert_non_null(jobj);
     assert_non_null(jschema);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
 
     // non object patternProperties
     jobj = json_object_object_get(e->json, "nonobject");
     jschema = json_object_object_get(e->schema, "schema-non-object");
     assert_null(jobj);
     assert_non_null(jschema);
-    assert_int_equal(jdac_validate_node(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
 
     freejson(state);
     freeschema(state);
 }
+
+static void side_test_pattern(void **state)
+{
+    json_object *jobj, *jschema;
+    struct test_env *e = (struct test_env *)*state;
+    e->json = json_object_from_file("json/side-test-pattern.json");
+    e->schema = json_object_from_file("schema/side-test-pattern.json");
+    assert_non_null(e->json);
+    assert_non_null(e->schema);
+
+    // ignore null instance
+    jobj = json_object_object_get(e->json, "nullobject");
+    jschema = json_object_object_get(e->schema, "schema-valid");
+    assert_null(jobj);
+    assert_non_null(jschema);
+    assert_int_equal(jdac_validate_instance(NULL, jschema), JDAC_ERR_VALID);
+
+    jobj = json_object_object_get(e->json, "botenanna");
+    jschema = json_object_object_get(e->schema, "schema-valid");
+    assert_non_null(jobj);
+    assert_non_null(jschema);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
+
+    // invalid regex
+    jobj = json_object_object_get(e->json, "boten");
+    jschema = json_object_object_get(e->schema, "schema-invalid-regex");
+    assert_non_null(jobj);
+    assert_non_null(jschema);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+
+    // non object patternProperties
+    jobj = json_object_object_get(e->json, "botenanna");
+    jschema = json_object_object_get(e->schema, "schema-non-object");
+    assert_non_null(jobj);
+    assert_non_null(jschema);
+    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+
+    freeschema(state);
+}
+
 int main()
 {
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test(side_test_additionalProperties),
+        cmocka_unit_test(side_test_patternProperties),
+        cmocka_unit_test(side_test_pattern),
     };
     return cmocka_run_group_tests(tests, test_env_init, test_env_free);
 }

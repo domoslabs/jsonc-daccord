@@ -19,11 +19,12 @@ enum jdac_errors {
     JDAC_ERR_INVALID_UNIQUEITEMS,
     JDAC_ERR_INVALID_ARRAYLEN,
     JDAC_ERR_INVALID_NUMBER,
+    JDAC_ERR_INVALID_PATTERNMATCH,
     JDAC_ERR_MAX
 };
 
 int jdac_validate(const char *jsonfile, const char *jsonschemafile);
-int jdac_validate_node(json_object *jobj, json_object *jschema);
+int jdac_validate_instance(json_object *jobj, json_object *jschema);
 
 const char* jdac_errorstr(unsigned int jdac_errors);
 

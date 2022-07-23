@@ -29,7 +29,7 @@ int _jdac_check_patternproperties(json_object *jobj, json_object *jschema)
                 reti = regexec(&regex, jobj_key, 0, NULL, 0);
                 if (reti==0) {
                     //printf("match: %s\n", jobj_key);
-                    int err = jdac_validate_node(jobj_val, jprop_val);
+                    int err = jdac_validate_instance(jobj_val, jprop_val);
                     if (err) {
                         regfree(&regex);
                         return err;

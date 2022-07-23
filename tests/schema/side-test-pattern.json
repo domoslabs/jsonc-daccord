@@ -1,0 +1,12 @@
+{
+    "description": "string pattern side tests",
+    "schema-non-object": {
+        "pattern": true
+    },
+    "schema-invalid-regex": {
+        "pattern": "^[a-zA-Z0-9]*@[a-zA-Z0-9-_.]*[.]*?"
+    },
+    "schema-valid": {
+        "pattern": "boten*"
+    }
+}
