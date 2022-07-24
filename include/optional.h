@@ -7,5 +7,6 @@ int _jdac_check_patternproperties(json_object *jobj, json_object *jschema);
 int _jdac_check_additionalproperties(json_object *jobj, json_object *jschema);
 int _jdac_check_propertynames(json_object *jobj, json_object *jschema);
 int _jdac_check_subschemalogic(json_object *jobj, json_object *jschema);
+int _jdac_check_prefixItems(json_object *jobj, json_object *jschema);
 
 #endif // __OPTIONAL_H

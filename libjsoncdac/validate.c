@@ -322,6 +322,10 @@ int _jdac_validate_array(json_object *jobj, json_object *jschema)
 {
     int err;
 
+    err = _jdac_check_prefixItems(jobj, jschema);
+    if (err)
+        return err;
+
     err = _jdac_check_uniqueItems(jobj, jschema);
     if (err)
         return err;
