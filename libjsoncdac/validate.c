@@ -294,16 +294,20 @@ int _jdac_check_maxmin_items(json_object *jobj, json_object *jschema)
     int arraylen = json_object_array_length(jobj);
 
     if (jmax) {
-        if (json_object_is_type(jmax, json_type_int)) {
-            int maxitems = json_object_get_int64(jmax);
+        if (json_object_is_type(jmax, json_type_int) ||
+            json_object_is_type(jmax, json_type_double)
+        ) {
+            int maxitems = json_object_get_double(jmax);
             if (arraylen>maxitems)
                 err = JDAC_ERR_INVALID_ARRAYLEN;
         }
     }
 
     if (jmin) {
-        if (json_object_is_type(jmin, json_type_int)) {
-            int minitems = json_object_get_int64(jmin);
+        if (json_object_is_type(jmin, json_type_int) ||
+            json_object_is_type(jmin, json_type_double)
+        ) {
+            int minitems = json_object_get_double(jmin);
             if (arraylen<minitems)
                 err = JDAC_ERR_INVALID_ARRAYLEN;
         }
