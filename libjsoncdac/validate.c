@@ -412,14 +412,29 @@ int _jdac_validate_number(json_object *jobj, json_object *jschema, double value)
 {
     json_object *jmin = json_object_object_get(jschema, "minimum");
     if (jmin) {
-        double min = (double)json_object_get_int64(jmin);
+        double min = (double)json_object_get_double(jmin);
         if (value<min)
             return JDAC_ERR_INVALID_NUMBER;
     }
+
+    json_object *jexclmin = json_object_object_get(jschema, "exclusiveMinimum");
+    if (jexclmin) {
+        double min = (double)json_object_get_double(jexclmin);
+        if (value<=min)
+            return JDAC_ERR_INVALID_NUMBER;
+    }
+
     json_object *jmax = json_object_object_get(jschema, "maximum");
     if (jmax) {
-        double max = (double)json_object_get_int64(jmax);
+        double max = (double)json_object_get_double(jmax);
         if (value>max)
+            return JDAC_ERR_INVALID_NUMBER;
+    }
+
+    json_object *jexclmax = json_object_object_get(jschema, "exclusiveMaximum");
+    if (jexclmax) {
+        double max = (double)json_object_get_double(jexclmax);
+        if (value>=max)
             return JDAC_ERR_INVALID_NUMBER;
     }
 
