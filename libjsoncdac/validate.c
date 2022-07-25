@@ -255,8 +255,22 @@ int _jdac_check_enums(json_object *jobj, json_object *jschema)
     int arraylen = json_object_array_length(jenum_array);
     for (int i=0; i<arraylen; i++) {
         json_object *ienum = json_object_array_get_idx(jenum_array, i);
+
         if (json_object_equal(jobj, ienum))
             return JDAC_ERR_VALID;
+
+        if (json_object_is_type(ienum, json_type_double) && json_object_is_type(jobj, json_type_int)) {
+            double value = json_object_get_double(ienum);
+            double value2 = json_object_get_int64(jobj);
+            if (value==round(value) && value == value2)
+                return JDAC_ERR_VALID;
+        }
+        if (json_object_is_type(ienum, json_type_int) && json_object_is_type(jobj, json_type_double)) {
+            double value = json_object_get_double(jobj);
+            double value2 = json_object_get_int64(ienum);
+            if (value==round(value) && value == value2)
+                return JDAC_ERR_VALID;
+        }
     }
     printf("ERROR: enum check failed (%s not in enum)\n", json_object_to_json_string(jobj));
 
@@ -322,6 +336,10 @@ int _jdac_validate_array(json_object *jobj, json_object *jschema)
 {
     int err;
 
+    err = _jdac_check_prefixItems(jobj, jschema);
+    if (err)
+        return err;
+
     err = _jdac_check_uniqueItems(jobj, jschema);
     if (err)
         return err;
@@ -370,19 +388,33 @@ int _jdac_validate_object(json_object *jobj, json_object *jschema)
     return JDAC_ERR_VALID;
 }
 
+int utf8_length(const char *str)
+{
+    const char *pointer = str;
+    int len = 0;
+    while(pointer[0])
+    {
+        if ((pointer[0] & 0xC0) != 0x80)
+            len++;
+        pointer++;
+    }
+    return len;
+}
+
 int _jdac_validate_string(json_object *jobj, json_object *jschema)
 {
     const char *str = json_object_get_string(jobj);
+    //printf("strlen of %s %ld %d %d\n", str, strlen(str), json_object_get_string_len(jobj), utf8_length(str));
     json_object *jminlen = json_object_object_get(jschema, "minLength");
     if (jminlen) {
         int minlen = json_object_get_int64(jminlen);
-        if (strlen(str)<minlen)
+        if (utf8_length(str)<minlen)
             return JDAC_ERR_INVALID_STRLEN;
     }
     json_object *jmaxlen = json_object_object_get(jschema, "maxLength");
     if (jmaxlen) {
         int maxlen = json_object_get_int64(jmaxlen);
-        if (strlen(str)>maxlen)
+        if (utf8_length(str)>maxlen)
             return JDAC_ERR_INVALID_STRLEN;
     }
 
@@ -455,10 +487,6 @@ int _jdac_validate_number(json_object *jobj, json_object *jschema, double value)
             return JDAC_ERR_INVALID_NUMBER;
     }
 
-    int err = _jdac_check_enums(jobj, jschema);
-    if (err)
-        return err;
-
     return JDAC_ERR_VALID;
 }
 
@@ -499,6 +527,10 @@ int jdac_validate_instance(json_object *jobj, json_object *jschema)
     if (err)
         return err;
 #endif
+
+    err = _jdac_check_enums(jobj, jschema);
+    if (err)
+        return err;
 
     json_type type = json_object_get_type(jobj);
 
