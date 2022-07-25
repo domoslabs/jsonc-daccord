@@ -11,6 +11,7 @@ enum subschematype {
     JDAC_ONEOF
 };
 
+
 // shall return valid or invalid based on subschema type
 int _jdac_test_subschema_array(json_object *jobj, json_object *jsubschema_array, enum subschematype type)
 {
