@@ -8,7 +8,7 @@
 int _jdac_check_subschemalogic(json_object *jobj, json_object *jschema)
 {
     int err;
-    printf("%s\n", __func__);
+    //printf("%s\n", __func__);
     json_object *jallof = json_object_object_get(jschema, "allOf");
     json_object *janyof = json_object_object_get(jschema, "anyOf");
     json_object *joneof = json_object_object_get(jschema, "oneOf");
