@@ -8,7 +8,6 @@ set(PUBLIC_HEADER_FILES ../include/jsoncdaccord.h)
 
 set(OPTIONAL
   pattern patternproperties additionalproperties propertynames subschemalogic
-  prefixitems
 )
 
 foreach(src ${OPTIONAL})

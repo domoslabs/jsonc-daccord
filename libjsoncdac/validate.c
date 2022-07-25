@@ -25,6 +25,8 @@ static char* jdacerrstr[JDAC_ERR_MAX] = {
     "INVALID ENUMS",
     "INVALID STRING LENGTH",
     "INVALID UNIQUE ITEMS",
+    "INVALID PREFIXITEMS",
+    "INVALID ITEMS",
     "INVALID ARRAY LENGTH",
     "INVALID NUMBER",
     "PATTERN NO MATCH",
@@ -181,6 +183,46 @@ int _jdac_check_properties(json_object *jobj, json_object *jschema)
     return JDAC_ERR_VALID;
 }
 
+int _jdac_check_prefixItems_and_items(json_object *jobj, json_object *jschema)
+{
+    json_object *jprefixitems = json_object_object_get(jschema, "prefixItems");
+    json_object *jitems = json_object_object_get(jschema, "items");
+
+    int jobj_arraylen = json_object_array_length(jobj);
+    int prefixitems_arraylen = 0;
+
+    if (jprefixitems) {
+
+        if (!json_object_is_type(jprefixitems, json_type_array))
+            return JDAC_ERR_SCHEMA_ERROR;
+
+        prefixitems_arraylen = json_object_array_length(jprefixitems);
+
+        for (int i=0; i<jobj_arraylen && i<prefixitems_arraylen; i++) {
+            printf("i=%d prefixitems\n", i);
+            json_object *iobj = json_object_array_get_idx(jobj, i);
+            json_object *ischema = json_object_array_get_idx(jprefixitems, i);
+            int err = jdac_validate_instance(iobj, ischema);
+            if (err)
+                return JDAC_ERR_INVALID_PREFIXITEMS;
+        }
+    }
+ 
+    if (jitems) {
+        if (!json_object_is_type(jprefixitems, json_type_array) &&
+            !json_object_is_type(jprefixitems, json_type_boolean))
+            return JDAC_ERR_SCHEMA_ERROR;
+
+        for (int i=prefixitems_arraylen; i<jobj_arraylen; i++) {
+            printf("i=%d items\n", i);
+            json_object *iobj = json_object_array_get_idx(jobj, i);
+            int err = jdac_validate_instance(iobj, jitems);
+            if (err)
+                return JDAC_ERR_INVALID_ITEMS;
+        }
+    }
+    return JDAC_ERR_VALID;
+}
 
 json_object* _jdac_get_defs_from_ref(json_object* ref)
 {
@@ -195,52 +237,6 @@ json_object* _jdac_get_defs_from_ref(json_object* ref)
     return NULL;
 }
 
-int _jdac_check_items(json_object *jobj, json_object *jschema)
-{
-    int err;
-
-    json_object *jitems = json_object_object_get(jschema, "items");
-    if (jitems) {
-            if (jitems) {
-                int arraylen = json_object_array_length(jobj);
-                for (int i=0; i<arraylen; i++) {
-                    json_object *iobj = json_object_array_get_idx(jobj, i);
-                    if (iobj) {
-                        err = jdac_validate_instance(iobj, jitems);
-                        if (err) return err;
-                    }
-                }
-            }
-
-
-        // json_object_object_foreach(jitems, jitem_key, jitem_val) {
-        //     printf("key of item is %s\n", jitem_key);
-
-        //     json_object *ischema = jitem_val;
-        //     if (strcmp(jitem_key, "$ref")==0) {
-        //         json_object *jdef =_jdac_get_defs_from_ref(jitem_val);
-        //         if (jdef) {
-        //             ischema = jdef;
-        //         } else {
-        //             printf("WARN: unable to find defs from ref (%s)\n", jitem_key);
-        //             ischema = NULL;
-        //         }
-        //     }
-
-        //     if (ischema) {
-        //         int arraylen = json_object_array_length(jobj);
-        //         for (int i=0; i<arraylen; i++) {
-        //             json_object *iobj = json_object_array_get_idx(jobj, i);
-        //             if (iobj) {
-        //                 err = jdac_validate_instance(iobj, ischema);
-        //                 if (err) return JDAC_ERR_INVALID;
-        //             }
-        //         }
-        //     }
-        // }
-    }
-    return JDAC_ERR_VALID;
-}
 
 int _jdac_check_enums(json_object *jobj, json_object *jschema)
 {
@@ -336,7 +332,7 @@ int _jdac_validate_array(json_object *jobj, json_object *jschema)
 {
     int err;
 
-    err = _jdac_check_prefixItems(jobj, jschema);
+    err = _jdac_check_prefixItems_and_items(jobj, jschema);
     if (err)
         return err;
 
@@ -345,10 +341,6 @@ int _jdac_validate_array(json_object *jobj, json_object *jschema)
         return err;
 
     err = _jdac_check_maxmin_items(jobj, jschema);
-    if (err)
-        return err;
-
-    err = _jdac_check_items(jobj, jschema);
     if (err)
         return err;
 
