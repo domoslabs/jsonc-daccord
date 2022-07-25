@@ -374,19 +374,33 @@ int _jdac_validate_object(json_object *jobj, json_object *jschema)
     return JDAC_ERR_VALID;
 }
 
+int utf8_length(const char *str)
+{
+    const char *pointer = str;
+    int len = 0;
+    while(pointer[0])
+    {
+        if ((pointer[0] & 0xC0) != 0x80)
+            len++;
+        pointer++;
+    }
+    return len;
+}
+
 int _jdac_validate_string(json_object *jobj, json_object *jschema)
 {
     const char *str = json_object_get_string(jobj);
+    //printf("strlen of %s %ld %d %d\n", str, strlen(str), json_object_get_string_len(jobj), utf8_length(str));
     json_object *jminlen = json_object_object_get(jschema, "minLength");
     if (jminlen) {
         int minlen = json_object_get_int64(jminlen);
-        if (strlen(str)<minlen)
+        if (utf8_length(str)<minlen)
             return JDAC_ERR_INVALID_STRLEN;
     }
     json_object *jmaxlen = json_object_object_get(jschema, "maxLength");
     if (jmaxlen) {
         int maxlen = json_object_get_int64(jmaxlen);
-        if (strlen(str)>maxlen)
+        if (utf8_length(str)>maxlen)
             return JDAC_ERR_INVALID_STRLEN;
     }
 
