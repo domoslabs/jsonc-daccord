@@ -209,8 +209,8 @@ int _jdac_check_prefixItems_and_items(json_object *jobj, json_object *jschema)
     }
  
     if (jitems) {
-        if (!json_object_is_type(jprefixitems, json_type_array) &&
-            !json_object_is_type(jprefixitems, json_type_boolean))
+        if (!json_object_is_type(jitems, json_type_object) &&
+            !json_object_is_type(jitems, json_type_boolean))
             return JDAC_ERR_SCHEMA_ERROR;
 
         for (int i=prefixitems_arraylen; i<jobj_arraylen; i++) {
