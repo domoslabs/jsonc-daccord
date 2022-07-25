@@ -22,6 +22,7 @@ static char* jdacerrstr[JDAC_ERR_MAX] = {
     "INVALID TYPE",
     "INVALID REQUIRED",
     "INVALID SUBSCHEMA LOGIC (allOf, anyOf, oneOf, or not)",
+    "INVALID CONST",
     "INVALID ENUMS",
     "INVALID STRING LENGTH",
     "INVALID UNIQUE ITEMS",
@@ -237,6 +238,41 @@ json_object* _jdac_get_defs_from_ref(json_object* ref)
     return NULL;
 }
 
+int _jdac_value_is_equal(json_object *jobj1, json_object *jobj2)
+{
+    if (json_object_equal(jobj1, jobj2))
+        return JDAC_ERR_VALID;
+
+    if (json_object_is_type(jobj1, json_type_double) && json_object_is_type(jobj2, json_type_int)) {
+        double value = json_object_get_double(jobj1);
+        double value2 = json_object_get_int64(jobj2);
+        if (value==round(value) && value == value2)
+            return JDAC_ERR_VALID;
+    }
+
+    if (json_object_is_type(jobj1, json_type_int) && json_object_is_type(jobj2, json_type_double)) {
+        double value = json_object_get_double(jobj2);
+        double value2 = json_object_get_int64(jobj1);
+        if (value==round(value) && value == value2)
+            return JDAC_ERR_VALID;
+    }
+
+    return JDAC_ERR_INVALID;
+}
+
+int _jdac_check_const(json_object *jobj, json_object *jschema)
+{
+    json_object *jconst;
+    int err = json_object_object_get_ex(jschema, "const", &jconst);
+    if (err==0)
+        return JDAC_ERR_VALID;
+
+    err = _jdac_value_is_equal(jobj, jconst);
+    if (err==JDAC_ERR_VALID)
+        return JDAC_ERR_VALID;
+
+    return JDAC_ERR_INVALID_CONST;
+}
 
 int _jdac_check_enums(json_object *jobj, json_object *jschema)
 {
@@ -252,21 +288,9 @@ int _jdac_check_enums(json_object *jobj, json_object *jschema)
     for (int i=0; i<arraylen; i++) {
         json_object *ienum = json_object_array_get_idx(jenum_array, i);
 
-        if (json_object_equal(jobj, ienum))
+    int err = _jdac_value_is_equal(jobj, ienum);
+        if (err==JDAC_ERR_VALID)
             return JDAC_ERR_VALID;
-
-        if (json_object_is_type(ienum, json_type_double) && json_object_is_type(jobj, json_type_int)) {
-            double value = json_object_get_double(ienum);
-            double value2 = json_object_get_int64(jobj);
-            if (value==round(value) && value == value2)
-                return JDAC_ERR_VALID;
-        }
-        if (json_object_is_type(ienum, json_type_int) && json_object_is_type(jobj, json_type_double)) {
-            double value = json_object_get_double(jobj);
-            double value2 = json_object_get_int64(ienum);
-            if (value==round(value) && value == value2)
-                return JDAC_ERR_VALID;
-        }
     }
     printf("ERROR: enum check failed (%s not in enum)\n", json_object_to_json_string(jobj));
 
@@ -505,6 +529,14 @@ int jdac_validate_instance(json_object *jobj, json_object *jschema)
     if (err)
         return err;
 
+    err = _jdac_check_const(jobj, jschema);
+    if (err)
+        return err;
+
+    err = _jdac_check_enums(jobj, jschema);
+    if (err)
+        return err;
+
     // if (!json_object_is_type(jobj, json_type_null))
     //     printf("%s\n", json_object_get_string(jobj));
     // else
@@ -519,10 +551,6 @@ int jdac_validate_instance(json_object *jobj, json_object *jschema)
     if (err)
         return err;
 #endif
-
-    err = _jdac_check_enums(jobj, jschema);
-    if (err)
-        return err;
 
     json_type type = json_object_get_type(jobj);
 
