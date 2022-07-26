@@ -24,7 +24,7 @@ int _jdac_check_contains_and_minmaxcontains(json_object *jobj, json_object *jsch
     for(int i=0; i<arraylen; i++)
     {
         json_object *iobj = json_object_array_get_idx(jobj, i);
-        err = jdac_validate_instance(iobj, jcontains);
+        err = _jdac_validate_instance(iobj, jcontains);
         if (err==JDAC_ERR_VALID)
             match_count++;
         else if (err==JDAC_ERR_SCHEMA_ERROR)

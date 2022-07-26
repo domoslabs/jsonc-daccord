@@ -20,8 +20,8 @@ Minimal build supports:
 You can pass json and schema as either filepaths or `json_object`:
 
 ```C
-    int jdac_validate(const char *jsonfile, const char *jsonschemafile);
-    int jdac_validate_instance(json_object *jobj, json_object *jschema);
+    int jdac_validate_file(const char *jsonfile, const char *jsonschemafile);
+    int jdac_validate(json_object *jobj, json_object *jschema);
     const char* jdac_errorstr(unsigned int jdac_errors);
 ```
 
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
         return JDAC_ERR_WRONG_ARGS;
     }
     printf("validating %s with %s\n", argv[1], argv[2]);
-    int err = jdac_validate(argv[1], argv[2]);
+    int err = jdac_validate_file(argv[1], argv[2]);
     if (err==JDAC_ERR_VALID) {
         printf("validation ok\n");
     } else {
@@ -92,6 +92,7 @@ build options:
 | BUILD_PROPERTYNAMES        | Support *propertyNames*                                  |
 | BUILD_SUBSCHEMALOGIC       | Support *allOf*, *anyOf*, *oneOf*, and *not*             |
 | BUILD_CONTAINS             | Support *contains*, *minContains*, and *maxContains*     |
+| BUILD_REFDEFS              | Support *$defs* and *$ref*                               |
 
  Note: All BUILD_* options are selected by default
 

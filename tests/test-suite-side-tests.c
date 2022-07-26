@@ -73,28 +73,28 @@ static void side_test_patternProperties(void **state)
     // ignore null instance
     jschema = json_object_object_get(e->schema, "schema-valid");
     assert_non_null(jschema);
-    assert_int_equal(jdac_validate_instance(NULL, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate(NULL, jschema), JDAC_ERR_VALID);
 
     // invalid regex
     jobj = json_object_object_get(e->json, "botenanna");
     jschema = json_object_object_get(e->schema, "schema-invalid-regex");
     assert_non_null(jobj);
     assert_non_null(jschema);
-    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+    assert_int_equal(jdac_validate(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
 
     // non object patternProperties
     jobj = json_object_object_get(e->json, "botenanna");
     jschema = json_object_object_get(e->schema, "schema-non-object");
     assert_non_null(jobj);
     assert_non_null(jschema);
-    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+    assert_int_equal(jdac_validate(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
 
     // non object patternProperties
     jobj = json_object_object_get(e->json, "nonobject");
     jschema = json_object_object_get(e->schema, "schema-non-object");
     assert_null(jobj);
     assert_non_null(jschema);
-    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate(jobj, jschema), JDAC_ERR_VALID);
 
     freejson(state);
     freeschema(state);
@@ -114,27 +114,27 @@ static void side_test_pattern(void **state)
     jschema = json_object_object_get(e->schema, "schema-valid");
     assert_null(jobj);
     assert_non_null(jschema);
-    assert_int_equal(jdac_validate_instance(NULL, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate(NULL, jschema), JDAC_ERR_VALID);
 
     jobj = json_object_object_get(e->json, "botenanna");
     jschema = json_object_object_get(e->schema, "schema-valid");
     assert_non_null(jobj);
     assert_non_null(jschema);
-    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate(jobj, jschema), JDAC_ERR_VALID);
 
     // invalid regex
     jobj = json_object_object_get(e->json, "boten");
     jschema = json_object_object_get(e->schema, "schema-invalid-regex");
     assert_non_null(jobj);
     assert_non_null(jschema);
-    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+    assert_int_equal(jdac_validate(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
 
     // non object patternProperties
     jobj = json_object_object_get(e->json, "botenanna");
     jschema = json_object_object_get(e->schema, "schema-non-object");
     assert_non_null(jobj);
     assert_non_null(jschema);
-    assert_int_equal(jdac_validate_instance(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
+    assert_int_equal(jdac_validate(jobj, jschema), JDAC_ERR_SCHEMA_ERROR);
 
     freeschema(state);
 }

@@ -176,7 +176,7 @@ int _jdac_check_properties(json_object *jobj, json_object *jschema)
             json_object *iobj = json_object_object_get(jobj, jprop_key);
             //printf("iobj %s type %d\nkey %s\nval %s\n", json_object_get_string(iobj), json_object_get_type(iobj), jprop_key, json_object_get_string(jprop_val));
             if (iobj) {
-                int err = jdac_validate_instance(iobj, jprop_val);
+                int err = _jdac_validate_instance(iobj, jprop_val);
                 if (err)
                     return err;
             }
@@ -201,10 +201,10 @@ int _jdac_check_prefixItems_and_items(json_object *jobj, json_object *jschema)
         prefixitems_arraylen = json_object_array_length(jprefixitems);
 
         for (int i=0; i<jobj_arraylen && i<prefixitems_arraylen; i++) {
-            printf("i=%d prefixitems\n", i);
+            //printf("i=%d prefixitems\n", i);
             json_object *iobj = json_object_array_get_idx(jobj, i);
             json_object *ischema = json_object_array_get_idx(jprefixitems, i);
-            int err = jdac_validate_instance(iobj, ischema);
+            int err = _jdac_validate_instance(iobj, ischema);
             if (err)
                 return JDAC_ERR_INVALID_PREFIXITEMS;
         }
@@ -216,9 +216,9 @@ int _jdac_check_prefixItems_and_items(json_object *jobj, json_object *jschema)
             return JDAC_ERR_SCHEMA_ERROR;
 
         for (int i=prefixitems_arraylen; i<jobj_arraylen; i++) {
-            printf("i=%d items\n", i);
+            //printf("i=%d items\n", i);
             json_object *iobj = json_object_array_get_idx(jobj, i);
-            int err = jdac_validate_instance(iobj, jitems);
+            int err = _jdac_validate_instance(iobj, jitems);
             if (err)
                 return JDAC_ERR_INVALID_ITEMS;
         }
@@ -521,8 +521,23 @@ int _jdac_validate_boolean(json_object *jobj, json_object *jschema)
     return JDAC_ERR_VALID;
 }
 
-int jdac_validate_instance(json_object *jobj, json_object *jschema)
+int _jdac_validate_instance(json_object *jobj, json_object *jschema)
 {
+#ifdef JDAC_REFDEFS
+    json_object *jschema_ref = _jdac_refdefs_lookup(jschema);
+
+    // if (!json_object_is_type(jschema, json_type_null))
+    //     printf("jschema after refdefs lookup: %s\n", json_object_get_string(jschema));
+    // else
+    //     printf("jschema was null\n");
+
+    if (jschema_ref){
+        int err = _jdac_validate_instance(jobj, jschema_ref);
+        if (err)
+            return JDAC_ERR_INVALID;
+    }
+#endif
+
     // check if jschema is a bool, true or false
     if (json_object_is_type(jschema, json_type_boolean)) {
         json_bool value = json_object_get_boolean(jschema);
@@ -581,12 +596,26 @@ int jdac_validate_instance(json_object *jobj, json_object *jschema)
     return JDAC_ERR_VALID;
 }
 
-int jdac_validate(const char *jsonfile, const char *jsonschemafile)
+int jdac_validate(json_object *jobj, json_object *jschema)
+{
+#ifdef JDAC_REFDEFS
+    _jdac_refdefs_init(jschema);
+#endif
+
+    int err = _jdac_validate_instance(jobj, jschema);
+
+#ifdef JDAC_REFDEFS
+    _jdac_refdefs_close(jschema);
+#endif
+    return err;
+}
+
+int jdac_validate_file(const char *jsonfile, const char *jsonschemafile)
 {
     int err = _jdac_load(jsonfile, jsonschemafile);
     if (err) return err;
 
-    err = jdac_validate_instance(json, schema);
+    err = _jdac_validate_instance(json, schema);
 
     json_object_put(json);
     json_object_put(schema);

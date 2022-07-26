@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     }
 
     printf("validating %s with %s\n", argv[1], argv[2]);
-    int err = jdac_validate(argv[1], argv[2]);
+    int err = jdac_validate_file(argv[1], argv[2]);
     if (err==JDAC_ERR_VALID) {
         printf("validation ok\n");
     } else {

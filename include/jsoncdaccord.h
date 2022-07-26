@@ -30,8 +30,8 @@ enum jdac_errors {
     JDAC_ERR_MAX
 };
 
-int jdac_validate(const char *jsonfile, const char *jsonschemafile);
-int jdac_validate_instance(json_object *jobj, json_object *jschema);
+int jdac_validate_file(const char *jsonfile, const char *jsonschemafile);
+int jdac_validate(json_object *jobj, json_object *jschema);
 
 const char* jdac_errorstr(unsigned int jdac_errors);
 

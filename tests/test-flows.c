@@ -13,7 +13,7 @@
 
 static void test_validate_flows(void **state)
 {
-    assert_int_equal(jdac_validate("json/flows.json", "schema/flows.json"), JDAC_ERR_VALID);
+    assert_int_equal(jdac_validate_file("json/flows.json", "schema/flows.json"), JDAC_ERR_VALID);
 }
 
 int main()

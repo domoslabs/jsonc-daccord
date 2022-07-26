@@ -8,7 +8,7 @@ set(PUBLIC_HEADER_FILES ../include/jsoncdaccord.h)
 
 set(OPTIONAL
   pattern patternproperties additionalproperties propertynames subschemalogic
-  contains
+  contains refdefs
 )
 
 foreach(src ${OPTIONAL})

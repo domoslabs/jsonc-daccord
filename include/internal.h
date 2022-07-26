@@ -19,5 +19,6 @@ int _jdac_validate_integer            (json_object *jobj, json_object *jschema);
 int _jdac_validate_double             (json_object *jobj, json_object *jschema);
 int _jdac_validate_number             (json_object *jobj, json_object *jschema, double value);
 int _jdac_validate_boolean            (json_object *jobj, json_object *jschema);
+int _jdac_validate_instance           (json_object *jobj, json_object *jschema);
 
 #endif // __INTERNAL_H
