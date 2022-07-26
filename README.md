@@ -115,7 +115,6 @@ jdac-cli path-to-json path-to-schema
 
 ## Related links
 
-- https://json-schema.org/draft/2020-12/json-schema-core.html
-- https://github.com/json-schema-org/json-schema-spec
+- https://json-schema.org/specification.html
 - https://github.com/json-schema-org/JSON-Schema-Test-Suite
 - https://github.com/json-c/json-c
