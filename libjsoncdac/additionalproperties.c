@@ -50,7 +50,7 @@ int _jdac_check_additionalproperties(json_object *jobj, json_object *jschema)
 #endif
 
         // by this point we consider the instance to be an additional property
-        int err = jdac_validate_instance(jobj_val, jaddprops);
+        int err = _jdac_validate_instance(jobj_val, jaddprops);
         if (err)
             return err;
 

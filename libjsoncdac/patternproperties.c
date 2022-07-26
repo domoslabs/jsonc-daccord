@@ -21,7 +21,7 @@ int _jdac_check_patternproperties(json_object *jobj, json_object *jschema)
                 if (ret==JDAC_REGEX_COMPILE_FAILED)
                     return JDAC_ERR_SCHEMA_ERROR;
                 else if (ret==JDAC_REGEX_MATCH) {
-                    int err = jdac_validate_instance(jobj_val, jprop_val);
+                    int err = _jdac_validate_instance(jobj_val, jprop_val);
                     if (err)
                         return err;
                 }

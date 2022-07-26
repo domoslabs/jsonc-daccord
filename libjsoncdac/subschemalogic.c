@@ -36,7 +36,7 @@ int _jdac_test_subschema_array(json_object *jobj, json_object *jsubschema_array,
             return JDAC_ERR_SCHEMA_ERROR;
         }
 
-        int err = jdac_validate_instance(jobj, jsubschema); 
+        int err = _jdac_validate_instance(jobj, jsubschema); 
 
         if (err==JDAC_ERR_VALID) {
             number_of_valid_schemas++;
@@ -90,7 +90,7 @@ int _jdac_check_subschemalogic(json_object *jobj, json_object *jschema)
         if (json_object_is_type(jnot, json_type_object) ||
             json_object_is_type(jnot, json_type_boolean)
         ) {
-            err = jdac_validate_instance(jobj, jnot);
+            err = _jdac_validate_instance(jobj, jnot);
             if (err==JDAC_ERR_VALID)
                 return JDAC_ERR_INVALID_SUBSCHEMALOGIC;
             else if (err==JDAC_ERR_SCHEMA_ERROR)

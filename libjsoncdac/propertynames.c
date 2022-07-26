@@ -18,7 +18,7 @@ int _jdac_check_propertynames(json_object *jobj, json_object *jschema)
 
     json_object_object_foreach(jobj, jprop_key, jprop_val) {
         json_object *jprop = json_object_new_string(jprop_key);
-        int err = jdac_validate_instance(jprop, jpropnames_schema);
+        int err = _jdac_validate_instance(jprop, jpropnames_schema);
         json_object_put(jprop);
         if (err)
             return err;
