@@ -26,6 +26,7 @@ static char* jdacerrstr[JDAC_ERR_MAX] = {
     "INVALID ENUMS",
     "INVALID STRING LENGTH",
     "INVALID UNIQUE ITEMS",
+    "INVALID UNIQUE CONTAINS",
     "INVALID PREFIXITEMS",
     "INVALID ITEMS",
     "INVALID ARRAY LENGTH",
@@ -367,6 +368,12 @@ int _jdac_validate_array(json_object *jobj, json_object *jschema)
     err = _jdac_check_maxmin_items(jobj, jschema);
     if (err)
         return err;
+
+#ifdef JDAC_CONTAINS
+    err = _jdac_check_contains_and_minmaxcontains(jobj, jschema);
+    if (err)
+        return err;
+#endif
 
     return JDAC_ERR_VALID;
 }

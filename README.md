@@ -91,6 +91,7 @@ build options:
 | BUILD_ADDITIONALPROPERTIES | Support *additionalProperties*                           |
 | BUILD_PROPERTYNAMES        | Support *propertyNames*                                  |
 | BUILD_SUBSCHEMALOGIC       | Support *allOf*, *anyOf*, *oneOf*, and *not*             |
+| BUILD_CONTAINS             | Support *contains*, *minContains*, and *maxContains*     |
 
  Note: All BUILD_* options are selected by default
 
