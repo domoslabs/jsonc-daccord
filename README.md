@@ -9,7 +9,7 @@ The goal is to have a lightweight JSON Schema validation implementation in C usi
 Currently the footprint of libjsoncdac.so is 8KB. The keep the footprint from bloating out, new features should be selectable using CMake options.
 
 Minimal build supports:
-- all: type, enum, required, properties.
+- all: type, enum, required, properties, const.
 - objects: 
 - strings: minLength, maxLength.
 - integers and doubles: minimum, maximum.
