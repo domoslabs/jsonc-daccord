@@ -524,15 +524,15 @@ int _jdac_validate_boolean(json_object *jobj, json_object *jschema)
 int _jdac_validate_instance(json_object *jobj, json_object *jschema)
 {
 #ifdef JDAC_REFDEFS
-    json_object *jschema_ref = _jdac_refdefs_lookup(jschema);
+    jschema = _jdac_refdefs_lookup(jschema);
 
-    // if (!json_object_is_type(jschema, json_type_null))
-    //     printf("jschema after refdefs lookup: %s\n", json_object_get_string(jschema));
-    // else
-    //     printf("jschema was null\n");
+    if (!json_object_is_type(jschema, json_type_null))
+        printf("jschema after refdefs lookup: %s\n", json_object_get_string(jschema));
+    else
+        printf("jschema was null\n");
 
-    if (jschema_ref){
-        int err = _jdac_validate_instance(jobj, jschema_ref);
+    if (jschema){
+        int err = _jdac_validate_instance(jobj, jschema);
         if (err)
             return JDAC_ERR_INVALID;
     }
@@ -559,14 +559,14 @@ int _jdac_validate_instance(json_object *jobj, json_object *jschema)
     if (err)
         return err;
 
-    // if (!json_object_is_type(jobj, json_type_null))
-    //     printf("%s\n", json_object_get_string(jobj));
-    // else
-    //     printf("jobj was null\n");
-    // if (!json_object_is_type(jschema, json_type_null))
-    //     printf("%s\n", json_object_get_string(jschema));
-    // else
-    //     printf("jschema was null\n");
+    if (!json_object_is_type(jobj, json_type_null))
+        printf("%s\n", json_object_get_string(jobj));
+    else
+        printf("jobj was null\n");
+    if (!json_object_is_type(jschema, json_type_null))
+        printf("%s\n", json_object_get_string(jschema));
+    else
+        printf("jschema was null\n");
 
 #ifdef JDAC_SUBSCHEMALOGIC
     err = _jdac_check_subschemalogic(jobj, jschema);

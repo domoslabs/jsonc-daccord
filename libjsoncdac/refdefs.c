@@ -5,7 +5,30 @@
 #include "../include/internal.h"
 #include "../include/optional.h"
 
+
+enum jdacfree {
+    JDAC_IS_NOT_REMOTE = 0,
+    JDAC_IS_REMOTE = 1
+};
+
+typedef struct reference_list {
+    char reference_keyword[128];
+    json_object *remoteSchema;
+    int is_remote;
+    struct reference_list *next;
+}reference_list;
+
 static json_object *rootschema = NULL;
+static reference_list *reflist_head = NULL;
+
+ void _jdac_reference_list_push(reference_list **head, const char *reference_keyword, json_object *jobj, int is_remote) {
+    reference_list *new_node;
+    new_node = malloc(sizeof(reference_list));
+    strncpy(new_node->reference_keyword, reference_keyword, sizeof(new_node->reference_keyword));
+    new_node->is_remote = is_remote>0 ? 1:0;
+    new_node->next = *head;
+    *head = new_node;
+}
 
 void _jdac_refdefs_init(json_object *jschema)
 {
@@ -31,43 +54,10 @@ int _jdac_is_numeric(const char *str)
     return 1;
 }
 
-void _jdac_refdefs_decode_ref(const char *refstr, char *decoded, int bufsize)
-{
-    const char *ptr = refstr;
-    int len=0;
-    decoded[0]=0;
-    while(*ptr && len<bufsize-1) {
-        if (ptr[0]=='~' && ptr[1]=='0') {
-            decoded[len++] = '~';
-            ptr++;
-        }
-        else if (ptr[0]=='~' && ptr[1]=='1') {
-            decoded[len++] = '/';
-            ptr++;
-        }
-        else if (ptr[0]=='%') {
-            if ( (ptr[1] <= '9' && ptr[1] >= 0) && ((ptr[2] <= '9' && ptr[2] >= 0))) {
-                char digits[3];
-                strncpy(digits, &ptr[1], 2);
-                ptr++;
-                ptr++;
-                if (_jdac_is_numeric(digits)) {
-                    if (atoi(digits)==25) {
-                        decoded[len++] = '%';
-                    }
-                }
-            }
-        }
-        else
-            decoded[len++] = *ptr;
-        ptr++;
-    }
-    decoded[len] = 0;
-
-}
-
 json_object* _jdac_refdefs_lookup(json_object *jschema)
 {
+    json_object *schema_ptr = rootschema;
+
     json_object *ref = json_object_object_get(jschema, "$ref");
     if (!ref)
         return NULL;
@@ -76,12 +66,24 @@ json_object* _jdac_refdefs_lookup(json_object *jschema)
     if (!refstr)
         return NULL;
 
+#ifdef JDAC_DOWNLOAD
+    const char *has_url = _jdac_download_resolve(refstr);
+    if (has_url) {
+        char* dlschema = _jdac_download_schema(has_url);
+        if (dlschema) {
+            schema_ptr = json_tokener_parse(dlschema);
+            free(dlschema);
+            _jdac_reference_list_push(&reflist_head, refstr, schema_ptr, JDAC_IS_REMOTE);
+            return schema_ptr;
+        }
+    }
+#endif
+
     // strole the refs
     char keyword[128];
     keyword[0]=0;
     int len=0;
     const char *ptr = refstr;
-    json_object *schema_ptr = rootschema;
     while(*ptr !=0 && len<sizeof(keyword)-1 && schema_ptr!=NULL )
     {
         keyword[len++]=*ptr;
@@ -124,11 +126,14 @@ json_object* _jdac_refdefs_lookup(json_object *jschema)
         if (*ptr=='/')
             ptr++;
     }
+
     if (schema_ptr) {
         json_object *nestedref = json_object_object_get(schema_ptr, "$ref");
-        if (nestedref)
+        if (nestedref) {
             return _jdac_refdefs_lookup(schema_ptr);
+        }
     }
+    _jdac_reference_list_push(&reflist_head, keyword, schema_ptr, JDAC_IS_NOT_REMOTE);
 
     return schema_ptr;
 }

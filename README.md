@@ -93,6 +93,7 @@ build options:
 | BUILD_SUBSCHEMALOGIC       | Support *allOf*, *anyOf*, *oneOf*, and *not*             |
 | BUILD_CONTAINS             | Support *contains*, *minContains*, and *maxContains*     |
 | BUILD_REFDEFS              | Support *$defs* and *$ref*                               |
+| BUILD_DOWNLOADS            | Support downloading referenced schema files              |
 
  Note: All BUILD_* options are selected by default
 

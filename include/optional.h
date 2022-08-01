@@ -13,6 +13,8 @@ int _jdac_check_contains_and_minmaxcontains(json_object *jobj, json_object *jsch
 void _jdac_refdefs_init(json_object *jschema);
 json_object* _jdac_refdefs_lookup(json_object *jschema);
 void _jdac_refdefs_close();
+char* _jdac_download_schema(const char *url);
+const char* _jdac_download_resolve(const char *uri);
 
 
 #endif // __OPTIONAL_H
