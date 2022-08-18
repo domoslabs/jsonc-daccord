@@ -90,10 +90,10 @@ build options:
 | BUILD_PATTERNPROPERTIES    | Support *patternProperties*                              |
 | BUILD_ADDITIONALPROPERTIES | Support *additionalProperties*                           |
 | BUILD_PROPERTYNAMES        | Support *propertyNames*                                  |
-| BUILD_SUBSCHEMALOGIC       | Support *allOf*, *anyOf*, *oneOf*, and *not*             |
+| BUILD_SUBSCHEMALOGIC       | Support *allOf*, *anyOf*, *oneOf*, *not*, *if-then-else* |
 | BUILD_CONTAINS             | Support *contains*, *minContains*, and *maxContains*     |
-| BUILD_REFDEFS              | Support *$defs* and *$ref*                               |
 | BUILD_DOWNLOADS            | Support downloading referenced schema files              |
+| BUILD_REF                  | Support Refer to schema uri, id, or anchor               |
 
  Note: All BUILD_* options are selected by default
 

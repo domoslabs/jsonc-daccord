@@ -11,6 +11,11 @@ json_object *json = NULL;
 json_object *schema = NULL;
 json_object *defs = NULL;
 
+
+#ifdef JDAC_STORE
+    static storage_node *storagelist_head = NULL;
+#endif
+
 static char* jdacerrstr[JDAC_ERR_MAX] = {
     "VALID",
     "GENERAL ERROR",
@@ -31,6 +36,7 @@ static char* jdacerrstr[JDAC_ERR_MAX] = {
     "INVALID ITEMS",
     "INVALID ARRAY LENGTH",
     "INVALID NUMBER",
+    "INVALID REFERENCE",
     "PATTERN NO MATCH",
     "REGEX MISMATCH",
     "REGEX MATCH",
@@ -516,26 +522,20 @@ int _jdac_validate_number(json_object *jobj, json_object *jschema, double value)
 int _jdac_validate_boolean(json_object *jobj, json_object *jschema)
 {
     // printf("%s\n", __func__);
-    // printf("%s\n", json_object_get_string(jobj));
-    // printf("%s\n", json_object_get_string(jschema));
     return JDAC_ERR_VALID;
 }
 
 int _jdac_validate_instance(json_object *jobj, json_object *jschema)
 {
-#ifdef JDAC_REFDEFS
-    jschema = _jdac_refdefs_lookup(jschema);
+    int err;
+    // printf("--validate instance--\n");
+    // printf("%s\n", json_object_get_string(jobj));
+    // printf("%s\n", json_object_get_string(jschema));
 
-    if (!json_object_is_type(jschema, json_type_null))
-        printf("jschema after refdefs lookup: %s\n", json_object_get_string(jschema));
-    else
-        printf("jschema was null\n");
-
-    if (jschema){
-        int err = _jdac_validate_instance(jobj, jschema);
-        if (err)
-            return JDAC_ERR_INVALID;
-    }
+#ifdef JDAC_REF
+    err = _jdac_check_ref(jobj, jschema, storagelist_head);
+    if (err)
+        return err;
 #endif
 
     // check if jschema is a bool, true or false
@@ -547,7 +547,7 @@ int _jdac_validate_instance(json_object *jobj, json_object *jschema)
             return JDAC_ERR_VALID;
     }
 
-    int err = _jdac_check_type(jobj, jschema);
+    err = _jdac_check_type(jobj, jschema);
     if (err)
         return err;
 
@@ -598,14 +598,14 @@ int _jdac_validate_instance(json_object *jobj, json_object *jschema)
 
 int jdac_validate(json_object *jobj, json_object *jschema)
 {
-#ifdef JDAC_REFDEFS
-    _jdac_refdefs_init(jschema);
+#ifdef JDAC_STORE
+    _jdac_store_traverse_json(&storagelist_head, jschema, NULL);
+    _jdac_store_print(storagelist_head);
 #endif
 
     int err = _jdac_validate_instance(jobj, jschema);
-
-#ifdef JDAC_REFDEFS
-    _jdac_refdefs_close(jschema);
+#ifdef JDAC_STORE
+    _jdac_store_free(&storagelist_head);
 #endif
     return err;
 }
@@ -615,7 +615,7 @@ int jdac_validate_file(const char *jsonfile, const char *jsonschemafile)
     int err = _jdac_load(jsonfile, jsonschemafile);
     if (err) return err;
 
-    err = _jdac_validate_instance(json, schema);
+    err = jdac_validate(json, schema);
 
     json_object_put(json);
     json_object_put(schema);

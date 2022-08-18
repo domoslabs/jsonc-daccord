@@ -102,5 +102,19 @@ int _jdac_check_subschemalogic(json_object *jobj, json_object *jschema)
             return JDAC_ERR_SCHEMA_ERROR;
     }
 
+    json_object *if_schema = json_object_object_get(jschema, "if");
+    json_object *then_schema = json_object_object_get(jschema, "then");
+    json_object *else_schema = json_object_object_get(jschema, "else");
+    if (if_schema) {
+        err = _jdac_validate_instance(jobj, if_schema);
+        if (err==JDAC_ERR_VALID && then_schema) {
+            err = _jdac_validate_instance(jobj, then_schema);
+            return err;
+        } else if (err!=JDAC_ERR_VALID && else_schema ) {
+            err = _jdac_validate_instance(jobj, else_schema);
+            return err;
+        }
+    }
+
     return JDAC_ERR_VALID;
 }

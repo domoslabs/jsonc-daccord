@@ -1,6 +1,8 @@
 #ifndef __INTERNAL_H
 #define __INTERNAL_H
 
+#include <json-c/json.h>
+
 int _jdac_load(const char *jsonfile, const char *jsonschema);
 int __jdac_inspect_type(json_object *jobj, const char *type);
 int _jdac_check_type                  (json_object *jobj, json_object *jschema);

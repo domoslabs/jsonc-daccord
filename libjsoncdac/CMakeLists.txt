@@ -8,7 +8,7 @@ set(PUBLIC_HEADER_FILES ../include/jsoncdaccord.h)
 
 list(APPEND OPTIONAL
   pattern patternproperties additionalproperties propertynames subschemalogic
-  contains refdefs download
+  contains download store ref
 )
 
 foreach(src ${OPTIONAL})
@@ -23,9 +23,6 @@ endforeach()
 
 
 if (BUILD_DOWNLOAD)
-  if (NOT BUILD_REFDEFS)
-    message(FATAL_ERROR "BUILD_DOWNLOAD requires BUILD_REFDEFS")
-  endif()
   find_package(CURL REQUIRED)
   include_directories(${CURL_INCLUDE_DIR})
   set(EXTRA_LIBS ${CURL_LIBRARIES})
@@ -37,7 +34,7 @@ if (BUILD_PATTERNPROPERTIES OR BUILD_PATTERN)
 endif()
 
 # always supported
-list(APPEND SUPPORTED_BASE type enum required properties anyOf minLength maxLength minimum maximum)
+list(APPEND SUPPORTED_BASE type enum required properties anyOf minLength maxLength minimum maximum const)
 list(APPEND SUPPORTED_BASE minItems maxItems uniqueItems items)
 string (REPLACE ";" "," SUPPORTED_BASE_STR "${SUPPORTED_BASE}")
 string (REPLACE ";" "," SUPPORTED_OPTIONAL_STR "${SUPPORTED_OPTIONAL}")
