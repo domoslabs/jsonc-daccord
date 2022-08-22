@@ -118,7 +118,7 @@ Running test suites are currently optional, and are select with `RUN_TEST_SUITE=
 You can try the library with the jdac-cli command.
 
 ```/tmp/domos/domosqos-sta_statistics_json
-jdac-cli path-to-json path-to-schema
+jdac-cli -h
 ```
 ## To do
 - prevent infinite recursion
