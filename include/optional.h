@@ -29,6 +29,9 @@ int _jdac_store_traverse_json(storage_node **head, json_object *jschema, char *p
 void _jdac_store_free(storage_node **head);
 void _jdac_store_print(storage_node *head);
 json_object* _jdac_store_resolve(storage_node *list, const char *uri);
+storage_node* _jdac_store_get_root_node(storage_node *head);
+
 int _jdac_check_ref(json_object *jobj, json_object *jschema, storage_node *storage_list);
+int jdac_ref_set_localpath(const char *_localpath);
 
 #endif // __OPTIONAL_H
