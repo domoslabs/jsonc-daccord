@@ -10,11 +10,12 @@ char localpath[256] = {0};
 int jdac_ref_set_localpath(const char *_localpath)
 {
     strcpy(localpath, _localpath);
+    return JDAC_ERR_VALID;
 }
 
 const char* _jdac_uri_get_path(const char *uri)
 {
-    char *ptr = uri;
+    const char *ptr = uri;
     char *schemaseparator = strstr(uri, "://");
     if (!schemaseparator)
     {
@@ -27,6 +28,7 @@ const char* _jdac_uri_get_path(const char *uri)
         if (path)
             return path;
     }
+    return NULL;
 }
 
 int _jdac_check_ref(json_object *jobj, json_object *jschema, storage_node *storage_list)
@@ -46,7 +48,7 @@ int _jdac_check_ref(json_object *jobj, json_object *jschema, storage_node *stora
                 return JDAC_ERR_VALID;
 
             if (!path_id) {
-                char filepath[256];
+                char filepath[512];
                 snprintf(filepath, sizeof(filepath)-1, "%s.%s", localpath, path_ref);
                 printf("filepath is %s\n", filepath);
                 json_object *jschemafromfile = json_object_from_file(filepath);
@@ -60,7 +62,7 @@ int _jdac_check_ref(json_object *jobj, json_object *jschema, storage_node *stora
 
             if (strcmp(path_ref, path_id)!=0 && strlen(localpath)>0) {
                 printf("yep\n");
-                char filepath[256];
+                char filepath[512];
                 snprintf(filepath, sizeof(filepath)-1, "%s.%s", localpath, path_ref);
                 printf("filepath is %s\n", filepath);
                 json_object *jschemafromfile = json_object_from_file(filepath);

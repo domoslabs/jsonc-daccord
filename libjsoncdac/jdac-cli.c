@@ -28,10 +28,8 @@ int main(int argc, char *argv[])
 {
 
     int c;
-    int digit_optind = 0;
 
     while (1) {
-        int this_option_optind = optind ? optind : 1;
         int option_index = 0;
         static struct option long_options[] = {
             {"json",      required_argument, 0, 'j'},

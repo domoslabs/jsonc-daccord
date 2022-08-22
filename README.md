@@ -17,21 +17,23 @@ Minimal build supports:
 
 ## Example Use
 
-You can pass json and schema as either filepaths or `json_object`:
+Public headers:
+
+See [jsoncdaccord.h](include/jsoncdaccord.h)
 
 ```C
     int jdac_validate_file(const char *jsonfile, const char *jsonschemafile);
     int jdac_validate(json_object *jobj, json_object *jschema);
+    int jdac_ref_set_localpath(const char *_localpath);
+
     const char* jdac_errorstr(unsigned int jdac_errors);
 ```
-
-For return values, see: [jsoncdaccord.h](include/jsoncdaccord.h)
 
 Link your binary to: `-ljsoncdac -ljson-c`
 
 Use the #include header: `#include <jsoncdaccord.h>`
 
-Example C code (based on jdac-cli):
+Example C code:
 
 ```C
 #include <stdio.h>
@@ -40,20 +42,25 @@ Example C code (based on jdac-cli):
 
 int main(int argc, char *argv[])
 {
-    if (argc!=3) {
-        printf("jdac-cli needs two arguments: paths to json and schema\n");
-        return JDAC_ERR_WRONG_ARGS;
-    }
-    printf("validating %s with %s\n", argv[1], argv[2]);
-    int err = jdac_validate_file(argv[1], argv[2]);
+    char *json_file = "test.json";
+    char *schema_file = "schema.json";
+
+    // optional: load referenced schema files from filesystem
+    char *localpath = "/my/path/to_json_files/";
+    jdac_ref_set_localpath(localpath);
+
+    printf("validating %s with %s\n", json_file, schema_file);
+    int err = jdac_validate_file(json_file, schema_file);
     if (err==JDAC_ERR_VALID) {
         printf("validation ok\n");
     } else {
-        printf("validate failed %d\n", err);
+        printf("validate failed %d: %s\n", err, jdac_errorstr(err));
     }
     return err;
 }
 ```
+
+See [jdac-cli.c](libjsoncdac/jdac-cli.c) as well.
 
 ## Install
 
@@ -64,14 +71,14 @@ Install json-c and libcmocka-dev (used in the debug builds).
 - Release version:
 
 ```
-git clone --branch libjsoncdac-0.1 https://github.com/domoslabs/jsonc-daccord &&\
+git clone --branch libjsoncdac-0.2 https://github.com/domoslabs/jsonc-daccord &&\
 cd jsonc-daccord && mkdir build && cd build &&\
 cmake .. -DCMAKE_BUILD_TYPE=Release && make && sudo make install
 ```
 
 - Debug version:
 ```
-git clone --branch libjsoncdac-0.1 https://github.com/domoslabs/jsonc-daccord &&\
+git clone --branch libjsoncdac-0.2 https://github.com/domoslabs/jsonc-daccord &&\
 cd jsonc-daccord && mkdir build && cd build &&\
 cmake .. -DCMAKE_BUILD_TYPE=Debug && make && sudo make install
 ```
@@ -92,8 +99,9 @@ build options:
 | BUILD_PROPERTYNAMES        | Support *propertyNames*                                  |
 | BUILD_SUBSCHEMALOGIC       | Support *allOf*, *anyOf*, *oneOf*, *not*, *if-then-else* |
 | BUILD_CONTAINS             | Support *contains*, *minContains*, and *maxContains*     |
-| BUILD_DOWNLOADS            | Support downloading referenced schema files              |
-| BUILD_REF                  | Support Refer to schema uri, id, or anchor               |
+| BUILD_DOWNLOAD             | Support downloading referenced schema files              |
+| BUILD_STORE                | Support build a list of schema uri, id, and anchors      |
+| BUILD_REF                  | Support *$ref* keyword. load schemas by file.            |
 
  Note: All BUILD_* options are selected by default
 
@@ -113,7 +121,6 @@ You can try the library with the jdac-cli command.
 jdac-cli path-to-json path-to-schema
 ```
 ## To do
-- ref, defs
 - prevent infinite recursion
 
 ## Related links

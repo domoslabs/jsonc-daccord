@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project (jsonc-daccord LANGUAGES C VERSION "0.1.99")
+project (jsonc-daccord LANGUAGES C VERSION "0.2")
 
 option(RUN_TEST_SUITE "Run JSON-Schema-org's test suite" OFF)
 
