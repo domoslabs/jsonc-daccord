@@ -2,8 +2,8 @@
 #include <string.h>
 #include <json-c/json.h>
 #include "../include/jsoncdaccord.h"
-#include "../include/internal.h"
-#include "../include/optional.h"
+#include "../include/jdac_internal.h"
+#include "../include/jdac_optional.h"
 
 void _jdac_store_append(storage_node **head, storage_node *ref)
 {

@@ -3,8 +3,8 @@
 #include <json-c/json.h>
 #include <curl/curl.h>
 #include "../include/jsoncdaccord.h"
-#include "../include/internal.h"
-#include "../include/optional.h"
+#include "../include/jdac_internal.h"
+#include "../include/jdac_optional.h"
 
 struct curlmemory {
     char *response;

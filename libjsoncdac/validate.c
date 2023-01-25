@@ -4,8 +4,8 @@
 #include <json-c/json.h>
 
 #include "../include/jsoncdaccord.h"
-#include "../include/internal.h"
-#include "../include/optional.h"
+#include "../include/jdac_internal.h"
+#include "../include/jdac_optional.h"
 
 json_object *json = NULL;
 json_object *schema = NULL;

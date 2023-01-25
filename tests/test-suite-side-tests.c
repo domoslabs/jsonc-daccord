@@ -11,7 +11,7 @@
 
 #include <json-c/json.h>
 #include "../include/jsoncdaccord.h"
-#include "../include/internal.h"
+#include "../include/jdac_internal.h"
 
 #define UNIT_TESTING 1  //overloads malloc,calloc,free,etc to mocka versions
 

@@ -2,8 +2,8 @@
 #include <string.h>
 #include <json-c/json.h>
 #include "../include/jsoncdaccord.h"
-#include "../include/internal.h"
-#include "../include/optional.h"
+#include "../include/jdac_internal.h"
+#include "../include/jdac_optional.h"
 
 enum subschematype {
     JDAC_ALLOF = 0,
