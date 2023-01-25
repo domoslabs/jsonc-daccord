@@ -1,5 +1,5 @@
-#ifndef __OPTIONAL_H
-#define __OPTIONAL_H
+#ifndef __JDAC_OPTIONAL_H
+#define __JDAC_OPTIONAL_H
 
 #include <json-c/json.h>
 
@@ -33,4 +33,4 @@ storage_node* _jdac_store_get_root_node(storage_node *head);
 
 int _jdac_check_ref(json_object *jobj, json_object *jschema, storage_node *storage_list);
 
-#endif // __OPTIONAL_H
+#endif // __JDAC_OPTIONAL_H
