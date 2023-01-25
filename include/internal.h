@@ -1,5 +1,5 @@
-#ifndef __INTERNAL_H
-#define __INTERNAL_H
+#ifndef __JDAC_INTERNAL_H
+#define __JDAC_INTERNAL_H
 
 int _jdac_load(const char *jsonfile, const char *jsonschema);
 int __jdac_inspect_type(json_object *jobj, const char *type);
@@ -21,4 +21,4 @@ int _jdac_validate_number             (json_object *jobj, json_object *jschema, 
 int _jdac_validate_boolean            (json_object *jobj, json_object *jschema);
 int _jdac_validate_instance           (json_object *jobj, json_object *jschema);
 
-#endif // __INTERNAL_H
+#endif // __JDAC_INTERNAL_H

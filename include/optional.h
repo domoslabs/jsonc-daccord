@@ -1,5 +1,5 @@
-#ifndef __OPTIONAL_H
-#define __OPTIONAL_H
+#ifndef __JDAC_OPTIONAL_H
+#define __JDAC_OPTIONAL_H
 
 #include <json-c/json.h>
 
@@ -17,4 +17,4 @@ char* _jdac_download_schema(const char *url);
 const char* _jdac_download_resolve(const char *uri);
 
 
-#endif // __OPTIONAL_H
+#endif // __JDAC_OPTIONAL_H
