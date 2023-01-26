@@ -7,6 +7,7 @@ int _jdac_load(const char *jsonfile, const char *jsonschema);
 int __jdac_inspect_type(json_object *jobj, const char *type);
 int _jdac_check_type                  (json_object *jobj, json_object *jschema);
 int _jdac_check_required              (json_object *jobj, json_object *jschema);
+int _jdac_check_dependentrequired     (json_object *jobj, json_object *jschema);
 int _jdac_check_properties            (json_object *jobj, json_object *jschema);
 int _jdac_check_prefixItems_and_items (json_object *jobj, json_object *jschema);
 int _jdac_value_is_equal              (json_object *jobj1, json_object *jobj2);

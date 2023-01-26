@@ -1,0 +1,8 @@
+{
+    "test1": {"type": "object"},
+    "test2": {"type": "object"},
+    "test3": {"type": "object", "dependentRequired": {"credit_card":["billing_address"]}},
+    "test4": {"type": "object", "dependentRequired": {"credit_card":["billing_address"]}},
+    "test5": {"type": "object", "dependentRequired": {"credit_card":["billing_address","rave"]}}
+
+}

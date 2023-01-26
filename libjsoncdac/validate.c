@@ -396,6 +396,12 @@ int _jdac_validate_object(json_object *jobj, json_object *jschema)
     err = _jdac_check_properties(jobj, jschema);
     if (err) return err;
 
+#ifdef JDAC_DEPENDENT
+    err = _jdac_check_dependentrequired(jobj, jschema);
+    if (err)
+        return err;
+#endif
+
 #ifdef JDAC_PROPERTYNAMES
     err = _jdac_check_propertynames(jobj, jschema);
     if (err)

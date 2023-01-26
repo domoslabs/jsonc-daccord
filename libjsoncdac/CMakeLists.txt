@@ -8,7 +8,7 @@ set(PUBLIC_HEADER_FILES ../include/jsoncdaccord.h)
 
 list(APPEND OPTIONAL
   pattern patternproperties additionalproperties propertynames subschemalogic
-  contains download store ref
+  dependent contains download store ref
 )
 
 foreach(src ${OPTIONAL})
