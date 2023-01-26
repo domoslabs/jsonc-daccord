@@ -2,10 +2,11 @@ cmake_minimum_required(VERSION 3.0)
 project (jsonc-daccord LANGUAGES C VERSION "0.2")
 
 option(RUN_TEST_SUITE "Run JSON-Schema-org's test suite" OFF)
+option(USE_ASAN       "Build with address-sanitizer" OFF)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wno-error=cpp -Wall")
 set(CMAKE_C_FLAGS_RELEASE "-Os -Werror")
-set(CMAKE_C_FLAGS_DEBUG "-ggdb -O0 -fsanitize=address -static-libasan -fno-omit-frame-pointer")
+set(CMAKE_C_FLAGS_DEBUG "-ggdb -O0 -fno-omit-frame-pointer")
 
 include(FindPkgConfig)
 pkg_check_modules (JSONC_LIBRARY REQUIRED json-c>=0.13)
@@ -33,6 +34,10 @@ if (BUILD_TYPE STREQUAL "debug")
   include(CTest)
   enable_testing()
   add_subdirectory(tests)
+endif ()
+
+if (USE_ASAN)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -static-libasan")
 endif ()
 
 if (UNIX OR MINGW OR CYGWIN)

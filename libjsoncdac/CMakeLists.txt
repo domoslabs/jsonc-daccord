@@ -28,6 +28,10 @@ if (BUILD_DOWNLOAD)
   set(EXTRA_LIBS ${CURL_LIBRARIES})
 endif()
 
+
+set(EXTRA_LIBS ${EXTRA_LIBS} m json-c)
+
+
 if (BUILD_PATTERNPROPERTIES OR BUILD_PATTERN)
   set(jsoncdaccord_SOURCES ${jsoncdaccord_SOURCES} regex_match.c )
   #set(EXTRA_LIBS regex)
@@ -64,9 +68,9 @@ install(
 
 add_executable(jdac-cli jdac-cli.c)
 if (BUILD_TYPE STREQUAL "debug")
-  set(EXTRA_LIBS ${EXTRA_LIBS} jsoncdaccord_static json-c cmocka)
+  set(EXTRA_LIBS ${EXTRA_LIBS} jsoncdaccord_static cmocka)
 else ()
-  set(EXTRA_LIBS ${EXTRA_LIBS} jsoncdaccord_shared json-c)
+  set(EXTRA_LIBS ${EXTRA_LIBS} jsoncdaccord_shared)
 endif ()
 target_link_libraries(jdac-cli PUBLIC ${EXTRA_LIBS})
 target_compile_definitions(jdac-cli PRIVATE "SUPPORTED_KEYWORDS_BASE=\"${SUPPORTED_BASE_STR}\"" "SUPPORTED_KEYWORDS_OPTIONAL=\"${SUPPORTED_OPTIONAL_STR}\"")
