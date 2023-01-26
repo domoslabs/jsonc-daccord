@@ -43,35 +43,42 @@ list(APPEND SUPPORTED_BASE minItems maxItems uniqueItems items)
 string (REPLACE ";" "," SUPPORTED_BASE_STR "${SUPPORTED_BASE}")
 string (REPLACE ";" "," SUPPORTED_OPTIONAL_STR "${SUPPORTED_OPTIONAL}")
 
-add_library(jsoncdaccord_shared SHARED ${jsoncdaccord_SOURCES})
-add_library(jsoncdaccord_static STATIC ${jsoncdaccord_SOURCES})
-target_compile_definitions(jsoncdaccord_shared PRIVATE "SUPPORTED_KEYWORDS_BASE=\"${SUPPORTED_BASE_STR}\"" "SUPPORTED_KEYWORDS_OPTIONAL=\"${SUPPORTED_OPTIONAL_STR}\"")
-target_compile_definitions(jsoncdaccord_static PRIVATE "SUPPORTED_KEYWORDS_BASE=\"${SUPPORTED_BASE_STR}\"" "SUPPORTED_KEYWORDS_OPTIONAL=\"${SUPPORTED_OPTIONAL_STR}\"")
-target_link_libraries(jsoncdaccord_shared ${EXTRA_LIBS})
-target_link_libraries(jsoncdaccord_static ${EXTRA_LIBS})
 
-set_target_properties(
-  jsoncdaccord_shared jsoncdaccord_static
-  PROPERTIES
-    OUTPUT_NAME   jsoncdac
-    PUBLIC_HEADER "${HEADER_FILES}"
-    VERSION 1.0.0
-    SOVERSION 1
-)
+if (BUILD_SHARED_LIBS)
+  add_library(jsoncdaccord_shared SHARED ${jsoncdaccord_SOURCES})
+  target_compile_definitions(jsoncdaccord_shared PRIVATE "SUPPORTED_KEYWORDS_BASE=\"${SUPPORTED_BASE_STR}\"" "SUPPORTED_KEYWORDS_OPTIONAL=\"${SUPPORTED_OPTIONAL_STR}\"")
+  target_link_libraries(jsoncdaccord_shared ${EXTRA_LIBS})
+  set_target_properties(jsoncdaccord_shared PROPERTIES OUTPUT_NAME jsoncdac PUBLIC_HEADER "${HEADER_FILES}" VERSION 1.0.0 SOVERSION 1 )
+  install(
+    TARGETS jsoncdaccord_shared
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    PUBLIC_HEADER DESTINATION include
+  )
+else ()
+  add_library(jsoncdaccord_static STATIC ${jsoncdaccord_SOURCES})
+  target_compile_definitions(jsoncdaccord_static PRIVATE "SUPPORTED_KEYWORDS_BASE=\"${SUPPORTED_BASE_STR}\"" "SUPPORTED_KEYWORDS_OPTIONAL=\"${SUPPORTED_OPTIONAL_STR}\"")
+  target_link_libraries(jsoncdaccord_static ${EXTRA_LIBS})
+  set_target_properties(jsoncdaccord_static PROPERTIES OUTPUT_NAME jsoncdac PUBLIC_HEADER "${HEADER_FILES}" VERSION 1.0.0 SOVERSION 1 )
+  install(
+    TARGETS jsoncdaccord_static
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    PUBLIC_HEADER DESTINATION include
+  )
+endif ()
 
-install(
-  TARGETS jsoncdaccord_shared jsoncdaccord_static
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  PUBLIC_HEADER DESTINATION include
-)
+if (BUILD_SHARED_LIBS)
+  set(EXTRA_LIBS ${EXTRA_LIBS} jsoncdaccord_shared)
+else ()
+  set(EXTRA_LIBS ${EXTRA_LIBS} jsoncdaccord_static)
+endif ()
+
+if (BUILD_TYPE STREQUAL "debug")
+  set(EXTRA_LIBS ${EXTRA_LIBS} cmocka)
+endif ()
 
 add_executable(jdac-cli jdac-cli.c)
-if (BUILD_TYPE STREQUAL "debug")
-  set(EXTRA_LIBS ${EXTRA_LIBS} jsoncdaccord_static cmocka)
-else ()
-  set(EXTRA_LIBS ${EXTRA_LIBS} jsoncdaccord_shared)
-endif ()
 target_link_libraries(jdac-cli PUBLIC ${EXTRA_LIBS})
 target_compile_definitions(jdac-cli PRIVATE "SUPPORTED_KEYWORDS_BASE=\"${SUPPORTED_BASE_STR}\"" "SUPPORTED_KEYWORDS_OPTIONAL=\"${SUPPORTED_OPTIONAL_STR}\"")
 install(TARGETS jdac-cli DESTINATION bin)

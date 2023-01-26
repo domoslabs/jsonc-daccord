@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.0)
 project (jsonc-daccord LANGUAGES C VERSION "0.2")
 
-option(RUN_TEST_SUITE "Run JSON-Schema-org's test suite" OFF)
-option(USE_ASAN       "Build with address-sanitizer" OFF)
+option(RUN_TEST_SUITE   "Run JSON-Schema-org's test suite" OFF)
+option(RUN_TESTS        "Run tests" OFF)
+option(USE_ASAN         "Build with address-sanitizer" OFF)
+option(BUILD_SHARED_LIBS "Build .so file, .a otherwise" OFF)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wno-error=cpp -Wall")
 set(CMAKE_C_FLAGS_RELEASE "-Os -Werror")
@@ -25,6 +27,10 @@ configure_file("config.h.in" ${CMAKE_BINARY_DIR}/generated/version_config.h)
 include_directories(${CMAKE_BINARY_DIR}/generated)
 
 add_subdirectory(libjsoncdac)
+
+if (RUN_TESTS AND NOT (BUILD_TYPE STREQUAL "debug"))
+  message(FATAL_ERROR "RUN_TESTS needs CMAKE_BUILD_TYPE=debug")
+endif ()
 
 if (BUILD_TYPE STREQUAL "debug")
   find_library(CMOCKA_LIBRARY NAMES libcmocka.so)
