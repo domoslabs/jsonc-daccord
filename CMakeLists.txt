@@ -4,7 +4,7 @@ project (jsonc-daccord LANGUAGES C VERSION "0.2")
 option(RUN_TEST_SUITE   "Run JSON-Schema-org's test suite" OFF)
 option(RUN_TESTS        "Run tests" OFF)
 option(USE_ASAN         "Build with address-sanitizer" OFF)
-option(BUILD_SHARED_LIBS "Build .so file, .a otherwise" OFF)
+option(JDAC_SHARED_LIBS "Build .so file, .a otherwise" OFF)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wno-error=cpp -Wall")
 set(CMAKE_C_FLAGS_RELEASE "-Os -Werror")

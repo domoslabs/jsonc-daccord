@@ -44,7 +44,7 @@ string (REPLACE ";" "," SUPPORTED_BASE_STR "${SUPPORTED_BASE}")
 string (REPLACE ";" "," SUPPORTED_OPTIONAL_STR "${SUPPORTED_OPTIONAL}")
 
 
-if (BUILD_SHARED_LIBS)
+if (JDAC_SHARED_LIBS)
   add_library(jsoncdaccord_shared SHARED ${jsoncdaccord_SOURCES})
   target_compile_definitions(jsoncdaccord_shared PRIVATE "SUPPORTED_KEYWORDS_BASE=\"${SUPPORTED_BASE_STR}\"" "SUPPORTED_KEYWORDS_OPTIONAL=\"${SUPPORTED_OPTIONAL_STR}\"")
   target_link_libraries(jsoncdaccord_shared ${EXTRA_LIBS})
@@ -68,7 +68,7 @@ else ()
   )
 endif ()
 
-if (BUILD_SHARED_LIBS)
+if (JDAC_SHARED_LIBS)
   set(EXTRA_LIBS ${EXTRA_LIBS} jsoncdaccord_shared)
 else ()
   set(EXTRA_LIBS ${EXTRA_LIBS} jsoncdaccord_static)
