@@ -32,7 +32,7 @@ if (RUN_TESTS AND NOT (BUILD_TYPE STREQUAL "debug"))
   message(FATAL_ERROR "RUN_TESTS needs CMAKE_BUILD_TYPE=debug")
 endif ()
 
-if (BUILD_TYPE STREQUAL "debug")
+if (RUN_TESTS)
   find_library(CMOCKA_LIBRARY NAMES libcmocka.so)
   if (NOT CMOCKA_LIBRARY)
     message(FATAL_ERROR "Could not find the cmocka library! Try: libcmocka-dev")
