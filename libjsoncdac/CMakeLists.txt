@@ -30,6 +30,10 @@ endif()
 
 
 set(EXTRA_LIBS ${EXTRA_LIBS} m json-c)
+if (USE_ASAN)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -static-libasan -fno-omit-frame-pointer")
+  set(EXTRA_LIBS ${EXTRA_LIBS} -fsanitize=address)
+endif ()
 
 
 if (BUILD_PATTERNPROPERTIES OR BUILD_PATTERN)

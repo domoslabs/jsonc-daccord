@@ -42,9 +42,6 @@ if (RUN_TESTS)
   add_subdirectory(tests)
 endif ()
 
-if (USE_ASAN)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -static-libasan")
-endif ()
 
 if (UNIX OR MINGW OR CYGWIN)
   SET(prefix ${CMAKE_INSTALL_PREFIX})
