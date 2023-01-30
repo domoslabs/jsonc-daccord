@@ -24,4 +24,9 @@ int _jdac_validate_number             (json_object *jobj, json_object *jschema, 
 int _jdac_validate_boolean            (json_object *jobj, json_object *jschema);
 int _jdac_validate_instance           (json_object *jobj, json_object *jschema);
 
+// a hack to get JSON_C version 0.12 to work
+#if JSON_C_MINOR_VERSION <= 12
+int json_object_equal(struct json_object* jso1, struct json_object* jso2);
+#endif
+
 #endif // __JDAC_INTERNAL_H

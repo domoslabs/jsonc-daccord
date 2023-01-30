@@ -42,6 +42,7 @@ int _jdac_check_additionalproperties(json_object *jobj, json_object *jschema)
                         foundpatternproperty = 1;
                         break;
                     }
+                    if (jpat_val) {}
                 }
             }
             if (foundpatternproperty)

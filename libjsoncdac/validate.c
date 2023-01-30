@@ -630,3 +630,60 @@ int jdac_validate_file(const char *jsonfile, const char *jsonschemafile)
     defs = NULL;
     return err;
 }
+
+
+#if JSON_C_MINOR_VERSION <= 12
+#include <stdlib.h>
+#include <stdbool.h>
+int json_object_equal(struct json_object* jso1, struct json_object* jso2)
+{
+	if (jso1 == jso2)
+		return 1;
+
+	if (!jso1 || !jso2)
+		return 0;
+
+	if (json_object_get_type(jso1) != json_object_get_type(jso2))
+		return 0;
+
+    bool boolval1, boolval2;
+    int intval1, intval2;
+    double doubleval1, doubleval2;
+    const char *string1, *string2;
+
+	switch(json_object_get_type(jso1)) {
+		case json_type_boolean:
+            boolval1 = json_object_get_boolean(jso1);
+            boolval2 = json_object_get_boolean(jso2);
+            return (boolval1==boolval2);
+
+		case json_type_double:
+            doubleval1 = json_object_get_double(jso1);
+            doubleval2 = json_object_get_double(jso2);
+			return (doubleval1 == doubleval2);
+
+		case json_type_int:
+            intval1 = json_object_get_int(jso1);
+            intval2 = json_object_get_int(jso2);
+			return (intval1==intval2);
+
+		case json_type_string:
+            if (json_object_get_string_len(jso1)!=json_object_get_string_len(jso2))
+                return 0;
+            string1 = json_object_get_string(jso1);
+            string2 = json_object_get_string(jso2);
+			return (memcmp(string1,string2,json_object_get_string_len(jso1)) == 0);
+
+		case json_type_object:
+		// 	return json_object_all_values_equal(jso1, jso2);
+
+		case json_type_array:
+		// 	return json_array_equal(jso1, jso2);
+
+		case json_type_null:
+		return 1;
+	};
+
+	return 0;
+}
+#endif
