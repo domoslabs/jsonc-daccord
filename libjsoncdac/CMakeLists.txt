@@ -78,10 +78,6 @@ else ()
   set(EXTRA_LIBS ${EXTRA_LIBS} jsoncdaccord_static)
 endif ()
 
-if (BUILD_TYPE STREQUAL "debug")
-  set(EXTRA_LIBS ${EXTRA_LIBS} cmocka)
-endif ()
-
 add_executable(jdac-cli jdac-cli.c)
 target_link_libraries(jdac-cli PUBLIC ${EXTRA_LIBS})
 target_compile_definitions(jdac-cli PRIVATE "SUPPORTED_KEYWORDS_BASE=\"${SUPPORTED_BASE_STR}\"" "SUPPORTED_KEYWORDS_OPTIONAL=\"${SUPPORTED_OPTIONAL_STR}\"")
