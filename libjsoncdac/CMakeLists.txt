@@ -6,25 +6,34 @@ set(PUBLIC_HEADER_FILES ../include/jsoncdaccord.h)
 # plugging in optional functionality here:
 # The option name must match the filename excluding the .c
 
-list(APPEND OPTIONAL_ON
+list(APPEND OPTIONAL_ON_DEFAULT
   additionalproperties
   propertynames
   subschemalogic
   dependent
   contains
   ref
-)
-
-list(APPEND OPTIONAL_OFF
-  pattern
-  patternproperties
-  download
   store
 )
 
-foreach(src ${OPTIONAL})
+list(APPEND OPTIONAL_OFF_DEFAULT
+  pattern
+  patternproperties
+  download
+)
+
+foreach(src ${OPTIONAL_ON_DEFAULT})
   string(TOUPPER ${src} srcupper)
   option(BUILD_${srcupper} "${src} option" ON)
+endforeach()
+
+foreach(src ${OPTIONAL_OFF_DEFAULT})
+  string(TOUPPER ${src} srcupper)
+  option(BUILD_${srcupper} "${src} option" OFF)
+endforeach()
+
+foreach(src ${OPTIONAL_ON_DEFAULT} ${OPTIONAL_OFF_DEFAULT})
+  string(TOUPPER ${src} srcupper)
   if (BUILD_${srcupper})
     list(APPEND SUPPORTED_OPTIONAL ${src})
     set(jsoncdaccord_SOURCES ${jsoncdaccord_SOURCES} ${src}.c )
@@ -32,7 +41,9 @@ foreach(src ${OPTIONAL})
   endif()
 endforeach()
 
-option(BUILD_DOWNLOAD "download option" OFF)
+if (BUILD_REF AND NOT BUILD_STORE)
+  message(FATAL_ERROR "Can not have BUILD_REF without BUILD_STORE option")
+endif()
 
 
 if (BUILD_DOWNLOAD)
