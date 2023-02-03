@@ -6,9 +6,20 @@ set(PUBLIC_HEADER_FILES ../include/jsoncdaccord.h)
 # plugging in optional functionality here:
 # The option name must match the filename excluding the .c
 
-list(APPEND OPTIONAL
-  pattern patternproperties additionalproperties propertynames subschemalogic
-  dependent contains download store ref
+list(APPEND OPTIONAL_ON
+  additionalproperties
+  propertynames
+  subschemalogic
+  dependent
+  contains
+  ref
+)
+
+list(APPEND OPTIONAL_OFF
+  pattern
+  patternproperties
+  download
+  store
 )
 
 foreach(src ${OPTIONAL})
@@ -20,6 +31,8 @@ foreach(src ${OPTIONAL})
     add_definitions(-DJDAC_${srcupper})
   endif()
 endforeach()
+
+option(BUILD_DOWNLOAD "download option" OFF)
 
 
 if (BUILD_DOWNLOAD)

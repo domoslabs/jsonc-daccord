@@ -103,7 +103,7 @@ build options:
 | BUILD_STORE                | Support build a list of schema uri, id, and anchors      |
 | BUILD_REF                  | Support *$ref* keyword. load schemas by file.            |
 
- Note: All BUILD_* options are selected by default
+ Note: Some build options may be off by default. Like DOWNLOAD. Not everyone needs curl+crypto on their system for this.
 
 ## Run tests
 For debug builds:
