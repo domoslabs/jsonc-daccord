@@ -79,9 +79,15 @@ if (JDAC_SHARED_LIBS)
   set_target_properties(jsoncdaccord_shared PROPERTIES OUTPUT_NAME jsoncdac PUBLIC_HEADER "${HEADER_FILES}" VERSION 1.0.0 SOVERSION 1 )
   install(
     TARGETS jsoncdaccord_shared
+    EXPORT jsoncdaccordtarget
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     PUBLIC_HEADER DESTINATION include
+  )
+  install(
+    EXPORT jsoncdaccordtarget
+    FILE jsoncdaccord.cmake
+    DESTINATION lib/cmake
   )
 else ()
   add_library(jsoncdaccord_static STATIC ${jsoncdaccord_SOURCES})
@@ -90,9 +96,15 @@ else ()
   set_target_properties(jsoncdaccord_static PROPERTIES OUTPUT_NAME jsoncdac PUBLIC_HEADER "${HEADER_FILES}" VERSION 1.0.0 SOVERSION 1 )
   install(
     TARGETS jsoncdaccord_static
+    EXPORT jsoncdaccordtarget
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
     PUBLIC_HEADER DESTINATION include
+  )
+  install(
+    EXPORT jsoncdaccordtarget
+    FILE jsoncdaccord.cmake
+    DESTINATION lib/cmake
   )
 endif ()
 
