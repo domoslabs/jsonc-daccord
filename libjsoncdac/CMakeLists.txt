@@ -3,8 +3,8 @@ include_directories(../include)
 set(jsoncdaccord_SOURCES validate.c)
 set(PUBLIC_HEADER_FILES ../include/jsoncdaccord.h)
 
-# plugging in optional functionality here:
-# The option name must match the filename excluding the .c
+# plugin options
+# The option name is the name of the c.file excluding the .c extension
 
 list(APPEND OPTIONAL_ON_DEFAULT
   additionalproperties
@@ -32,6 +32,7 @@ foreach(src ${OPTIONAL_OFF_DEFAULT})
   option(BUILD_${srcupper} "${src} option" OFF)
 endforeach()
 
+# add selected plugins to source, and set definitions
 foreach(src ${OPTIONAL_ON_DEFAULT} ${OPTIONAL_OFF_DEFAULT})
   string(TOUPPER ${src} srcupper)
   if (BUILD_${srcupper})
