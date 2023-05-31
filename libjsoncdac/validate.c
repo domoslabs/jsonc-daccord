@@ -159,7 +159,7 @@ int _jdac_check_required(json_object *jobj, json_object *jschema)
                 json_object *required_object = NULL;
                 int err = json_object_object_get_ex(jobj, key, &required_object);
                 if (err==0) {
-                    printf("required key missing: %s\n", key);
+                    // printf("required key missing: %s\n", key);
                     missing_required_key=1;
                 }
             }
@@ -299,7 +299,7 @@ int _jdac_check_enums(json_object *jobj, json_object *jschema)
         if (err==JDAC_ERR_VALID)
             return JDAC_ERR_VALID;
     }
-    printf("ERROR: enum check failed (%s not in enum)\n", json_object_to_json_string(jobj));
+    // printf("ERROR: enum check failed (%s not in enum)\n", json_object_to_json_string(jobj));
 
     return JDAC_ERR_INVALID_ENUMS;
 }
@@ -606,7 +606,7 @@ int jdac_validate(json_object *jobj, json_object *jschema)
 {
 #ifdef JDAC_STORE
     _jdac_store_traverse_json(&storagelist_head, jschema, NULL);
-    _jdac_store_print(storagelist_head);
+    // _jdac_store_print(storagelist_head);
 #endif
 
     int err = _jdac_validate_instance(jobj, jschema);
