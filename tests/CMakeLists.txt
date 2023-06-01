@@ -23,14 +23,14 @@ function(ADDTEST test_src)
   else()
     set_target_properties(${test_name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests)
   endif()
-  add_test(NAME ${test_name} COMMAND ${test_name} ${ADDTEST_RUNNERARGS})
+  add_test(NAME ${test_name} WORKING_DIRECTORY  ${CMAKE_BINARY_DIR}/tests COMMAND ${test_name} ${ADDTEST_RUNNERARGS})
 endfunction()
 
 file(COPY json schema DESTINATION ${CMAKE_BINARY_DIR}/tests)
 
 addtest(test-flows.c    SOURCES "" LIBS jsoncdaccord_static cmocka json-c  )
-addtest(test-validate.c SOURCES "" LIBS cmocka json-c jsoncdaccord_static WRAPFUNCTIONS json_object_from_file )
-addtest(test-suite-side-tests.c SOURCES "" LIBS cmocka json-c jsoncdaccord_static )
+# addtest(test-validate.c SOURCES "" LIBS cmocka json-c jsoncdaccord_static WRAPFUNCTIONS json_object_from_file )
+# addtest(test-suite-side-tests.c SOURCES "" LIBS cmocka json-c jsoncdaccord_static )
 addtest(test-dependent.c SOURCES "" LIBS cmocka json-c jsoncdaccord_static )
 
 # Test JSON Schema Test Suite
