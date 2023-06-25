@@ -1,0 +1,17 @@
+{
+  "flows": [
+    {
+      "flow_id": "91",
+      "service_name": "Cloudflare",
+      "master_protocol": "HTTP",
+      "sport": 58692,
+      "dport": 80,
+      "src": "192.168.1.190",
+      "dst": "104.20.145.10",
+      "proto": "6",
+      "alive": "1",
+      "active": false
+    }
+
+  ]
+}

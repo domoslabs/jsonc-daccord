@@ -1,6 +1,6 @@
 include_directories(../include)
 
-set(jsoncdaccord_SOURCES validate.c)
+set(jsoncdaccord_SOURCES validate.c output.c)
 set(PUBLIC_HEADER_FILES ../include/jsoncdaccord.h)
 
 # plugin options

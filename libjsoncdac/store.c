@@ -94,9 +94,9 @@ storage_node* _jdac_store_get_root_node(storage_node *head)
 {
     // spool to start of list
     storage_node* list = head;
-    //printf("%-*s %-*s %-*s %-*s\n", 32, "JSONPtr", 16, "anchor", 16, "dynamicAnchor", 32, "id");
+    printf("%-*s %-*s %-*s %-*s\n", 32, "JSONPtr", 16, "anchor", 16, "dynamicAnchor", 32, "id");
     while(list) {
-        //printf("%-*s %-*s %-*s %-*s\n", 32, list->JSONPtrURI, 16, list->anchor, 16, list->dynamicAnchor, 32, list->id);
+        printf("%-*s %-*s %-*s %-*s\n", 32, list->JSONPtrURI, 16, list->anchor, 16, list->dynamicAnchor, 32, list->id);
         if (list->next==NULL) return list;
         list = list->next;
     }
