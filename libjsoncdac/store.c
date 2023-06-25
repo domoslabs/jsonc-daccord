@@ -83,9 +83,9 @@ int _jdac_store_traverse_json(storage_node **head, json_object *jschema, char *p
 void _jdac_store_print(storage_node *head)
 {
     storage_node* list = head;
-    printf("%-*s %-*s %-*s %-*s\n", 32, "JSONPtr", 16, "anchor", 16, "dynamicAnchor", 32, "id");
+    // printf("%-*s %-*s %-*s %-*s\n", 32, "JSONPtr", 16, "anchor", 16, "dynamicAnchor", 32, "id");
     while(list) {
-        printf("%-*s %-*s %-*s %-*s\n", 32, list->JSONPtrURI, 16, list->anchor, 16, list->dynamicAnchor, 32, list->id);
+        // printf("%-*s %-*s %-*s %-*s\n", 32, list->JSONPtrURI, 16, list->anchor, 16, list->dynamicAnchor, 32, list->id);
         list = list->next;
     }
 }

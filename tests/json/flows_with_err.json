@@ -1,7 +1,7 @@
 {
   "flows": [
     {
-      "flow_id": "91",
+      "flow_id": 91,
       "service_name": "Cloudflare",
       "master_protocol": "HTTP",
       "sport": 58692,

@@ -215,11 +215,14 @@ int _jdac_check_properties(json_object *jobj, json_object *jschema, json_object 
         json_object *iobj = json_object_object_get(jobj, jprop_key);
         //printf("iobj %s type %d\nkey %s\nval %s\n", json_object_get_string(iobj), json_object_get_type(iobj), jprop_key, json_object_get_string(jprop_val));
         if (iobj) {
-            json_object *jprop_item_node = _jdac_output_create_and_append_node(jproperties_node, jprop_key);
-            int err = _jdac_validate_instance(iobj, jprop_val, jprop_item_node);
-            _jdac_output_apply_result(jprop_item_node, err);
+            json_object *jprop_item_tmp_node = _jdac_output_create_node(jprop_key);
+            int err = _jdac_validate_instance(iobj, jprop_val, jprop_item_tmp_node);
             if (err!=JDAC_ERR_VALID) {
                 properties_valid=0;
+                _jdac_output_apply_result(jprop_item_tmp_node, err);
+                _jdac_output_append_node(jproperties_node, jprop_item_tmp_node);
+            } else {
+                json_object_put(jprop_item_tmp_node);
             }
         }
     }
@@ -745,14 +748,15 @@ int jdac_validate(json_object *jobj, json_object *jschema)
 {
 #ifdef JDAC_STORE
     _jdac_store_traverse_json(&storagelist_head, jschema, NULL);
-    // _jdac_store_print(storagelist_head);
+    _jdac_store_print(storagelist_head);
 #endif
 
     json_object *joutput = _jdac_output_create_node("root");
     int err = _jdac_validate_instance(jobj, jschema, joutput);
     _jdac_output_apply_result(joutput, err);
 
-    printf("%s\n", json_object_get_string(joutput));
+    if (err)
+        printf("Basic Output: %s\n", json_object_get_string(joutput));
 
 #ifdef JDAC_STORE
     _jdac_store_free(&storagelist_head);
