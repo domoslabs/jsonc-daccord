@@ -1,19 +1,26 @@
 # json-c d'accord library (libjsoncdac)
 
-jsonc-daccord is a lightweight JSON Schema validation library written in C, and is taking advantage of the libjson-c library.
+jsonc-daccord is a JSON Schema validation library written in C, and is taking advantage of the json-c library.
 
 ## Design Goals
 
-The goal is to have a lightweight JSON Schema validation implementation in C using json-c. json-c is popular in OpenWRT communities. Initially I just wanted it to support a small subset of JSON Schema to suit a need to validate simple json files. See the minimum build supports below. However to suit a broader audience, supporting more JSON Schema is important.
+The goal is to have a lightweight JSON Schema validation implementation in C using json-c.
+json-c is popular in OpenWRT communities.
 
-Currently the footprint of libjsoncdac.so is 8KB. The keep the footprint from bloating out, new features should be selectable using CMake options.
+Many of the schema features are made optional, and can be disabled if not needed.
 
-Minimal build supports:
-- all: type, enum, required, properties, const.
-- objects: 
-- strings: minLength, maxLength.
-- integers and doubles: minimum, maximum.
-- arrays: minItems, maxItems, uniqeItems, items.
+Supported schema keywords:
+
+| object type | feature                                                                   |
+| :---------- | :------------------------------------------------------------------------ |
+| all         | type, enum, required, properties, const                                   |
+| object      | dependentRequired, propertyNames, patternProperties, additionalProperties |
+| string      | minLength, maxLength                                                      |
+| numbers     | minimum, maximum, multipleOf, exclusiveMinimum, exclusiveMaximum          |
+| boolean     | additionalProperties                                                      |
+| array       | minItems, maxItems, uniqeItems, items                                     |
+
+Other: $defs, $ref
 
 ## Example Use
 
@@ -71,14 +78,14 @@ Install json-c and libcmocka-dev (used in the debug builds).
 - Release version:
 
 ```
-git clone --branch libjsoncdac-0.2 https://github.com/domoslabs/jsonc-daccord &&\
+git clone --branch libjsoncdac-0.3 https://github.com/domoslabs/jsonc-daccord &&\
 cd jsonc-daccord && mkdir build && cd build &&\
 cmake .. -DCMAKE_BUILD_TYPE=Release && make && sudo make install
 ```
 
 - Debug version:
 ```
-git clone --branch libjsoncdac-0.2 https://github.com/domoslabs/jsonc-daccord &&\
+git clone --branch libjsoncdac-0.3 https://github.com/domoslabs/jsonc-daccord &&\
 cd jsonc-daccord && mkdir build && cd build &&\
 cmake .. -DCMAKE_BUILD_TYPE=Debug && make && sudo make install
 ```
@@ -92,7 +99,11 @@ build options:
 | option                     | description                                              |
 | :------------------------- | :------------------------------------------------------- |
 | CMAKE_BUILD_TYPE           | Build as Release or Debug. Default: Release.             |
-| RUN_TEST_SUITE             | Run JSON Schema test suite (CMAKE_BUILD_TYPE=Debug Only) |
+| RUN_TEST_SUITE             | Run json-schema-org's JSON-Schema-Test-Suite             |
+| RUN_TESTS                  | jdac unit tests (CMAKE_BUILD_TYPE=Debug Only)            |
+| USE_ASAN                   | Build with address sanitizer                             |
+| JDAC_SHARED_LIBS           | Build .so file, .a otherwise                             |
+| BUILD_ERROR_OUTPUT         | Show failing validations with neat error messages        |
 | BUILD_PATTERN              | Support *pattern*.                                       |
 | BUILD_PATTERNPROPERTIES    | Support *patternProperties*                              |
 | BUILD_ADDITIONALPROPERTIES | Support *additionalProperties*                           |
