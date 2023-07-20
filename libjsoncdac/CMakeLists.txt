@@ -46,6 +46,9 @@ if (BUILD_REF AND NOT BUILD_STORE)
   message(FATAL_ERROR "Can not have BUILD_REF without BUILD_STORE option")
 endif()
 
+if (BUILD_ERROR_OUTPUT)
+  add_definitions(-DJDAC_ERROR_OUTPUT)
+endif ()
 
 if (BUILD_DOWNLOAD)
   find_package(CURL REQUIRED)

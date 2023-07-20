@@ -755,13 +755,16 @@ int jdac_validate(json_object *jobj, json_object *jschema)
     int err = _jdac_validate_instance(jobj, jschema, joutput);
     _jdac_output_apply_result(joutput, err);
 
-    if (err)
-        printf("Basic Output: %s\n", json_object_get_string(joutput));
+    if (joutput) {
+        //printf("Basic Output: %s\n", json_object_get_string(joutput));
+        _jdac_output_print_errors(joutput);
+    }
 
 #ifdef JDAC_STORE
     _jdac_store_free(&storagelist_head);
 #endif
-    json_object_put(joutput);
+    if (joutput)
+        json_object_put(joutput);
     return err;
 }
 

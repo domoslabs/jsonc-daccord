@@ -30,6 +30,7 @@ void _jdac_output_append_node(json_object *joutput, json_object *jnode);
 json_object* _jdac_output_create_and_append_node(json_object *joutput, const char *name);
 json_object* _jdac_output_create_and_append_node_concatnames(json_object *joutput, char *name1, char *name2);
 void _jdac_output_apply_result(json_object *joutput, enum jdac_errors err);
+void _jdac_output_print_errors(json_object *joutput);
 
 // a hack to get JSON_C version 0.12 to work
 #if JSON_C_MINOR_VERSION <= 12

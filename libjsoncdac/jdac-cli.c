@@ -60,7 +60,13 @@ int main(int argc, char *argv[])
                 break;
 #endif
             case 'v':
-                printf("jdac-cli (%s version %s)\n", PROJECT_NAME, PROJECT_VER);
+                printf("jdac-cli (%s version %s)\n\n", PROJECT_NAME, PROJECT_VER);
+                printf("configuration:\n");
+#ifdef JDAC_ERROR_OUTPUT
+                printf("  JDAC_ERROR_OUTPUT=ON\n");
+#else
+                printf("  JDAC_ERROR_OUTPUT=OFF\n");
+#endif
                 printf("supported keywords:\n");
                 printf(" - base:     %s\n", SUPPORTED_KEYWORDS_BASE);
                 printf(" - selected: %s\n\n", SUPPORTED_KEYWORDS_OPTIONAL);

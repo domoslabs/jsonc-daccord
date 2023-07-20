@@ -1,10 +1,11 @@
 cmake_minimum_required(VERSION 3.0)
 project (jsonc-daccord LANGUAGES C VERSION "0.2.9999")
 
-option(RUN_TEST_SUITE   "Run JSON-Schema-org's test suite" OFF)
-option(RUN_TESTS        "Run tests" OFF)
-option(USE_ASAN         "Build with address-sanitizer" OFF)
-option(JDAC_SHARED_LIBS "Build .so file, .a otherwise" OFF)
+option(RUN_TEST_SUITE     "Run JSON-Schema-org's test suite" OFF)
+option(RUN_TESTS          "Run tests" OFF)
+option(USE_ASAN           "Build with address-sanitizer" OFF)
+option(JDAC_SHARED_LIBS   "Build .so file, .a otherwise" OFF)
+option(BUILD_ERROR_OUTPUT "Show errors neatly in schema validations" ON)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wno-error=cpp -Wall")
 set(CMAKE_C_FLAGS_RELEASE "-Os -Werror")
