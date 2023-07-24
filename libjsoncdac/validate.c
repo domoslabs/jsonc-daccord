@@ -137,6 +137,7 @@ int _jdac_check_bool(json_object *jobj, json_object *jschema, json_object *joutp
 
 int _jdac_check_type(json_object *jobj, json_object *jschema, json_object *joutput_node)
 {
+    json_object *jnode;
     json_object *jtype = json_object_object_get(jschema, "type");
     if  (jtype==NULL) {
         return JDAC_ERR_VALID;
@@ -156,12 +157,12 @@ int _jdac_check_type(json_object *jobj, json_object *jschema, json_object *joutp
             if (err==JDAC_ERR_VALID)
                 return JDAC_ERR_VALID;
         }
-        json_object *jnode = _jdac_output_create_and_append_node(joutput_node, "type");
+        jnode = _jdac_output_create_and_append_node(joutput_node, "type");
         _jdac_output_apply_result(jnode, JDAC_ERR_INVALID);
         return JDAC_ERR_INVALID;
     }
 check_type_schema_error:
-    json_object *jnode = _jdac_output_create_and_append_node(joutput_node, "type");
+    jnode = _jdac_output_create_and_append_node(joutput_node, "type");
     _jdac_output_apply_result(jnode, JDAC_ERR_SCHEMA_ERROR);
     return JDAC_ERR_SCHEMA_ERROR;
 }
