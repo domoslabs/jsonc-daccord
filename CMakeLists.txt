@@ -7,7 +7,7 @@ option(USE_ASAN           "Build with address-sanitizer" OFF)
 option(JDAC_SHARED_LIBS   "Build .so file, .a otherwise" OFF)
 option(BUILD_ERROR_OUTPUT "Show errors neatly in schema validations" ON)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wno-error=cpp -Wall")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wno-error=cpp -Wall -Wno-error=deprecated-declarations")
 set(CMAKE_C_FLAGS_RELEASE "-Os -Werror")
 set(CMAKE_C_FLAGS_DEBUG "-ggdb -O0 -fno-omit-frame-pointer")
 
