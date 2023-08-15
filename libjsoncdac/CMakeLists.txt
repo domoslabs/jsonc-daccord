@@ -84,14 +84,14 @@ if (JDAC_SHARED_LIBS)
   install(
     TARGETS jsoncdaccord_shared
     EXPORT jsoncdaccordtarget
-    ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION lib
-    PUBLIC_HEADER DESTINATION include
+    # ARCHIVE DESTINATION lib
+    # LIBRARY DESTINATION lib
+    # PUBLIC_HEADER DESTINATION include
   )
   install(
     EXPORT jsoncdaccordtarget
     FILE jsoncdaccord.cmake
-    DESTINATION lib/cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
   )
 else ()
   add_library(jsoncdaccord_static STATIC ${jsoncdaccord_SOURCES})
@@ -101,14 +101,14 @@ else ()
   install(
     TARGETS jsoncdaccord_static
     EXPORT jsoncdaccordtarget
-    ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION lib
-    PUBLIC_HEADER DESTINATION include
+    # ARCHIVE DESTINATION lib
+    # LIBRARY DESTINATION lib
+    # PUBLIC_HEADER DESTINATION include
   )
   install(
     EXPORT jsoncdaccordtarget
     FILE jsoncdaccord.cmake
-    DESTINATION lib/cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
   )
 endif ()
 
