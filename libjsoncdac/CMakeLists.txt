@@ -85,9 +85,9 @@ if (JDAC_SHARED_LIBS)
   install(
     TARGETS jsoncdaccord_shared
     EXPORT jsoncdaccordtarget
-    # ARCHIVE DESTINATION lib
-    # LIBRARY DESTINATION lib
-    # PUBLIC_HEADER DESTINATION include
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
   install(
     EXPORT jsoncdaccordtarget
@@ -102,6 +102,9 @@ else ()
   install(
     TARGETS jsoncdaccord_static
     EXPORT jsoncdaccordtarget
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
   install(
     EXPORT jsoncdaccordtarget
@@ -121,4 +124,5 @@ target_link_libraries(jdac-cli PUBLIC ${EXTRA_LIBS})
 target_compile_definitions(jdac-cli PRIVATE "SUPPORTED_KEYWORDS_BASE=\"${SUPPORTED_BASE_STR}\"" "SUPPORTED_KEYWORDS_OPTIONAL=\"${SUPPORTED_OPTIONAL_STR}\"")
 install(
   TARGETS jdac-cli
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
