@@ -1,5 +1,4 @@
 include_directories(../include)
-include(GNUInstallDirs)
 
 set(jsoncdaccord_SOURCES validate.c output.c)
 set(PUBLIC_HEADER_FILES ../include/jsoncdaccord.h)
@@ -85,14 +84,14 @@ if (JDAC_SHARED_LIBS)
   install(
     TARGETS jsoncdaccord_shared
     EXPORT jsoncdaccordtarget
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    ARCHIVE DESTINATION usr/lib
+    LIBRARY DESTINATION usr/lib
+    PUBLIC_HEADER DESTINATION usr/include
   )
   install(
     EXPORT jsoncdaccordtarget
     FILE jsoncdaccord.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
+    DESTINATION usr/lib/cmake
   )
 else ()
   add_library(jsoncdaccord_static STATIC ${jsoncdaccord_SOURCES})
@@ -102,14 +101,14 @@ else ()
   install(
     TARGETS jsoncdaccord_static
     EXPORT jsoncdaccordtarget
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    ARCHIVE DESTINATION usr/lib
+    LIBRARY DESTINATION usr/lib
+    PUBLIC_HEADER DESTINATION usr/include
   )
   install(
     EXPORT jsoncdaccordtarget
     FILE jsoncdaccord.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
+    DESTINATION usr/lib/cmake
   )
 endif ()
 
@@ -124,5 +123,5 @@ target_link_libraries(jdac-cli PUBLIC ${EXTRA_LIBS})
 target_compile_definitions(jdac-cli PRIVATE "SUPPORTED_KEYWORDS_BASE=\"${SUPPORTED_BASE_STR}\"" "SUPPORTED_KEYWORDS_OPTIONAL=\"${SUPPORTED_OPTIONAL_STR}\"")
 install(
   TARGETS jdac-cli
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  RUNTIME DESTINATION usr/bin
 )
