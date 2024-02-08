@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.0)
-project (jsonc-daccord LANGUAGES C VERSION "0.2.9999")
+project (jsonc-daccord LANGUAGES C VERSION "0.3")
 
-option(RUN_TEST_SUITE     "Run JSON-Schema-org's test suite" OFF)
-option(RUN_TESTS          "Run tests" OFF)
-option(USE_ASAN           "Build with address-sanitizer" OFF)
-option(JDAC_SHARED_LIBS   "Build .so file, .a otherwise" OFF)
-option(BUILD_ERROR_OUTPUT "Show errors neatly in schema validations" ON)
+option(JDAC_RUN_TEST_SUITE     "Run JSON-Schema-org's test suite" OFF)
+option(JDAC_RUN_TESTS          "Run tests" OFF)
+option(JDAC_USE_ASAN           "Build with address-sanitizer" OFF)
+option(JDAC_SHARED_LIBS        "Build .so file, .a otherwise" OFF)
+option(JDAC_BUILD_ERROR_OUTPUT "Show errors neatly in schema validations" ON)
+option(JDAC_BUILD_ALL          "Override individual BUILD options and build all" OFF)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wno-error=cpp -Wall -Wno-error=deprecated-declarations")
 set(CMAKE_C_FLAGS_RELEASE "-Os -Werror")
@@ -30,11 +31,11 @@ include_directories(${CMAKE_BINARY_DIR}/generated)
 
 add_subdirectory(libjsoncdac)
 
-if (RUN_TESTS AND NOT (BUILD_TYPE STREQUAL "debug"))
-  message(FATAL_ERROR "RUN_TESTS needs CMAKE_BUILD_TYPE=debug")
+if (JDAC_RUN_TESTS AND NOT (BUILD_TYPE STREQUAL "debug"))
+  message(FATAL_ERROR "JDAC_RUN_TESTS needs CMAKE_BUILD_TYPE=debug")
 endif ()
 
-if (RUN_TESTS)
+if (JDAC_RUN_TESTS)
   find_library(CMOCKA_LIBRARY NAMES libcmocka.so)
   if (NOT CMOCKA_LIBRARY)
     message(FATAL_ERROR "Could not find the cmocka library! Try: libcmocka-dev")

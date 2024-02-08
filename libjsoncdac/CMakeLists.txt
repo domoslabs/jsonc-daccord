@@ -24,18 +24,18 @@ list(APPEND OPTIONAL_OFF_DEFAULT
 
 foreach(src ${OPTIONAL_ON_DEFAULT})
   string(TOUPPER ${src} srcupper)
-  option(BUILD_${srcupper} "${src} option" ON)
+  option(JDAC_BUILD_${srcupper} "${src} option" ON)
 endforeach()
 
 foreach(src ${OPTIONAL_OFF_DEFAULT})
   string(TOUPPER ${src} srcupper)
-  option(BUILD_${srcupper} "${src} option" OFF)
+  option(JDAC_BUILD_${srcupper} "${src} option" OFF)
 endforeach()
 
 # add selected plugins to source, and set definitions
 foreach(src ${OPTIONAL_ON_DEFAULT} ${OPTIONAL_OFF_DEFAULT})
   string(TOUPPER ${src} srcupper)
-  if (BUILD_${srcupper})
+  if (JDAC_BUILD_${srcupper} OR JDAC_BUILD_ALL)
     list(APPEND SUPPORTED_OPTIONAL ${src})
     set(jsoncdaccord_SOURCES ${jsoncdaccord_SOURCES} ${src}.c )
     add_definitions(-DJDAC_${srcupper})
@@ -46,11 +46,11 @@ if (BUILD_REF AND NOT BUILD_STORE)
   message(FATAL_ERROR "Can not have BUILD_REF without BUILD_STORE option")
 endif()
 
-if (BUILD_ERROR_OUTPUT)
+if (JDAC_BUILD_ERROR_OUTPUT)
   add_definitions(-DJDAC_ERROR_OUTPUT)
 endif ()
 
-if (BUILD_DOWNLOAD)
+if (JDAC_BUILD_DOWNLOAD)
   find_package(CURL REQUIRED)
   include_directories(${CURL_INCLUDE_DIR})
   set(EXTRA_LIBS ${CURL_LIBRARIES})
@@ -58,13 +58,14 @@ endif()
 
 
 set(EXTRA_LIBS ${EXTRA_LIBS} m ${JSONC_LIBRARY})
-if (USE_ASAN)
+if (JDAC_USE_ASAN)
+
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -static-libasan -fno-omit-frame-pointer")
   set(EXTRA_LIBS ${EXTRA_LIBS} -fsanitize=address)
 endif ()
 
 
-if (BUILD_PATTERNPROPERTIES OR BUILD_PATTERN)
+if (JDAC_BUILD_PATTERNPROPERTIES OR JDAC_BUILD_PATTERN OR JDAC_BUILD_ALL)
   set(jsoncdaccord_SOURCES ${jsoncdaccord_SOURCES} regex_match.c )
   #set(EXTRA_LIBS regex)
 endif()
