@@ -20,7 +20,7 @@ int _jdac_check_dependentrequired(json_object *jobj, json_object *jschema, json_
     }
 
     json_object_object_foreach(j_required, jprop_key, jprop_val) {
-        json_object *jdepreq_key = _jdac_output_create_and_append_node(j_required, jprop_key);
+        json_object *jdepreq_key = _jdac_output_create_and_append_node(jdepreq_node, jprop_key);
 
         if (!json_object_is_type(jprop_val, json_type_array)) {
             _jdac_output_apply_result(jdepreq_key, JDAC_ERR_SCHEMA_ERROR);

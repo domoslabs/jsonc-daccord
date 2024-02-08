@@ -96,34 +96,42 @@ Note: After install you might need to run `sudo ldconfig`.
 
 build options:
 
-| option                     | description                                              |
-| :------------------------- | :------------------------------------------------------- |
-| CMAKE_BUILD_TYPE           | Build as Release or Debug. Default: Release.             |
-| RUN_TEST_SUITE             | Run json-schema-org's JSON-Schema-Test-Suite             |
-| RUN_TESTS                  | jdac unit tests (CMAKE_BUILD_TYPE=Debug Only)            |
-| USE_ASAN                   | Build with address sanitizer                             |
-| JDAC_SHARED_LIBS           | Build .so file, .a otherwise                             |
-| BUILD_ERROR_OUTPUT         | Show failing validations with neat error messages        |
-| BUILD_PATTERN              | Support *pattern*.                                       |
-| BUILD_PATTERNPROPERTIES    | Support *patternProperties*                              |
-| BUILD_ADDITIONALPROPERTIES | Support *additionalProperties*                           |
-| BUILD_PROPERTYNAMES        | Support *propertyNames*                                  |
-| BUILD_SUBSCHEMALOGIC       | Support *allOf*, *anyOf*, *oneOf*, *not*, *if-then-else* |
-| BUILD_CONTAINS             | Support *contains*, *minContains*, and *maxContains*     |
-| BUILD_DOWNLOAD             | Support downloading referenced schema files              |
-| BUILD_STORE                | Support build a list of schema uri, id, and anchors      |
-| BUILD_REF                  | Support *$ref* keyword. load schemas by file.            |
+| option                          | description                                              |
+| :------------------------------ | :------------------------------------------------------- |
+| CMAKE_BUILD_TYPE                | Build as Release or Debug. Default: Release.             |
+| JDAC_RUN_TESTS                  | jdac unit tests (CMAKE_BUILD_TYPE=Debug Only)            |
+| JDAC_RUN_TEST_SUITE             | Run json-schema-org's JSON-Schema-Test-Suite             |
+| JDAC_USE_ASAN                   | Build with address sanitizer                             |
+| JDAC_SHARED_LIBS                | Build .so file, .a otherwise                             |
+| JDAC_BUILD_ALL                  | override build options below and build all               |
+| JDAC_BUILD_ERROR_OUTPUT         | Show failing validations with neat error messages        |
+| JDAC_BUILD_PATTERN              | Support *pattern*.                                       |
+| JDAC_BUILD_PATTERNPROPERTIES    | Support *patternProperties*                              |
+| JDAC_BUILD_ADDITIONALPROPERTIES | Support *additionalProperties*                           |
+| JDAC_BUILD_PROPERTYNAMES        | Support *propertyNames*                                  |
+| JDAC_BUILD_SUBSCHEMALOGIC       | Support *allOf*, *anyOf*, *oneOf*, *not*, *if-then-else* |
+| JDAC_BUILD_CONTAINS             | Support *contains*, *minContains*, and *maxContains*     |
+| JDAC_BUILD_DOWNLOAD             | Support downloading referenced schema files              |
+| JDAC_BUILD_STORE                | Support build a list of schema uri, id, and anchors      |
+| JDAC_BUILD_REF                  | Support *$ref* keyword. load schemas by file.            |
 
  Note: Some build options may be off by default. Like DOWNLOAD. Not everyone needs curl+crypto on their system for this.
 
 ## Run tests
+This should be done before each test
 For debug builds:
 ```
+mkdir build
+cd build && \
+cmake .. -DJDAC_BUILD_ALL=ON -DJDAC_RUN_TESTS=ON -DCMAKE_BUILD_TYPE=debug -DJDAC_USE_ASAN=ON && \
+make
+
 ctest
 ctest -V # to see output of tests
+ctest -R dep -V # to test only output test-dependent
 ```
 
-Running test suites are currently optional, and are select with `RUN_TEST_SUITE=ON` in the cmake options.
+To run the test suites, set `RUN_TEST_SUITE=ON` in the cmake options.
 
 ## Command Line Interface
 You can try the library with the jdac-cli command.

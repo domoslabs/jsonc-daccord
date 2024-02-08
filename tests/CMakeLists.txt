@@ -34,7 +34,7 @@ addtest(test-flows.c    SOURCES "" LIBS jsoncdaccord_static cmocka json-c  )
 addtest(test-dependent.c SOURCES "" LIBS cmocka json-c jsoncdaccord_static )
 
 # Test JSON Schema Test Suite
-if (RUN_TEST_SUITE)
+if (JDAC_RUN_TEST_SUITE)
   file(GLOB DRAFT2020_12          RELATIVE "${PROJECT_SOURCE_DIR}/tests/JSON-Schema-Test-Suite/tests/" "${PROJECT_SOURCE_DIR}/tests/JSON-Schema-Test-Suite/tests/draft2020-12/*.json")
   #file(GLOB DRAFT2020_12_OPTIONAL RELATIVE "${PROJECT_SOURCE_DIR}/tests/JSON-Schema-Test-Suite/tests/" "${PROJECT_SOURCE_DIR}/tests/JSON-Schema-Test-Suite/tests/draft2020-12/optional/*.json")
   #file(GLOB DRAFT2020_12_FORMAT   RELATIVE "${PROJECT_SOURCE_DIR}/tests/JSON-Schema-Test-Suite/tests/" "${PROJECT_SOURCE_DIR}/tests/JSON-Schema-Test-Suite/tests/draft2020-12/optional/format/*.json")
