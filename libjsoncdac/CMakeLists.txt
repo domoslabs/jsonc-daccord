@@ -57,8 +57,9 @@ if (JDAC_BUILD_DOWNLOAD)
 endif()
 
 
-set(EXTRA_LIBS ${EXTRA_LIBS} m json-c)
+set(EXTRA_LIBS ${EXTRA_LIBS} m ${JSONC_LIBRARY})
 if (JDAC_USE_ASAN)
+
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address -static-libasan -fno-omit-frame-pointer")
   set(EXTRA_LIBS ${EXTRA_LIBS} -fsanitize=address)
 endif ()

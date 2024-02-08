@@ -52,7 +52,7 @@ if (UNIX OR MINGW OR CYGWIN)
   SET(libdir ${CMAKE_INSTALL_PREFIX}/lib)
   SET(includedir ${CMAKE_INSTALL_PREFIX}/include)
   SET(VERSION ${PROJECT_VERSION})
-	SET(LIBS_LIST json-c)
+	SET(LIBS_LIST ${JSONC_LIBRARY})
 
 	function(list_transform_prepend var prefix)
 		set(temp "")
