@@ -65,6 +65,6 @@ if (UNIX OR MINGW OR CYGWIN)
 	string(REPLACE ";" " " LIBS "${LIBS_LIST}")
 
   configure_file(jsonc-daccord.pc.in jsonc-daccord.pc @ONLY)
-  set(INSTALL_PKGCONFIG_DIR /pkgconfig CACHE PATH "Installation directory for pkgconfig (.pc) files")
+  set(INSTALL_PKGCONFIG_DIR pkgconfig CACHE PATH "Installation directory for pkgconfig (.pc) files")
   install(FILES ${PROJECT_BINARY_DIR}/jsonc-daccord.pc DESTINATION "${INSTALL_PKGCONFIG_DIR}")
 endif ()
