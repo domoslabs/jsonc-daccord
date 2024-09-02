@@ -8,6 +8,11 @@
 void _jdac_store_append(storage_node **head, storage_node *ref)
 {
     storage_node *new_node = malloc(sizeof(storage_node));
+    if (new_node == NULL)
+    {
+        fprintf(stderr, "Error: malloc failed\n");
+        return;
+    }
     memcpy(new_node, ref, sizeof(storage_node));
     new_node->next = *head;
     *head = new_node;
