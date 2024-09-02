@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project (jsonc-daccord LANGUAGES C VERSION "0.4")
+project (jsonc-daccord LANGUAGES C VERSION "0.5.99")
 
 option(JDAC_RUN_TEST_SUITE     "Run JSON-Schema-org's test suite" OFF)
 option(JDAC_RUN_TESTS          "Run tests" OFF)
@@ -7,6 +7,7 @@ option(JDAC_USE_ASAN           "Build with address-sanitizer" OFF)
 option(JDAC_SHARED_LIBS        "Build .so file, .a otherwise" OFF)
 option(JDAC_BUILD_ERROR_OUTPUT "Show errors neatly in schema validations" ON)
 option(JDAC_BUILD_ALL          "Override individual BUILD options and build all" OFF)
+option(JDAC_STATIC_ANALYZER    "Run static analysis" OFF)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wno-error=cpp -Wall -Wno-error=deprecated-declarations")
 set(CMAKE_C_FLAGS_RELEASE "-Os -Werror")
@@ -25,6 +26,10 @@ find_library(JSONC_LIBRARY NAMES libjson-c.so)
 if (NOT JSONC_LIBRARY)
 message(FATAL_ERROR "libjson-c.so not found!")
 endif()
+
+if (JDAC_STATIC_ANALYZER)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fanalyzer")
+endif ()
 
 configure_file("config.h.in" ${CMAKE_BINARY_DIR}/generated/version_config.h)
 include_directories(${CMAKE_BINARY_DIR}/generated)

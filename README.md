@@ -102,6 +102,7 @@ build options:
 | JDAC_RUN_TESTS                  | jdac unit tests (CMAKE_BUILD_TYPE=Debug Only)            |
 | JDAC_RUN_TEST_SUITE             | Run json-schema-org's JSON-Schema-Test-Suite             |
 | JDAC_USE_ASAN                   | Build with address sanitizer                             |
+| JDAC_STATIC_ANALYZER            | Build with static analyzer                               |
 | JDAC_SHARED_LIBS                | Build .so file, .a otherwise                             |
 | JDAC_BUILD_ALL                  | override build options below and build all               |
 | JDAC_BUILD_ERROR_OUTPUT         | Show failing validations with neat error messages        |
