@@ -105,6 +105,7 @@ else ()
     ARCHIVE DESTINATION usr/lib
     LIBRARY DESTINATION usr/lib
     PUBLIC_HEADER DESTINATION usr/include
+    INCLUDES DESTINATION usr/include
   )
   install(
     EXPORT jsoncdaccordtarget
