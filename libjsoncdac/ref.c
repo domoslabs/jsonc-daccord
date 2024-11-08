@@ -40,19 +40,20 @@ int _jdac_check_ref(json_object *jobj, json_object *jschema, storage_node *stora
         return JDAC_ERR_VALID;
     }
 
-
     const char *refstr = json_object_get_string(jref);
+    if (!refstr) {
+        return JDAC_ERR_VALID;
+    }
+
     // printf("ref is %s\n", refstr);
 
-    if (refstr) {
-        json_object *jschema_from_resolved_uri = _jdac_store_resolve(storage_list, refstr);
-        if (jschema_from_resolved_uri) {
-            // printf("resolve schema: %s\n", json_object_get_string(jschema_from_resolved_uri));
-            json_object *jref_node = _jdac_output_create_and_append_node(joutput_node, "$ref");
-            int err = _jdac_validate_instance(jobj, jschema_from_resolved_uri, jref_node);
-            _jdac_output_apply_result(jref_node, err);
-            return err;
-        }
+    json_object *jschema_from_resolved_uri = _jdac_store_resolve(storage_list, refstr);
+    if (jschema_from_resolved_uri) {
+        // printf("resolve schema: %s\n", json_object_get_string(jschema_from_resolved_uri));
+        json_object *jref_node = _jdac_output_create_and_append_node(joutput_node, "$ref");
+        int err = _jdac_validate_instance(jobj, jschema_from_resolved_uri, jref_node);
+        _jdac_output_apply_result(jref_node, err);
+        return err;
     }
 
     storage_node *rootnode = _jdac_store_get_root_node(storage_list);
