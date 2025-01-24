@@ -25,20 +25,6 @@ static char* jdacerrstr[JDAC_ERR_MAX] = {
     "WRONG ARGUEMNTS GIVEN",
     "SCHEMA ERROR",
     "INVALID",
-    "INVALID TYPE",
-    "INVALID REQUIRED",
-    "INVALID SUBSCHEMA LOGIC (allOf, anyOf, oneOf, or not)",
-    "INVALID CONST",
-    "INVALID ENUMS",
-    "INVALID STRING LENGTH",
-    "INVALID UNIQUE ITEMS",
-    "INVALID UNIQUE CONTAINS",
-    "INVALID PREFIXITEMS",
-    "INVALID ITEMS",
-    "INVALID ARRAY LENGTH",
-    "INVALID NUMBER",
-    "INVALID REFERENCE",
-    "PATTERN NO MATCH",
     "REGEX MISMATCH",
     "REGEX MATCH",
     "REGEX COMPILE FAILED"
@@ -305,18 +291,18 @@ int _jdac_check_prefixItems_and_items(json_object *jobj, json_object *jschema, j
     return ret;
 }
 
-json_object* _jdac_get_defs_from_ref(json_object* ref)
-{
-    char key[128];
-    if (!json_object_is_type(ref, json_type_string))
-        return NULL;
+// json_object* _jdac_get_defs_from_ref(json_object* ref)
+// {
+//     char key[128];
+//     if (!json_object_is_type(ref, json_type_string))
+//         return NULL;
 
-    const char *refstr = json_object_get_string(ref);
-    if (sscanf(refstr, "#/$defs/%s", key)==1) {
-        return json_object_object_get(defs, key);
-    }
-    return NULL;
-}
+//     const char *refstr = json_object_get_string(ref);
+//     if (sscanf(refstr, "#/$defs/%s", key)==1) {
+//         return json_object_object_get(defs, key);
+//     }
+//     return NULL;
+// }
 
 int _jdac_value_is_equal(json_object *jobj1, json_object *jobj2)
 {
